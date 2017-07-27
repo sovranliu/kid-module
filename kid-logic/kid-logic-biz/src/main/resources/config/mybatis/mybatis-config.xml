@@ -2,7 +2,7 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <typeAlias alias="DemoPO" type="com.xyzq.kid.logic.dao.po.DemoPO" />
+        <typeAlias alias="DemoPO" type="com.xyzq.kid.logic.user.dao.po.DemoPO" />
     </typeAliases>
     <mappers>
         <mapper resource="config/mybatis/mapper/Demo.xml" />

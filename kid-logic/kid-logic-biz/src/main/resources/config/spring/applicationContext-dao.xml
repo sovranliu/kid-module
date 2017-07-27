@@ -16,7 +16,7 @@
     </bean>
     <!-- DAO -->
     <bean id="demoDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.xyzq.kid.logic.dao.DemoDAO"></property>
+        <property name="mapperInterface" value="com.xyzq.kid.logic.user.dao.DemoDAO"></property>
         <property name="sqlSessionFactory" ref="logicSqlSessionFactory"></property>
     </bean>
 </beans>

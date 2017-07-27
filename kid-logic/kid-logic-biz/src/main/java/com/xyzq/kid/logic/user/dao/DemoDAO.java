@@ -1,6 +1,6 @@
-package com.xyzq.kid.logic.dao;
+package com.xyzq.kid.logic.user.dao;
 
-import com.xyzq.kid.logic.dao.po.DemoPO;
+import com.xyzq.kid.logic.user.dao.po.DemoPO;
 
 /**
  * 范例表数据访问接口

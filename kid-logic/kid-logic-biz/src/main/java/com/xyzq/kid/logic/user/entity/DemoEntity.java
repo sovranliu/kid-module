@@ -1,4 +1,4 @@
-package com.xyzq.kid.logic.entity;
+package com.xyzq.kid.logic.user.entity;
 
 /**
  * 范例实体

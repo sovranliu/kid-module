@@ -1,4 +1,4 @@
-package com.xyzq.kid.logic.dao.po;
+package com.xyzq.kid.logic.user.dao.po;
 
 /**
  * 范例持久对象

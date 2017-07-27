@@ -1,8 +1,8 @@
-package com.xyzq.kid.logic.bean;
+package com.xyzq.kid.logic.user.bean;
 
-import com.xyzq.kid.logic.dao.DemoDAO;
-import com.xyzq.kid.logic.dao.po.DemoPO;
-import com.xyzq.kid.logic.entity.DemoEntity;
+import com.xyzq.kid.logic.user.dao.DemoDAO;
+import com.xyzq.kid.logic.user.dao.po.DemoPO;
+import com.xyzq.kid.logic.user.entity.DemoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

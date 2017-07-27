@@ -1,7 +1,7 @@
-package com.xyzq.kid.logic.service;
+package com.xyzq.kid.logic.user.service;
 
-import com.xyzq.kid.logic.bean.DemoBean;
-import com.xyzq.kid.logic.entity.DemoEntity;
+import com.xyzq.kid.logic.user.bean.DemoBean;
+import com.xyzq.kid.logic.user.entity.DemoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

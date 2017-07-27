@@ -1,4 +1,4 @@
-package com.xyzq.kid.logic.common;
+package com.xyzq.kid.logic.user.common;
 
 /**
  * 范例工具类
