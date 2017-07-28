@@ -9,15 +9,15 @@ public class BookEntity {
     /**
      * 主键ID
      */
-    private int id;
+    private Integer id;
     /**
      * 关联票券ID
      */
-    private int ticketId;
+    private Integer ticketId;
     /**
      * 用户ID
      */
-    private int userId;
+    private Integer userId;
     /**
      * 预约日期 YYY-MM-DD
      */
@@ -29,7 +29,7 @@ public class BookEntity {
     /**
      * 关联的可预约时间仓库ID
      */
-    private String bookTimeId;
+    private Integer bookTimeId;
     /**
      * 预约状态
      * 1：已预约未使用，2：已预约已使用，3：已撤销

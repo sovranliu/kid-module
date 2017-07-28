@@ -12,9 +12,9 @@ import com.xyzq.kid.logic.book.dao.po.Book;
 public class BookService {
 	
 	@Autowired
-	BookMapper bookDAO;
+	BookMapper bookMapper;
 	
 	public List<Book> getAllBooks(){
-		return bookDAO.selectAll();
+		return bookMapper.selectAll();
 	}
 }

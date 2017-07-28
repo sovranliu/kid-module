@@ -5,21 +5,21 @@ import java.util.Date;
 public class Message {
     private Integer id;
 
-    private Integer userId;
+    private Integer userid;
 
     private String message;
 
-    private Date createTime;
+    private Date createtime;
 
-    private Date lastUpdateTime;
+    private Date lastupdatetime;
 
-    private String deleteFlag;
+    private String deleteflag;
 
     private String answer;
 
-    private Date answerTime;
+    private Date answertime;
 
-    private String answerPerson;
+    private String answerperson;
 
     public Integer getId() {
         return id;
@@ -29,12 +29,12 @@ public class Message {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getUserid() {
+        return userid;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserid(Integer userid) {
+        this.userid = userid;
     }
 
     public String getMessage() {
@@ -45,28 +45,28 @@ public class Message {
         this.message = message == null ? null : message.trim();
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreatetime() {
+        return createtime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
     }
 
-    public Date getLastUpdateTime() {
-        return lastUpdateTime;
+    public Date getLastupdatetime() {
+        return lastupdatetime;
     }
 
-    public void setLastUpdateTime(Date lastUpdateTime) {
-        this.lastUpdateTime = lastUpdateTime;
+    public void setLastupdatetime(Date lastupdatetime) {
+        this.lastupdatetime = lastupdatetime;
     }
 
-    public String getDeleteFlag() {
-        return deleteFlag;
+    public String getDeleteflag() {
+        return deleteflag;
     }
 
-    public void setDeleteFlag(String deleteFlag) {
-        this.deleteFlag = deleteFlag == null ? null : deleteFlag.trim();
+    public void setDeleteflag(String deleteflag) {
+        this.deleteflag = deleteflag == null ? null : deleteflag.trim();
     }
 
     public String getAnswer() {
@@ -77,19 +77,19 @@ public class Message {
         this.answer = answer == null ? null : answer.trim();
     }
 
-    public Date getAnswerTime() {
-        return answerTime;
+    public Date getAnswertime() {
+        return answertime;
     }
 
-    public void setAnswerTime(Date answerTime) {
-        this.answerTime = answerTime;
+    public void setAnswertime(Date answertime) {
+        this.answertime = answertime;
     }
 
-    public String getAnswerPerson() {
-        return answerPerson;
+    public String getAnswerperson() {
+        return answerperson;
     }
 
-    public void setAnswerPerson(String answerPerson) {
-        this.answerPerson = answerPerson == null ? null : answerPerson.trim();
+    public void setAnswerperson(String answerperson) {
+        this.answerperson = answerperson == null ? null : answerperson.trim();
     }
 }
