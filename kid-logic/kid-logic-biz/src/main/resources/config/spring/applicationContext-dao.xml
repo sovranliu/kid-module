@@ -19,4 +19,8 @@
         <property name="mapperInterface" value="com.xyzq.kid.logic.user.dao.DemoDAO"></property>
         <property name="sqlSessionFactory" ref="logicSqlSessionFactory"></property>
     </bean>
+    <bean id="recordDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.record.dao.RecordDAO"></property>
+        <property name="sqlSessionFactory" ref="logicSqlSessionFactory"></property>
+    </bean>
 </beans>

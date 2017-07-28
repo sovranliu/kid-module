@@ -7,4 +7,21 @@ FROM LGC_Record
 WHERE Deleted = 0 AND ID = #{id}
 LIMIT 1
     </select>
+
+    <select id="findBy" resultType="RecordPO">
+    SELECT *
+    FROM LGC_Record
+    WHERE Deleted = 0 AND ticketID = #{ticketID}
+    AND purchased = #{purchased}
+    LIMIT 1
+    </select>
+
+    <update id="buyRecord" parameterType="RecordPO" >
+        update mkt.LGC_Record
+        set Purchased = #{recordPO.purchased,jdbcType=VARCHAR},
+        Updator = #{record.updator,jdbcType=INT},
+        UpdateTime = #{record.updateTime,jdbcType=TIMESTAMP},
+        WHERE ID = #{recordPO.id}
+    </update>
+
 </mapper>
