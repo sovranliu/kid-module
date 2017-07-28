@@ -1,5 +1,7 @@
 package com.xyzq.kid.logic.book.dao;
 
+import java.util.List;
+
 import com.xyzq.kid.logic.book.dao.po.BookTimeSpan;
 
 public interface BookTimeSpanMapper {
@@ -14,4 +16,6 @@ public interface BookTimeSpanMapper {
     int updateByPrimaryKeySelective(BookTimeSpan record);
 
     int updateByPrimaryKey(BookTimeSpan record);
+    
+    List<BookTimeSpan> queryValidTimeSpan();
 }

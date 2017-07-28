@@ -7,7 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.xyzq.kid.logic.book.dao.BookMapper;
 import com.xyzq.kid.logic.book.dao.po.Book;
-
+/**
+ * 飞行预约服务
+ * @author keyanggui
+ *
+ */
 @Service("bookService")
 public class BookService {
 	
