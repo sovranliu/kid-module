@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyzq.kid.logic.user.dao.UserDAO">
+  <resultMap id="BaseResultMap" type="com.xyzq.kid.logic.user.dao.po.UserPO">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="MobileNo" jdbcType="VARCHAR" property="mobileno" />
+    <result column="OpenID" jdbcType="VARCHAR" property="openid" />
+    <result column="RealName" jdbcType="VARCHAR" property="realname" />
+    <result column="Gender" jdbcType="BIT" property="gender" />
+    <result column="SubscribeTime" jdbcType="TIMESTAMP" property="subscribetime" />
+    <result column="Deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, MobileNo, OpenID, RealName, Gender, SubscribeTime, Deleted, CreateTime, UpdateTime
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LGC_User
+    where ID = #{id,jdbcType=INTEGER} and Deleted = 0
+  </select>
+
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    update LGC_User
+    set Deleted = 1
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+  <insert id="insert" parameterType="com.xyzq.kid.logic.user.dao.po.UserPO">
+    insert into LGC_User (ID, MobileNo, OpenID, 
+      RealName, Gender, SubscribeTime, 
+      Deleted, CreateTime, UpdateTime
+      )
+    values (#{id,jdbcType=INTEGER}, #{mobileno,jdbcType=VARCHAR}, #{openid,jdbcType=VARCHAR}, 
+      #{realname,jdbcType=VARCHAR}, #{gender,jdbcType=BIT}, #{subscribetime,jdbcType=TIMESTAMP}, 
+      #{deleted,jdbcType=TINYINT}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.xyzq.kid.logic.user.dao.po.UserPO">
+    insert into LGC_User
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="mobileno != null">
+        MobileNo,
+      </if>
+      <if test="openid != null">
+        OpenID,
+      </if>
+      <if test="realname != null">
+        RealName,
+      </if>
+      <if test="gender != null">
+        Gender,
+      </if>
+      <if test="subscribetime != null">
+        SubscribeTime,
+      </if>
+      <if test="deleted != null">
+        Deleted,
+      </if>
+      <if test="createtime != null">
+        CreateTime,
+      </if>
+      <if test="updatetime != null">
+        UpdateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="mobileno != null">
+        #{mobileno,jdbcType=VARCHAR},
+      </if>
+      <if test="openid != null">
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null">
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=BIT},
+      </if>
+      <if test="subscribetime != null">
+        #{subscribetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=TINYINT},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.xyzq.kid.logic.user.dao.po.UserPO">
+    update LGC_User
+    <set>
+      <if test="mobileno != null">
+        MobileNo = #{mobileno,jdbcType=VARCHAR},
+      </if>
+      <if test="openid != null">
+        OpenID = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null">
+        RealName = #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        Gender = #{gender,jdbcType=BIT},
+      </if>
+      <if test="subscribetime != null">
+        SubscribeTime = #{subscribetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        Deleted = #{deleted,jdbcType=TINYINT},
+      </if>
+      <if test="createtime != null">
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.xyzq.kid.logic.user.dao.po.UserPO">
+    update LGC_User
+    set MobileNo = #{mobileno,jdbcType=VARCHAR},
+      OpenID = #{openid,jdbcType=VARCHAR},
+      RealName = #{realname,jdbcType=VARCHAR},
+      Gender = #{gender,jdbcType=BIT},
+      SubscribeTime = #{subscribetime,jdbcType=TIMESTAMP},
+      Deleted = #{deleted,jdbcType=TINYINT},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

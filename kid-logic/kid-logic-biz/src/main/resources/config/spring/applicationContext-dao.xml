@@ -39,4 +39,20 @@
         <property name="mapperInterface" value="com.xyzq.kid.logic.user.dao.DemoDAO"></property>
         <property name="sqlSessionFactory" ref="logicSqlSessionFactory"></property>
     </bean> 
+    <bean id="ticketDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.ticket.dao.TicketDAO"></property>
+        <property name="sqlSessionFactory" ref="logicSqlSessionFactory"></property>
+    </bean>
+    <bean id="ticketHistoryDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.ticket.dao.TicketHistoryDAO"></property>
+        <property name="sqlSessionFactory" ref="logicSqlSessionFactory"></property>
+    </bean>
+    <bean id="userDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.user.dao.UserDAO"></property>
+        <property name="sqlSessionFactory" ref="logicSqlSessionFactory"></property>
+    </bean>
+
 </beans>
+
+
+
