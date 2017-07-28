@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyzq.kid.logic.book.dao.BookMapper">
+  <resultMap id="BaseResultMap" type="com.xyzq.kid.logic.book.dao.po.Book">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="TICKET_ID" jdbcType="INTEGER" property="ticketId" />
+    <result column="BOOK_STATUS" jdbcType="VARCHAR" property="bookStatus" />
+    <result column="BOOK_DATE" jdbcType="VARCHAR" property="bookDate" />
+    <result column="BOOK_TIME" jdbcType="VARCHAR" property="bookTime" />
+    <result column="USER_ID" jdbcType="INTEGER" property="userId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="LAST_UPDATE_TIME" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="SMS_NOTIFIED" jdbcType="VARCHAR" property="smsNotified" />
+    <result column="SMS_CONTENT" jdbcType="VARCHAR" property="smsContent" />
+    <result column="BOOK_TIME_ID" jdbcType="INTEGER" property="bookTimeId" />
+    <result column="DELETE_FLAG" jdbcType="VARCHAR" property="deleteFlag" />
+    <result column="NOTIFIED_TIME" jdbcType="TIMESTAMP" property="notifiedTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, TICKET_ID, BOOK_STATUS, BOOK_DATE, BOOK_TIME, USER_ID, CREATE_TIME, LAST_UPDATE_TIME, 
+    SMS_NOTIFIED, SMS_CONTENT, BOOK_TIME_ID, DELETE_FLAG, NOTIFIED_TIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LGC_Book
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from LGC_Book
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xyzq.kid.logic.book.dao.po.Book">
+    insert into LGC_Book (ID, TICKET_ID, BOOK_STATUS, 
+      BOOK_DATE, BOOK_TIME, USER_ID, 
+      CREATE_TIME, LAST_UPDATE_TIME, SMS_NOTIFIED, 
+      SMS_CONTENT, BOOK_TIME_ID, DELETE_FLAG, 
+      NOTIFIED_TIME)
+    values (#{id,jdbcType=INTEGER}, #{ticketId,jdbcType=INTEGER}, #{bookStatus,jdbcType=VARCHAR}, 
+      #{bookDate,jdbcType=VARCHAR}, #{bookTime,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{smsNotified,jdbcType=VARCHAR}, 
+      #{smsContent,jdbcType=VARCHAR}, #{bookTimeId,jdbcType=INTEGER}, #{deleteFlag,jdbcType=VARCHAR}, 
+      #{notifiedTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xyzq.kid.logic.book.dao.po.Book">
+    insert into LGC_Book
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="ticketId != null">
+        TICKET_ID,
+      </if>
+      <if test="bookStatus != null">
+        BOOK_STATUS,
+      </if>
+      <if test="bookDate != null">
+        BOOK_DATE,
+      </if>
+      <if test="bookTime != null">
+        BOOK_TIME,
+      </if>
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="lastUpdateTime != null">
+        LAST_UPDATE_TIME,
+      </if>
+      <if test="smsNotified != null">
+        SMS_NOTIFIED,
+      </if>
+      <if test="smsContent != null">
+        SMS_CONTENT,
+      </if>
+      <if test="bookTimeId != null">
+        BOOK_TIME_ID,
+      </if>
+      <if test="deleteFlag != null">
+        DELETE_FLAG,
+      </if>
+      <if test="notifiedTime != null">
+        NOTIFIED_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="ticketId != null">
+        #{ticketId,jdbcType=INTEGER},
+      </if>
+      <if test="bookStatus != null">
+        #{bookStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="bookDate != null">
+        #{bookDate,jdbcType=VARCHAR},
+      </if>
+      <if test="bookTime != null">
+        #{bookTime,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateTime != null">
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="smsNotified != null">
+        #{smsNotified,jdbcType=VARCHAR},
+      </if>
+      <if test="smsContent != null">
+        #{smsContent,jdbcType=VARCHAR},
+      </if>
+      <if test="bookTimeId != null">
+        #{bookTimeId,jdbcType=INTEGER},
+      </if>
+      <if test="deleteFlag != null">
+        #{deleteFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="notifiedTime != null">
+        #{notifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xyzq.kid.logic.book.dao.po.Book">
+    update LGC_Book
+    <set>
+      <if test="ticketId != null">
+        TICKET_ID = #{ticketId,jdbcType=INTEGER},
+      </if>
+      <if test="bookStatus != null">
+        BOOK_STATUS = #{bookStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="bookDate != null">
+        BOOK_DATE = #{bookDate,jdbcType=VARCHAR},
+      </if>
+      <if test="bookTime != null">
+        BOOK_TIME = #{bookTime,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        USER_ID = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateTime != null">
+        LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="smsNotified != null">
+        SMS_NOTIFIED = #{smsNotified,jdbcType=VARCHAR},
+      </if>
+      <if test="smsContent != null">
+        SMS_CONTENT = #{smsContent,jdbcType=VARCHAR},
+      </if>
+      <if test="bookTimeId != null">
+        BOOK_TIME_ID = #{bookTimeId,jdbcType=INTEGER},
+      </if>
+      <if test="deleteFlag != null">
+        DELETE_FLAG = #{deleteFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="notifiedTime != null">
+        NOTIFIED_TIME = #{notifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xyzq.kid.logic.book.dao.po.Book">
+    update LGC_Book
+    set TICKET_ID = #{ticketId,jdbcType=INTEGER},
+      BOOK_STATUS = #{bookStatus,jdbcType=VARCHAR},
+      BOOK_DATE = #{bookDate,jdbcType=VARCHAR},
+      BOOK_TIME = #{bookTime,jdbcType=VARCHAR},
+      USER_ID = #{userId,jdbcType=INTEGER},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      SMS_NOTIFIED = #{smsNotified,jdbcType=VARCHAR},
+      SMS_CONTENT = #{smsContent,jdbcType=VARCHAR},
+      BOOK_TIME_ID = #{bookTimeId,jdbcType=INTEGER},
+      DELETE_FLAG = #{deleteFlag,jdbcType=VARCHAR},
+      NOTIFIED_TIME = #{notifiedTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select * from LGC_Book
+  </select>
+</mapper>

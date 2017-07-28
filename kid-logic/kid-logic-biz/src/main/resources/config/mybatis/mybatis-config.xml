@@ -3,8 +3,18 @@
 <configuration>
     <typeAliases>
         <typeAlias alias="DemoPO" type="com.xyzq.kid.logic.user.dao.po.DemoPO" />
+        <!-- <typeAlias alias="BookPO" type="com.xyzq.kid.logic.book.dao.po.BookPO" />
+        <typeAlias alias="BookHistoryPO" type="com.xyzq.kid.logic.book.dao.po.BookHistoryPO" />
+        <typeAlias alias="BookTimeSpanPO" type="com.xyzq.kid.logic.book.dao.po.BookTimeSpanPO" />
+        <typeAlias alias="BookTimeRepositoryPO" type="com.xyzq.kid.logic.book.dao.po.BookTimeRepositoryPO" />
+        <typeAlias alias="MessagePO" type="com.xyzq.kid.logic.message.dao.po.MessagePO" /> -->
     </typeAliases>
     <mappers>
         <mapper resource="config/mybatis/mapper/Demo.xml" />
+        <mapper resource="config/mybatis/mapper/BookMapper.xml" />
+         <mapper resource="config/mybatis/mapper/BookHistoryMapper.xml" />
+        <mapper resource="config/mybatis/mapper/BookTimeSpanMapper.xml" />
+        <mapper resource="config/mybatis/mapper/BookTimeRepositoryMapper.xml" />
+        <mapper resource="config/mybatis/mapper/MessageMapper.xml" /> 
     </mappers>
 </configuration>
