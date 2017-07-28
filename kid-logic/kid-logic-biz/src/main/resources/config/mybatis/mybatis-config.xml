@@ -3,8 +3,10 @@
 <configuration>
     <typeAliases>
         <typeAlias alias="DemoPO" type="com.xyzq.kid.logic.user.dao.po.DemoPO" />
+        <typeAlias alias="RecordPO" type="com.xyzq.kid.logic.record.dao.po.RecordPO" />
     </typeAliases>
     <mappers>
         <mapper resource="config/mybatis/mapper/Demo.xml" />
+        <mapper resource="config/mybatis/mapper/Record.xml" />
     </mappers>
 </configuration>

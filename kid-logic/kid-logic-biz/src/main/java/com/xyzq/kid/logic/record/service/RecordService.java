@@ -14,7 +14,7 @@ public class RecordService {
      * 范例组件
      */
     @Autowired
-    private FlyRecordBean flyRecordBean;
+    private RecordBean recordBean;
 
 
     /**

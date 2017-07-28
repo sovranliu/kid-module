@@ -4,9 +4,9 @@ package com.xyzq.kid.logic.record.bean;
  * Created by Brann on 17/7/27.
  */
 
-import com.xyzq.kid.logic.record.dao.FlyRecordDAO;
-import com.xyzq.kid.logic.record.dao.po.FlyRecordPO;
-import com.xyzq.kid.logic.record.entity.FlyRecordEntity;
+import com.xyzq.kid.logic.record.dao.RecordDAO;
+import com.xyzq.kid.logic.record.dao.po.RecordPO;
+import com.xyzq.kid.logic.record.entity.RecordEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +19,7 @@ public class RecordBean {
      * 范例数据库访问对象
      */
     @Autowired
-    private RecordDAO RecordDAO;
+    private RecordDAO recordDAO;
 
 
     /**
@@ -29,7 +29,7 @@ public class RecordBean {
      */
     public RecordEntity call() {
         RecordPO recordPO = recordDAO.load(1);
-        RecordEntity entity = new recordEntity(recordPO);
+        RecordEntity entity = new RecordEntity(recordPO);
         return entity;
     }
 }

@@ -1,6 +1,6 @@
 package com.xyzq.kid.logic.record.entity;
 
-import com.xyzq.kid.logic.record.dao.po.FlyRecordPO;
+import com.xyzq.kid.logic.record.dao.po.RecordPO;
 
 import java.sql.Timestamp;
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xyzq.kid.logic.Record.dao.RecordDAO">
-    <select id="load" resultType="DemoPO">
+<mapper namespace="com.xyzq.kid.logic.record.dao.RecordDAO">
+    <select id="load" resultType="RecordPO">
 SELECT *
 FROM LGC_Record
 WHERE Deleted = 0 AND ID = #{id}
