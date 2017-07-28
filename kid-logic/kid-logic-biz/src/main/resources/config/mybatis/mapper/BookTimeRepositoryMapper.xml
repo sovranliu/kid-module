@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyzq.kid.logic.book.dao.BookTimeRepositoryMapper">
+  <resultMap id="BaseResultMap" type="com.xyzq.kid.logic.book.dao.po.BookTimeRepository">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="BookDate" jdbcType="VARCHAR" property="bookdate" />
+    <result column="BookTimeSpanId" jdbcType="INTEGER" property="booktimespanid" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="CreatePerson" jdbcType="VARCHAR" property="createperson" />
+    <result column="LastUpdateTime" jdbcType="TIMESTAMP" property="lastupdatetime" />
+    <result column="BookAmount" jdbcType="INTEGER" property="bookamount" />
+    <result column="BookTotal" jdbcType="INTEGER" property="booktotal" />
+    <result column="DeleteFlag" jdbcType="VARCHAR" property="deleteflag" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, BookDate, BookTimeSpanId, CreateTime, CreatePerson, LastUpdateTime, BookAmount, 
+    BookTotal, DeleteFlag
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LGC_Book_Time_Repository
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from LGC_Book_Time_Repository
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xyzq.kid.logic.book.dao.po.BookTimeRepository">
+    insert into LGC_Book_Time_Repository (ID, BookDate, BookTimeSpanId, 
+      CreateTime, CreatePerson, LastUpdateTime, 
+      BookAmount, BookTotal, DeleteFlag
+      )
+    values (#{id,jdbcType=INTEGER}, #{bookdate,jdbcType=VARCHAR}, #{booktimespanid,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{createperson,jdbcType=VARCHAR}, #{lastupdatetime,jdbcType=TIMESTAMP}, 
+      #{bookamount,jdbcType=INTEGER}, #{booktotal,jdbcType=INTEGER}, #{deleteflag,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xyzq.kid.logic.book.dao.po.BookTimeRepository">
+    insert into LGC_Book_Time_Repository
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="bookdate != null">
+        BookDate,
+      </if>
+      <if test="booktimespanid != null">
+        BookTimeSpanId,
+      </if>
+      <if test="createtime != null">
+        CreateTime,
+      </if>
+      <if test="createperson != null">
+        CreatePerson,
+      </if>
+      <if test="lastupdatetime != null">
+        LastUpdateTime,
+      </if>
+      <if test="bookamount != null">
+        BookAmount,
+      </if>
+      <if test="booktotal != null">
+        BookTotal,
+      </if>
+      <if test="deleteflag != null">
+        DeleteFlag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bookdate != null">
+        #{bookdate,jdbcType=VARCHAR},
+      </if>
+      <if test="booktimespanid != null">
+        #{booktimespanid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createperson != null">
+        #{createperson,jdbcType=VARCHAR},
+      </if>
+      <if test="lastupdatetime != null">
+        #{lastupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookamount != null">
+        #{bookamount,jdbcType=INTEGER},
+      </if>
+      <if test="booktotal != null">
+        #{booktotal,jdbcType=INTEGER},
+      </if>
+      <if test="deleteflag != null">
+        #{deleteflag,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xyzq.kid.logic.book.dao.po.BookTimeRepository">
+    update LGC_Book_Time_Repository
+    <set>
+      <if test="bookdate != null">
+        BookDate = #{bookdate,jdbcType=VARCHAR},
+      </if>
+      <if test="booktimespanid != null">
+        BookTimeSpanId = #{booktimespanid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createperson != null">
+        CreatePerson = #{createperson,jdbcType=VARCHAR},
+      </if>
+      <if test="lastupdatetime != null">
+        LastUpdateTime = #{lastupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookamount != null">
+        BookAmount = #{bookamount,jdbcType=INTEGER},
+      </if>
+      <if test="booktotal != null">
+        BookTotal = #{booktotal,jdbcType=INTEGER},
+      </if>
+      <if test="deleteflag != null">
+        DeleteFlag = #{deleteflag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xyzq.kid.logic.book.dao.po.BookTimeRepository">
+    update LGC_Book_Time_Repository
+    set BookDate = #{bookdate,jdbcType=VARCHAR},
+      BookTimeSpanId = #{booktimespanid,jdbcType=INTEGER},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      CreatePerson = #{createperson,jdbcType=VARCHAR},
+      LastUpdateTime = #{lastupdatetime,jdbcType=TIMESTAMP},
+      BookAmount = #{bookamount,jdbcType=INTEGER},
+      BookTotal = #{booktotal,jdbcType=INTEGER},
+      DeleteFlag = #{deleteflag,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

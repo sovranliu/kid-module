@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyzq.kid.logic.message.dao.MessageMapper">
+  <resultMap id="BaseResultMap" type="com.xyzq.kid.logic.message.dao.po.Message">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="UserId" jdbcType="INTEGER" property="userid" />
+    <result column="Message" jdbcType="VARCHAR" property="message" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="LastUpdateTime" jdbcType="TIMESTAMP" property="lastupdatetime" />
+    <result column="DeleteFlag" jdbcType="VARCHAR" property="deleteflag" />
+    <result column="Answer" jdbcType="VARCHAR" property="answer" />
+    <result column="AnswerTime" jdbcType="TIMESTAMP" property="answertime" />
+    <result column="AnswerPerson" jdbcType="VARCHAR" property="answerperson" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, UserId, Message, CreateTime, LastUpdateTime, DeleteFlag, Answer, AnswerTime, 
+    AnswerPerson
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LGC_Message
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from LGC_Message
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xyzq.kid.logic.message.dao.po.Message">
+    insert into LGC_Message (ID, UserId, Message, 
+      CreateTime, LastUpdateTime, DeleteFlag, 
+      Answer, AnswerTime, AnswerPerson
+      )
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{message,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{lastupdatetime,jdbcType=TIMESTAMP}, #{deleteflag,jdbcType=VARCHAR}, 
+      #{answer,jdbcType=VARCHAR}, #{answertime,jdbcType=TIMESTAMP}, #{answerperson,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xyzq.kid.logic.message.dao.po.Message">
+    insert into LGC_Message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="userid != null">
+        UserId,
+      </if>
+      <if test="message != null">
+        Message,
+      </if>
+      <if test="createtime != null">
+        CreateTime,
+      </if>
+      <if test="lastupdatetime != null">
+        LastUpdateTime,
+      </if>
+      <if test="deleteflag != null">
+        DeleteFlag,
+      </if>
+      <if test="answer != null">
+        Answer,
+      </if>
+      <if test="answertime != null">
+        AnswerTime,
+      </if>
+      <if test="answerperson != null">
+        AnswerPerson,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="message != null">
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastupdatetime != null">
+        #{lastupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteflag != null">
+        #{deleteflag,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null">
+        #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="answertime != null">
+        #{answertime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="answerperson != null">
+        #{answerperson,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xyzq.kid.logic.message.dao.po.Message">
+    update LGC_Message
+    <set>
+      <if test="userid != null">
+        UserId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="message != null">
+        Message = #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastupdatetime != null">
+        LastUpdateTime = #{lastupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteflag != null">
+        DeleteFlag = #{deleteflag,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null">
+        Answer = #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="answertime != null">
+        AnswerTime = #{answertime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="answerperson != null">
+        AnswerPerson = #{answerperson,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xyzq.kid.logic.message.dao.po.Message">
+    update LGC_Message
+    set UserId = #{userid,jdbcType=INTEGER},
+      Message = #{message,jdbcType=VARCHAR},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      LastUpdateTime = #{lastupdatetime,jdbcType=TIMESTAMP},
+      DeleteFlag = #{deleteflag,jdbcType=VARCHAR},
+      Answer = #{answer,jdbcType=VARCHAR},
+      AnswerTime = #{answertime,jdbcType=TIMESTAMP},
+      AnswerPerson = #{answerperson,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
