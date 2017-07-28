@@ -39,6 +39,12 @@
             <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.xyzq.simpson</groupId>
+            <artifactId>simpson-utility</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
         <!-- 外部组件 -->
         <dependency>
             <groupId>junit</groupId>
