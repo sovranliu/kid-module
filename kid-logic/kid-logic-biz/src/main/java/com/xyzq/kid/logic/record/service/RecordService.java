@@ -1,15 +1,15 @@
 package com.xyzq.kid.logic.record.service;
 
-import com.xyzq.kid.logic.record.bean.FlyRecordBean;
-import com.xyzq.kid.logic.record.entity.FlyRecordEntity;
+import com.xyzq.kid.logic.record.bean.RecordBean;
+import com.xyzq.kid.logic.record.entity.RecordEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
  * Created by Brann on 17/7/27.
  */
-@Service("flyRecordService")
-public class FlyRecordService {
+@Service("recordService")
+public class RecordService {
     /**
      * 范例组件
      */
@@ -22,7 +22,7 @@ public class FlyRecordService {
      *
      * @return 返回值
      */
-    public FlyRecordEntity call() {
-        return flyRecordBean.call();
+    public RecordEntity call() {
+        return recordBean.call();
     }
 }

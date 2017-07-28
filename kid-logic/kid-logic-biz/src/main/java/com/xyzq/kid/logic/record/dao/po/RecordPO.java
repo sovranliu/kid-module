@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 /**
  * Created by Brann on 17/7/27.
  */
-public class FlyRecordPO {
+public class RecordPO {
     /**
      * 主键ID，自增长的流水号
      */

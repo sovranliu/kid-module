@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 /**
  * Created by Brann on 17/7/27.
  */
-public class FlyRecordEntity {
+public class RecordEntity {
     /**
      * 主键ID，自增长的流水号
      */
@@ -46,15 +46,15 @@ public class FlyRecordEntity {
     private Timestamp updateTime;
 
 
-    public FlyRecordEntity(FlyRecordPO flyRecordPO){
-        id = flyRecordPO.getId();
-        ticketID = flyRecordPO.getTicketID();
-        path = flyRecordPO.getPath();
-        purchased=flyRecordPO.getPurchased();
-        deleted = flyRecordPO.getDeleted();
-        creator = flyRecordPO.getCreator();
-        createTime = flyRecordPO.getCreateTime();
-        updator = flyRecordPO.getUpdator();
-        updateTime = flyRecordPO.getUpdateTime();
+    public RecordEntity(RecordPO recordPO){
+        id = recordPO.getId();
+        ticketID = recordPO.getTicketID();
+        path = recordPO.getPath();
+        purchased=recordPO.getPurchased();
+        deleted = recordPO.getDeleted();
+        creator = recordPO.getCreator();
+        createTime = recordPO.getCreateTime();
+        updator = recordPO.getUpdator();
+        updateTime = recordPO.getUpdateTime();
     }
 }

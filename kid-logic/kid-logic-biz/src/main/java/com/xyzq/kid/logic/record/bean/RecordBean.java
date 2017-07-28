@@ -14,12 +14,12 @@ import org.springframework.stereotype.Component;
  * 这是一个范例Java逻辑功能Bean
  */
 @Component
-public class FlyRecordBean {
+public class RecordBean {
     /**
      * 范例数据库访问对象
      */
     @Autowired
-    private FlyRecordDAO flyRecordDAO;
+    private RecordDAO RecordDAO;
 
 
     /**
@@ -27,9 +27,9 @@ public class FlyRecordBean {
      *
      * @return 返回值
      */
-    public FlyRecordEntity call() {
-        FlyRecordPO flyRecordPO = flyRecordDAO.load(1);
-        FlyRecordEntity entity = new FlyRecordEntity(flyRecordPO);
+    public RecordEntity call() {
+        RecordPO recordPO = recordDAO.load(1);
+        RecordEntity entity = new recordEntity(recordPO);
         return entity;
     }
 }
