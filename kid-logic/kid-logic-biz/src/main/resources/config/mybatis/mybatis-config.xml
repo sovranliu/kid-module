@@ -3,8 +3,14 @@
 <configuration>
     <typeAliases>
         <typeAlias alias="DemoPO" type="com.xyzq.kid.logic.user.dao.po.DemoPO" />
+        <typeAlias alias="UserPO" type="com.xyzq.kid.logic.user.dao.po.UserPO" />
+        <typeAlias alias="TicketPO" type="com.xyzq.kid.logic.ticket.dao.po.TicketPO" />
+        <typeAlias alias="TicketHistoryPO" type="com.xyzq.kid.logic.ticket.dao.po.TicketHistoryPO" />
     </typeAliases>
     <mappers>
         <mapper resource="config/mybatis/mapper/Demo.xml" />
+        <mapper resource="config/mybatis/mapper/User.xml" />
+        <mapper resource="config/mybatis/mapper/Ticket.xml" />
+        <mapper resource="config/mybatis/mapper/TicketHistory.xml" />
     </mappers>
 </configuration>
