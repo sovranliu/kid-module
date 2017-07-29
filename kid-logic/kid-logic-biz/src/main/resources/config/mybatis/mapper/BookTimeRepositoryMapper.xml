@@ -139,4 +139,17 @@
       DeleteFlag = #{deleteflag,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="queryByCond" parameterType="Map" resultType="com.xyzq.kid.logic.book.dao.po.BookTimeRepository">
+  	select * from LGC_Book_Time_Repository 
+  		where 1=1
+  	<if test="bookDate != null">
+  		and BookDate = #{bookDate}
+  	</if>
+  	<if test="timeSpanId != null">
+  		and BookTimeSpanId = #{timeSpanId} 
+  	</if>
+  	 and DeleteFlag = '0'
+  	 order by LstUpdateTime desc
+  </select>
 </mapper>

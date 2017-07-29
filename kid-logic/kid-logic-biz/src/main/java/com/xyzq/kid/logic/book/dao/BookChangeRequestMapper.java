@@ -18,5 +18,5 @@ public interface BookChangeRequestMapper {
 
     int updateByPrimaryKey(BookChangeRequest record);
     
-    List<BookChangeRequest> queryRequestByCond(Map map);
+    List<BookChangeRequest> queryRequestByCond(Map<String,Object> map);
 }

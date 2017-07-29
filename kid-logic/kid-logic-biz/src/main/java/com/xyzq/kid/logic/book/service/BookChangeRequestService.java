@@ -1,12 +1,14 @@
 package com.xyzq.kid.logic.book.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mysql.jdbc.StringUtils;
 import com.xyzq.kid.logic.book.dao.BookChangeRequestMapper;
 import com.xyzq.kid.logic.book.dao.BookMapper;
 import com.xyzq.kid.logic.book.dao.BookTimeRepositoryMapper;
@@ -160,10 +162,23 @@ public class BookChangeRequestService {
 		return flag;
 	}
 	
-	public List<BookChangeRequest> queryRequestByCond(Map params){
+	/**
+	 * 查询各类型各状态申请单
+	 * @param status
+	 * @param requestType
+	 * @return
+	 */
+	public List<BookChangeRequest> queryRequesting(String status,String requestType){
 		List<BookChangeRequest> reqList=null;
+		Map<String,Object> map=new HashMap<>();
+		if(StringUtils.isNullOrEmpty(status)){
+			map.put("requestType",requestType );
+		}
+		if(StringUtils.isNullOrEmpty(status)){
+			map.put("status", status);
+		}
 		try{
-			reqList=bookChangeRequestMapper.queryRequestByCond(params);
+			reqList=bookChangeRequestMapper.queryRequestByCond(map);
 		}catch(Exception e){
 			System.out.println("query Request by condition fail ,caused by "+e.getMessage());
 			e.printStackTrace();
