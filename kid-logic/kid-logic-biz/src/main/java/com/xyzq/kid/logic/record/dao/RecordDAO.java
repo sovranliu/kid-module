@@ -1,6 +1,7 @@
 package com.xyzq.kid.logic.record.dao;
 
 import com.xyzq.kid.logic.record.dao.po.RecordPO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface RecordDAO {
     /**
      * 加载指定ID的
      */
-    RecordPO load(int id);
+    RecordPO load(Integer id);
 
     /**
      * 根据飞行票ID和购买状态字段查询record飞行日志
@@ -19,13 +20,20 @@ public interface RecordDAO {
      * @Param purchased
      * @return RecordEntity
      */
-    List<RecordPO> findBy(int ticketID, String purchased);
+    List<RecordPO> findBy(@Param("ticketID")Integer ticketID, @Param("purchased")String purchased);
 
     /**
      * 购买飞行日志
-     * @Param RecordPO
-     * @return int
+     * @Param id
+     * @return Integer
      */
-    int buyRecord(RecordPO record);
+    Integer buyRecord(Integer id);
+
+    /**
+     * 根据飞行票购买所有的飞行日志
+     * @Param RecordPO
+     * @return Integer
+     */
+    int buyRecords(Integer ticketID);
 
 }

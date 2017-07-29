@@ -13,25 +13,21 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 这是一个范例Java逻辑功能Bean
- */
+
 @Component
 public class RecordBean {
-    /**
-     * 范例数据库访问对象
-     */
+
     @Autowired
     private RecordDAO recordDAO;
 
 
     /**
-     * 方法描述
-     *
+     * 根据ID加载RecordEntity
+     * @Param id
      * @return 返回值
      */
-    public RecordEntity call() {
-        RecordPO recordPO = recordDAO.load(1);
+    public RecordEntity load(Integer id) {
+        RecordPO recordPO = recordDAO.load(id);
         RecordEntity entity = new RecordEntity(recordPO);
         return entity;
     }
@@ -41,7 +37,7 @@ public class RecordBean {
      * @Param purchased
      * @return RecordEntity
      */
-    public List<RecordEntity> findBy(int ticketID, String purchased){
+    public List<RecordEntity> findBy(Integer ticketID, String purchased){
         List<RecordPO> recordPOList = recordDAO.findBy(ticketID,purchased);
         List<RecordEntity> recordEntityList= new ArrayList<>();
         for (RecordPO recordPO :recordPOList
@@ -55,9 +51,18 @@ public class RecordBean {
     /**
      * 购买飞行日志
      * @Param RecordPO
-     * @return int
+     * @return Integer
      */
-    public int buyRecord(RecordPO recordPO){
-        return recordDAO.buyRecord(recordPO);
+    public int buyRecord(Integer id){
+        return recordDAO.buyRecord(id);
+    }
+    /**
+     * 购买飞行日志
+     * @Param RecordPO
+     * @return Integer
+     */
+    public int buyRecords(Integer ticketId){
+        return recordDAO.buyRecords(ticketId);
     }
 }
+

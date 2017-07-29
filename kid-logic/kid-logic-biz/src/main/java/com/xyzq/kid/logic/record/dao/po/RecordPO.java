@@ -9,11 +9,11 @@ public class RecordPO {
     /**
      * 主键ID，自增长的流水号
      */
-    private int id;
+    private Integer id;
     /**
      * 票券的id
      */
-    private int ticketID;
+    private Integer ticketID;
     /**
      * 飞行日志文件名称
      */
@@ -44,19 +44,19 @@ public class RecordPO {
     private Timestamp updateTime;
 
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getTicketID() {
+    public Integer getTicketID() {
         return ticketID;
     }
 
-    public void setTicketID(int ticketID) {
+    public void setTicketID(Integer ticketID) {
         this.ticketID = ticketID;
     }
 

@@ -11,11 +11,11 @@ public class RecordEntity {
     /**
      * 主键ID，自增长的流水号
      */
-    private int id;
+    private Integer id;
     /**
      * 票券的id
      */
-    private int ticketID;
+    private Integer ticketID;
     /**
      * 飞行日志文件名称
      */

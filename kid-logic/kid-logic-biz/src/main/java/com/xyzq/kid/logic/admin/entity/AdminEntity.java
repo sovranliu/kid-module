@@ -11,11 +11,11 @@ public class AdminEntity {
     /**
      * 主键ID，自增长的流水号
      */
-    private int id;
+    private Integer id;
     /**
      * 票券的id
      */
-    private int userName;
+    private Integer userName;
     /**
      * 飞行日志文件名称
      */
