@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyzq.kid.logic.record.dao.RecordDAO">
+    <select id="load" resultType="RecordPO">
+SELECT *
+FROM LGC_Record
+WHERE Deleted = 0 AND ID = #{id}
+LIMIT 1
+    </select>
+
+    <select id="findBy" resultType="RecordPO">
+    SELECT *
+    FROM LGC_Record
+    WHERE Deleted = 0 AND ticketID = #{ticketID}
+    AND purchased = #{purchased}
+    LIMIT 1
+    </select>
+
+    <update id="buyRecord" parameterType="RecordPO" >
+        update mkt.LGC_Record
+        set Purchased = #{recordPO.purchased,jdbcType=VARCHAR},
+        Updator = #{record.updator,jdbcType=INT},
+        UpdateTime = #{record.updateTime,jdbcType=TIMESTAMP},
+        WHERE ID = #{recordPO.id}
+    </update>
+
+</mapper>
