@@ -10,6 +10,9 @@ import com.xyzq.kid.logic.record.entity.RecordEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 这是一个范例Java逻辑功能Bean
  */
@@ -38,10 +41,16 @@ public class RecordBean {
      * @Param purchased
      * @return RecordEntity
      */
-    public RecordEntity findBy(int ticketID,String purchased){
-        RecordPO recordPO = recordDAO.findBy(ticketID,purchased);
-        RecordEntity entity = new RecordEntity(recordPO);
-        return entity;
+    public List<RecordEntity> findBy(int ticketID, String purchased){
+        List<RecordPO> recordPOList = recordDAO.findBy(ticketID,purchased);
+        List<RecordEntity> recordEntityList= new ArrayList<>();
+        for (RecordPO recordPO :recordPOList
+                ) {
+            RecordEntity entity = new RecordEntity(recordPO);
+            recordEntityList.add(entity);
+        }
+
+        return recordEntityList;
     }
     /**
      * 购买飞行日志

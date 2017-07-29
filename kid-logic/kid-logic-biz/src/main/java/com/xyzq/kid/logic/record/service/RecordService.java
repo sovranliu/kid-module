@@ -43,37 +43,40 @@ public class RecordService {
 
     /**
      * 根据飞行票ID和购买状态字段查询record
+     *
+     * @return RecordEntity
      * @Param ticketID
      * @Param purchased
-     * @return RecordEntity
      */
-    public RecordEntity findBy(int ticketID,String purchased){
-        return recordBean.findBy(ticketID,purchased);
+    public List<RecordEntity> findBy(int ticketID, String purchased) {
+        return recordBean.findBy(ticketID, purchased);
     }
+
     /**
      * 购买飞行日志
-     * @Param RecordPO
+     *
      * @return int
+     * @Param RecordPO
      */
-    public int buyRecord(RecordPO recordPO){
+    public int buyRecord(RecordPO recordPO) {
         return recordBean.buyRecord(recordPO);
     }
+
     /**
      * 方法描述
-     * /apps/data/record/2017-07/201707271830459527.jpg，
      * /apps/data/record/2017-07/201707271830459527.mp4。
      *
      * @return 返回值
      */
     public Map<String, String> uploadFile(MultipartFile uplodaFile) {
-        // TODO Auto-generated method stub
         Map<String, String> resMap = new HashMap<String, String>();
         try {
             InputStream inputStream = uplodaFile.getInputStream();
             byte[] b = new byte[1048576];
             int length = inputStream.read(b);
-            String filePath = genFileName();
             // 文件流写到服务器端
+            String suffixStr = uplodaFile.getOriginalFilename().substring(uplodaFile.getOriginalFilename().indexOf("."));
+            String filePath = genFileName(suffixStr);
             FileOutputStream outputStream = new FileOutputStream(filePath);
             outputStream.write(b, 0, length);
             inputStream.close();
@@ -81,7 +84,7 @@ public class RecordService {
 
             resMap.put("code", "0");
             resMap.put("msg", "文件上传成功!");
-            resMap.put("data", "fileName:\""+filePath+"\"");
+            resMap.put("data", "fileName:\"" + filePath + "\"");
         } catch (Exception e) {
 //            log.error("上传文件失败", e);
             resMap.put("code", "2");
@@ -92,8 +95,13 @@ public class RecordService {
         return resMap;
 
     }
-
-    private String genFileName() {
+    /**
+     * 方法描述
+     * /apps/data/record/2017-07/201707271830459527.mp4。
+     *
+     * @return 返回值
+     */
+    private String genFileName(String suffixStr) {
 
         SimpleDateFormat headFormatter = new SimpleDateFormat("yyyy-MM");
         String headStr = headFormatter.format(new Date());
@@ -103,7 +111,7 @@ public class RecordService {
 
         String tailStr = getRandomStr(4);
 
-        return file_server_upload_url + "/" + headStr + "/" + midStr + tailStr;
+        return file_server_upload_url + "/" + headStr + "/" + midStr + tailStr + suffixStr;
     }
 
     public static String getRandomStr(int codeCount) {
