@@ -18,7 +18,7 @@ public interface BookMapper {
 
     int updateByPrimaryKey(Book record);
     
-    List<Book> queryBookByCond(Map params);
+    List<Book> queryBookByCond(Map<String,Object> params);
     
     List<Book> selectAll();
 }

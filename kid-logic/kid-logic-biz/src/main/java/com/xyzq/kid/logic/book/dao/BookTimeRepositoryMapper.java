@@ -1,6 +1,7 @@
 package com.xyzq.kid.logic.book.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.xyzq.kid.logic.book.dao.po.BookTimeRepository;
 
@@ -17,8 +18,5 @@ public interface BookTimeRepositoryMapper {
 
     int updateByPrimaryKey(BookTimeRepository record);
     
-    List<BookTimeRepository> selectByBookDate(String bookDate);
-    
-    BookTimeRepository selectByBookDateAndTimeSpan(String bookDate,Integer timeSpanId);
-    
+    List<BookTimeRepository> queryByCond(Map<String,Object> map);
 }

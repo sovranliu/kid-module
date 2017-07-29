@@ -186,6 +186,16 @@
     where ID = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectAll" resultMap="BaseResultMap">
-  	select * from LGC_Book
+  	select * from LGC_Book where deleteFlag='0' order by LastUpdateTime desc
+  </select>
+  
+  <select id="queryBookByCond" parameterType="Map" resultType="com.xyzq.kid.logic.book.dao.po.Book">
+   select * from LGC_Book
+   where 1=1
+   <if test="ticketId != null">
+   	TicketId = #{ticketId}
+   </if>
+    and DeleteFlag = '0'
+    order by LastUpdateTime desc
   </select>
 </mapper>

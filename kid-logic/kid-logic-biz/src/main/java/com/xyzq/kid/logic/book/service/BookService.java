@@ -91,9 +91,12 @@ public class BookService {
 	public Book queryBookRecByTicketId(Integer ticketId){
 		Book bookRec=null;
 		try{
-			Map<String,Object> params=new HashMap<>();
-			if(bookMapper.queryBookByCond(params)!=null){
-				bookRec=bookMapper.queryBookByCond(params).get(0);
+			Map<String,Object> map=new HashMap<>();
+			if(ticketId!=null){
+				map.put("ticketId", ticketId);
+			}
+			if(bookMapper.queryBookByCond(map)!=null){
+				bookRec=bookMapper.queryBookByCond(map).get(0);
 			}
 		}catch(Exception e){
 			System.out.println("query book record by ticket id fail,caused by "+e.getMessage());

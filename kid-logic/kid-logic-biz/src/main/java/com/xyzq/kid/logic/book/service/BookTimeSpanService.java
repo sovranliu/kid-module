@@ -1,7 +1,9 @@
 package com.xyzq.kid.logic.book.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,7 +75,7 @@ public class BookTimeSpanService {
 	public List<BookTimeSpan> queryAllTimeSpan(){
 		List<BookTimeSpan> spanList=null;
 		try{
-			spanList=bookTimeSpanMapper.queryValidTimeSpan();
+			spanList=queryValidTimeSpans();
 		}catch(Exception e){
 			System.out.println("query all time span fail ,caused by "+e.getMessage());
 			e.printStackTrace();
@@ -81,6 +83,22 @@ public class BookTimeSpanService {
 		return spanList;
 	}
 	
+	/**
+	 * 查询有效的可预约时间段
+	 * @return
+	 */
+	public List<BookTimeSpan> queryValidTimeSpans(){
+		List<BookTimeSpan> spanList=null;
+		Map<String ,Object> map=new HashMap<>();
+		map.put("deleteFlag", "0");
+		try{
+			spanList=bookTimeSpanMapper.queryByCond(map);
+		}catch(Exception e){
+			System.out.println("query valid time spans fail ,caused by "+e.getMessage());
+			e.printStackTrace();
+		}
+		return spanList;
+	}
 	
 	/**
 	 * 修改可预约时间区间状态

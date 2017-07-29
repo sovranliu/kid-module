@@ -185,4 +185,16 @@
       BookTimeId = #{booktimeid,jdbcType=INTEGER}
     where ID = #{id,jdbcType=INTEGER}
   </update>
+  <select id="queryRequestByCond" parameterType="Map" resultType="com.xyzq.kid.logic.book.dao.po.BookChangeRequest">
+  	select * from LGC_Book_ChangeRequest
+  	where 1=1
+  	<if test="requestType != null">
+  		and RequestType = #{requestType}
+  	</if>
+  	<if test="status != null ">
+  		and Status = #{status}
+  	</if>
+  	 and DeleteFlag = '0'
+  	 order by LstUpdateTime desc
+  </select>
 </mapper>
