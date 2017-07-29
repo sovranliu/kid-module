@@ -57,6 +57,11 @@
         <property name="sqlSessionFactory" ref="logicSqlSessionFactory"></property>
     </bean>
 
+    <bean id="adminDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.admin.dao.AdminDAO"></property>
+        <property name="sqlSessionFactory" ref="logicSqlSessionFactory"></property>
+    </bean>
+
 </beans>
 
 

@@ -2,6 +2,8 @@ package com.xyzq.kid.logic.record.dao;
 
 import com.xyzq.kid.logic.record.dao.po.RecordPO;
 
+import java.util.List;
+
 /**
  * LGC_Fly_Record表数据访问接口
  */
@@ -17,7 +19,7 @@ public interface RecordDAO {
      * @Param purchased
      * @return RecordEntity
      */
-    RecordPO findBy(int ticketID,String purchased);
+    List<RecordPO> findBy(int ticketID, String purchased);
 
     /**
      * 购买飞行日志

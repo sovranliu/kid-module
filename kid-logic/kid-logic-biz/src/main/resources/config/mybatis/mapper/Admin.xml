@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyzq.kid.logic.admin.dao.AdminDAO">
+    <select id="load" resultType="AdminPO">
+        SELECT *
+        FROM CNS_Admin
+        WHERE Deleted = 0 AND ID = #{id}
+        LIMIT 1
+    </select>
+
+    <select id="findByUserName" resultType="AdminPO">
+        SELECT *
+        FROM CNS_Admin
+        WHERE Deleted = 0 AND userName = #{userName}
+        LIMIT 1
+    </select>
+
+
+</mapper>
