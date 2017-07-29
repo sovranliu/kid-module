@@ -10,7 +10,7 @@ public interface AdminDAO {
     /**
      * 加载指定ID的
      */
-    AdminPO load(int id);
+    AdminPO load(Integer id);
 
     /**
      * 根据userName查询管理用户

@@ -27,7 +27,7 @@ public class AdminService {
      * @Param  id
      * @return 返回值AdminEntity
      */
-    public AdminEntity load(int id) {
+    public AdminEntity load(Integer id) {
         return adminBean.load(id);
     }
 

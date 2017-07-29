@@ -10,11 +10,11 @@ public class AdminPO {
     /**
      * 主键ID，自增长的流水号
      */
-    private int id;
+    private Integer id;
     /**
      * 票券的id
      */
-    private int userName;
+    private Integer userName;
     /**
      * 飞行日志文件名称
      */
@@ -48,19 +48,19 @@ public class AdminPO {
      */
     private Timestamp updateTime;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getUserName() {
+    public Integer getUserName() {
         return userName;
     }
 
-    public void setUserName(int userName) {
+    public void setUserName(Integer userName) {
         this.userName = userName;
     }
 

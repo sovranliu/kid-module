@@ -28,7 +28,7 @@ public class AdminBean {
      *
      * @return 返回值
      */
-    public AdminEntity load(int id) {
+    public AdminEntity load(Integer id) {
         AdminPO adminPO = adminDAO.load(id);
         AdminEntity entity = new AdminEntity(adminPO);
         return entity;

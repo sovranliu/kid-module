@@ -36,8 +36,8 @@ public class RecordService {
      *
      * @return 返回值
      */
-    public RecordEntity call() {
-        return recordBean.call();
+    public RecordEntity load(Integer id) {
+        return recordBean.load(id);
     }
 
 
@@ -48,18 +48,26 @@ public class RecordService {
      * @Param ticketID
      * @Param purchased
      */
-    public List<RecordEntity> findBy(int ticketID, String purchased) {
+    public List<RecordEntity> findBy(Integer ticketID, String purchased) {
         return recordBean.findBy(ticketID, purchased);
     }
-
     /**
      * 购买飞行日志
      *
-     * @return int
+     * @return Integer
      * @Param RecordPO
      */
-    public int buyRecord(RecordPO recordPO) {
-        return recordBean.buyRecord(recordPO);
+    public Integer buyRecord(Integer id) {
+        return recordBean.buyRecord(id);
+    }
+    /**
+     * 购买飞行日志
+     *
+     * @return Integer
+     * @Param RecordPO
+     */
+    public Integer buyRecords(Integer ticketId) {
+        return recordBean.buyRecords(ticketId);
     }
 
     /**
@@ -73,7 +81,7 @@ public class RecordService {
         try {
             InputStream inputStream = uplodaFile.getInputStream();
             byte[] b = new byte[1048576];
-            int length = inputStream.read(b);
+            Integer length = inputStream.read(b);
             // 文件流写到服务器端
             String suffixStr = uplodaFile.getOriginalFilename().substring(uplodaFile.getOriginalFilename().indexOf("."));
             String filePath = genFileName(suffixStr);
@@ -114,7 +122,7 @@ public class RecordService {
         return file_server_upload_url + "/" + headStr + "/" + midStr + tailStr + suffixStr;
     }
 
-    public static String getRandomStr(int codeCount) {
+    public static String getRandomStr(Integer codeCount) {
 
         StringBuffer randomCodeRes = new StringBuffer();
 
@@ -132,17 +140,17 @@ public class RecordService {
         Random random = new Random();
 
         //随机产生，验证码由几个数字、几个字母组成
-        int shuziNum = random.nextInt(2) + 1;
-        int charNum = codeCount - shuziNum;
+        Integer shuziNum = random.nextInt(2) + 1;
+        Integer charNum = codeCount - shuziNum;
 
         // 随机产生codeCount数字的验证码。
-        for (int i = 0; i < shuziNum; i++) {
+        for (Integer i = 0; i < shuziNum; i++) {
             // 得到随机产生的验证码数字。
             String numRand = String.valueOf(codeSequenceNumber[random.nextInt(codeSequenceNumber.length)]);
             // 将产生的随机数组合在一起。
             randomCode.add(numRand);
         }
-        for (int i = 0; i < charNum; i++) {
+        for (Integer i = 0; i < charNum; i++) {
             // 得到随机产生的验证码字母。
             String strRand = String.valueOf(codeSequenceChar[random.nextInt(codeSequenceChar.length)]);
             // 将产生的随机数组合在一起。
@@ -151,7 +159,7 @@ public class RecordService {
 
         Collections.shuffle(randomCode);
 
-        for (int i = 0; i < randomCode.size(); i++) {
+        for (Integer i = 0; i < randomCode.size(); i++) {
             randomCodeRes.append(randomCode.get(i));
         }
 
