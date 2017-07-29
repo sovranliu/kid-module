@@ -14,6 +14,7 @@
         <mapper resource="config/mybatis/mapper/BookTimeSpanMapper.xml" />
         <mapper resource="config/mybatis/mapper/BookTimeRepositoryMapper.xml" />
         <mapper resource="config/mybatis/mapper/MessageMapper.xml" /> 
+        <mapper resource="config/mybatis/mapper/BookChangeRequestMapper.xml" /> 
         <mapper resource="config/mybatis/mapper/Demo.xml" />
         <mapper resource="config/mybatis/mapper/User.xml" />
         <mapper resource="config/mybatis/mapper/Ticket.xml" />

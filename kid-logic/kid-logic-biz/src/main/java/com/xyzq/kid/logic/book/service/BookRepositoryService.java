@@ -136,6 +136,27 @@ public class BookRepositoryService {
 	}
 	
 	/**
+	 * 检查指定可预约时间是否有库存
+	 * @param bookTimeId
+	 * @return
+	 */
+	public boolean checkAmount(Integer bookTimeId){
+		boolean flag=false;
+		try{
+			BookTimeRepository repo=bookTimeRepositoryMapper.selectByPrimaryKey(bookTimeId);
+			if(repo!=null){
+				if(repo.getBookamount()>0){
+					flag=true;
+				}
+			}
+		}catch(Exception e){
+			System.out.println("check book time repository amount fail,caused by "+e.getMessage());
+			e.printStackTrace();
+		}
+		return flag;
+	}
+	
+	/**
 	 * 预约成功后扣减库存
 	 * @param id
 	 * @param status 1:扣库存，2：回退库存，空或其它默认为扣库存
