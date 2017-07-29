@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyzq.kid.logic.book.dao.BookHistoryMapper">
+  <resultMap id="BaseResultMap" type="com.xyzq.kid.logic.book.dao.po.BookHistory">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="BookId" jdbcType="INTEGER" property="bookid" />
+    <result column="BookTimeId" jdbcType="VARCHAR" property="booktimeid" />
+    <result column="BookDate" jdbcType="VARCHAR" property="bookdate" />
+    <result column="BookTime" jdbcType="VARCHAR" property="booktime" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="DeleteFlag" jdbcType="VARCHAR" property="deleteflag" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, BookId, BookTimeId, BookDate, BookTime, CreateTime, DeleteFlag
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LGC_Book_History
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from LGC_Book_History
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xyzq.kid.logic.book.dao.po.BookHistory">
+    insert into LGC_Book_History (ID, BookId, BookTimeId, 
+      BookDate, BookTime, CreateTime, 
+      DeleteFlag)
+    values (#{id,jdbcType=INTEGER}, #{bookid,jdbcType=INTEGER}, #{booktimeid,jdbcType=VARCHAR}, 
+      #{bookdate,jdbcType=VARCHAR}, #{booktime,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{deleteflag,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xyzq.kid.logic.book.dao.po.BookHistory">
+    insert into LGC_Book_History
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="bookid != null">
+        BookId,
+      </if>
+      <if test="booktimeid != null">
+        BookTimeId,
+      </if>
+      <if test="bookdate != null">
+        BookDate,
+      </if>
+      <if test="booktime != null">
+        BookTime,
+      </if>
+      <if test="createtime != null">
+        CreateTime,
+      </if>
+      <if test="deleteflag != null">
+        DeleteFlag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bookid != null">
+        #{bookid,jdbcType=INTEGER},
+      </if>
+      <if test="booktimeid != null">
+        #{booktimeid,jdbcType=VARCHAR},
+      </if>
+      <if test="bookdate != null">
+        #{bookdate,jdbcType=VARCHAR},
+      </if>
+      <if test="booktime != null">
+        #{booktime,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteflag != null">
+        #{deleteflag,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xyzq.kid.logic.book.dao.po.BookHistory">
+    update LGC_Book_History
+    <set>
+      <if test="bookid != null">
+        BookId = #{bookid,jdbcType=INTEGER},
+      </if>
+      <if test="booktimeid != null">
+        BookTimeId = #{booktimeid,jdbcType=VARCHAR},
+      </if>
+      <if test="bookdate != null">
+        BookDate = #{bookdate,jdbcType=VARCHAR},
+      </if>
+      <if test="booktime != null">
+        BookTime = #{booktime,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteflag != null">
+        DeleteFlag = #{deleteflag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xyzq.kid.logic.book.dao.po.BookHistory">
+    update LGC_Book_History
+    set BookId = #{bookid,jdbcType=INTEGER},
+      BookTimeId = #{booktimeid,jdbcType=VARCHAR},
+      BookDate = #{bookdate,jdbcType=VARCHAR},
+      BookTime = #{booktime,jdbcType=VARCHAR},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      DeleteFlag = #{deleteflag,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
