@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.mysql.jdbc.StringUtils;
 import com.xyzq.kid.logic.book.dao.BookTimeRepositoryMapper;
@@ -12,6 +13,12 @@ import com.xyzq.kid.logic.book.dao.BookTimeSpanMapper;
 import com.xyzq.kid.logic.book.dao.po.BookTimeRepository;
 import com.xyzq.kid.logic.book.dao.po.BookTimeSpan;
 
+/**
+ * 可预约库存服务
+ * @author keyanggui
+ *
+ */
+@Service("bookRepositoryService")
 public class BookRepositoryService {
 	
 	@Autowired
