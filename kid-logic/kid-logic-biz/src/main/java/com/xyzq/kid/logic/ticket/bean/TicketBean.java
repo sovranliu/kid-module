@@ -47,7 +47,9 @@ public class TicketBean {
         List<TicketPO> ticketPOList = ticketDAO.getTicketsInfoByOwnerMobileNo(mobileNo);
         if(null != ticketPOList) {
             for (int i = 0; i < ticketPOList.size(); i++) {
-                ticketEntityList.add(TicketPOToEntity(ticketPOList.get(i)));
+                if(ticketPOList.get(i).getDeleted() == 0) {
+                    ticketEntityList.add(TicketPOToEntity(ticketPOList.get(i)));
+                }
             }
         }
         return ticketEntityList;
@@ -58,7 +60,9 @@ public class TicketBean {
         List<TicketPO> ticketPOList = ticketDAO.getTicketsInfoByPayerOpenID(openID);
         if(null != ticketPOList) {
             for (int i = 0; i < ticketPOList.size(); i++) {
-                ticketEntityList.add(TicketPOToEntity(ticketPOList.get(i)));
+                if(ticketPOList.get(i).getDeleted() == 0) {
+                    ticketEntityList.add(TicketPOToEntity(ticketPOList.get(i)));
+                }
             }
         }
         return ticketEntityList;
