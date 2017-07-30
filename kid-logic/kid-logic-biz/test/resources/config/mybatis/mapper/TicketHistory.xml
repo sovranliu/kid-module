@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyzq.kid.logic.ticket.dao.TicketHistoryDAO">
+  <resultMap id="BaseResultMap" type="com.xyzq.kid.logic.ticket.dao.po.TicketHistoryPO">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="TicketID" jdbcType="INTEGER" property="ticketid" />
+    <result column="Action" jdbcType="INTEGER" property="action" />
+    <result column="PreValidPeriod" jdbcType="TIMESTAMP" property="prevalidperiod" />
+    <result column="PreMobile" jdbcType="VARCHAR" property="premobile" />
+    <result column="Deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    ID, TicketID, Action, PreValidPeriod, PreMobile, Deleted, CreateTime, UpdateTime
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_TicketHistory
+    where ID = #{id,jdbcType=INTEGER} and Deleted = 0
+  </select>
+
+  <select id="selectByTicketId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_TicketHistory
+    where TicketID = #{ticketid,jdbcType=INTEGER} and Deleted = 0
+  </select>
+
+
+  <select id="selectByPreMobile" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_TicketHistory
+    where PreMobile = #{premobile,jdbcType=VARCHAR} and Deleted = 0
+  </select>
+
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    update LGC_TicketHistory
+    set Deleted = 1
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+  <insert id="insert" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketHistoryPO">
+    insert into LGC_TicketHistory (ID, TicketID, Action, 
+      PreValidPeriod, PreMobile, Deleted, 
+      CreateTime, UpdateTime)
+    values (#{id,jdbcType=INTEGER}, #{ticketid,jdbcType=INTEGER}, #{action,jdbcType=BIT}, 
+      #{prevalidperiod,jdbcType=TIMESTAMP}, #{premobile,jdbcType=VARCHAR}, #{deleted,jdbcType=TINYINT}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketHistoryPO">
+    insert into LGC_TicketHistory
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="ticketid != null">
+        TicketID,
+      </if>
+      <if test="action != null">
+        Action,
+      </if>
+      <if test="prevalidperiod != null">
+        PreValidPeriod,
+      </if>
+      <if test="premobile != null">
+        PreMobile,
+      </if>
+      <if test="deleted != null">
+        Deleted,
+      </if>
+      <if test="createtime != null">
+        CreateTime,
+      </if>
+      <if test="updatetime != null">
+        UpdateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="ticketid != null">
+        #{ticketid,jdbcType=INTEGER},
+      </if>
+      <if test="action != null">
+        #{action,jdbcType=BIT},
+      </if>
+      <if test="prevalidperiod != null">
+        #{prevalidperiod,jdbcType=TIMESTAMP},
+      </if>
+      <if test="premobile != null">
+        #{premobile,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=TINYINT},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketHistoryPO">
+    update LGC_TicketHistory
+    <set>
+      <if test="ticketid != null">
+        TicketID = #{ticketid,jdbcType=INTEGER},
+      </if>
+      <if test="action != null">
+        Action = #{action,jdbcType=BIT},
+      </if>
+      <if test="prevalidperiod != null">
+        PreValidPeriod = #{prevalidperiod,jdbcType=TIMESTAMP},
+      </if>
+      <if test="premobile != null">
+        PreMobile = #{premobile,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        Deleted = #{deleted,jdbcType=TINYINT},
+      </if>
+      <if test="createtime != null">
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketHistoryPO">
+    update LGC_TicketHistory
+    set TicketID = #{ticketid,jdbcType=INTEGER},
+      Action = #{action,jdbcType=BIT},
+      PreValidPeriod = #{prevalidperiod,jdbcType=TIMESTAMP},
+      PreMobile = #{premobile,jdbcType=VARCHAR},
+      Deleted = #{deleted,jdbcType=TINYINT},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>

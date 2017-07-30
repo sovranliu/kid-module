@@ -22,9 +22,13 @@ public class UserEntity {
      */
     public String realname;
     /**
+     * 真实姓名
+     */
+    public String address;
+    /**
      * 性别，0位置，1男，2女
      */
-    public int gender;
+    public Integer gender;
     /**
      * 关注时间，null表示未关注
      */

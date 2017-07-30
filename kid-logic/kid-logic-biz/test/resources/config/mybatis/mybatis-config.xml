@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias alias="DemoPO" type="com.xyzq.kid.logic.user.dao.po.DemoPO" />
+        <typeAlias alias="RecordPO" type="com.xyzq.kid.logic.record.dao.po.RecordPO" />
+        <typeAlias alias="UserPO" type="com.xyzq.kid.logic.user.dao.po.UserPO" />
+        <typeAlias alias="TicketPO" type="com.xyzq.kid.logic.ticket.dao.po.TicketPO" />
+        <typeAlias alias="TicketHistoryPO" type="com.xyzq.kid.logic.ticket.dao.po.TicketHistoryPO" />
+        <typeAlias alias="AdminPO" type="com.xyzq.kid.logic.admin.dao.po.AdminPO" />
+        <typeAlias alias="ConfigPO" type="com.xyzq.kid.logic.config.dao.po.ConfigPO" />
+    </typeAliases>
+    <mappers>
+        <mapper resource="config/mybatis/mapper/Demo.xml" />
+        <mapper resource="config/mybatis/mapper/BookMapper.xml" />
+        <mapper resource="config/mybatis/mapper/BookHistoryMapper.xml" />
+        <mapper resource="config/mybatis/mapper/BookTimeSpanMapper.xml" />
+        <mapper resource="config/mybatis/mapper/BookTimeRepositoryMapper.xml" />
+        <mapper resource="config/mybatis/mapper/MessageMapper.xml" /> 
+        <mapper resource="config/mybatis/mapper/BookChangeRequestMapper.xml" /> 
+        <mapper resource="config/mybatis/mapper/User.xml" />
+        <mapper resource="config/mybatis/mapper/Ticket.xml" />
+        <mapper resource="config/mybatis/mapper/TicketHistory.xml" />
+        <mapper resource="config/mybatis/mapper/Record.xml" />
+        <mapper resource="config/mybatis/mapper/Admin.xml" />
+        <mapper resource="config/mybatis/mapper/Config.xml" />
+    </mappers>
+</configuration>

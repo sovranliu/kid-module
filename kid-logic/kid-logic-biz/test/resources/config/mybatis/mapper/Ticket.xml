@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyzq.kid.logic.ticket.dao.TicketDAO">
+  <resultMap id="BaseResultMap" type="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="SerialNo" jdbcType="VARCHAR" property="serialno" />
+    <result column="Type" jdbcType="INTEGER" property="type" />
+    <result column="OwnerMobileNo" jdbcType="VARCHAR" property="ownermobileno" />
+    <result column="PayerOpenID" jdbcType="VARCHAR" property="payeropenid" />
+    <result column="Price" jdbcType="DECIMAL" property="price" />
+    <result column="ExpireDate" jdbcType="TIMESTAMP" property="expiredate" />
+    <result column="Insurance" jdbcType="BIT" property="insurance" />
+    <result column="OrderNo" jdbcType="VARCHAR" property="orderno" />
+    <result column="Status" jdbcType="INTEGER" property="status" />
+    <result column="Deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    ID, SerialNo, Type, OwnerMobileNo, PayerOpenID, Price, ExpireDate, Insurance, OrderNo, 
+    Status, Deleted, CreateTime, UpdateTime
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_Ticket
+    where ID = #{id,jdbcType=INTEGER} and Deleted = 0
+  </select>
+
+  <select id="getTicketsInfoBySerialno" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_Ticket
+    where SerialNo = #{serialno,jdbcType=VARCHAR} and Deleted = 0
+  </select>
+
+  <select id="getTicketsInfoByOwnerMobileNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_Ticket
+    where OwnerMobileNo = #{ownermobileno,jdbcType=VARCHAR} and Deleted = 0
+  </select>
+
+  <select id="getTicketsInfoByPayerOpenID" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_Ticket
+    where PayerOpenID = #{payeropenid,jdbcType=VARCHAR} and Deleted = 0
+  </select>
+
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    update LGC_Ticket
+    set Deleted = 1
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+  <insert id="insert" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into LGC_Ticket (ID, SerialNo, Type, 
+      OwnerMobileNo, PayerOpenID, Price, 
+      ExpireDate, Insurance, OrderNo,
+      Status, Deleted, CreateTime, 
+      UpdateTime)
+    values (#{id,jdbcType=INTEGER}, #{serialno,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{ownermobileno,jdbcType=VARCHAR}, #{payeropenid,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{expiredate,jdbcType=TIMESTAMP}, #{insurance,jdbcType=BIT}, #{orderno,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{deleted,jdbcType=TINYINT}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{updatetime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
+    insert into LGC_Ticket
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="serialno != null">
+        SerialNo,
+      </if>
+      <if test="type != null">
+        Type,
+      </if>
+      <if test="ownermobileno != null">
+        OwnerMobileNo,
+      </if>
+      <if test="payeropenid != null">
+        PayerOpenID,
+      </if>
+      <if test="price != null">
+        Price,
+      </if>
+      <if test="expiredate != null">
+        ExpireDate,
+      </if>
+      <if test="insurance != null">
+        Insurance,
+      </if>
+      <if test="orderno != null">
+        OrderNo,
+      </if>
+      <if test="status != null">
+        Status,
+      </if>
+      <if test="deleted != null">
+        Deleted,
+      </if>
+      <if test="createtime != null">
+        CreateTime,
+      </if>
+      <if test="updatetime != null">
+        UpdateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="serialno != null">
+        #{serialno,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="ownermobileno != null">
+        #{ownermobileno,jdbcType=VARCHAR},
+      </if>
+      <if test="payeropenid != null">
+        #{payeropenid,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="expiredate != null">
+        #{expiredate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insurance != null">
+        #{insurance,jdbcType=BIT},
+      </if>
+      <if test="orderno != null">
+        #{orderno,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=TINYINT},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
+    update LGC_Ticket
+    <set>
+      <if test="serialno != null">
+        SerialNo = #{serialno,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        Type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="ownermobileno != null">
+        OwnerMobileNo = #{ownermobileno,jdbcType=VARCHAR},
+      </if>
+      <if test="payeropenid != null">
+        PayerOpenID = #{payeropenid,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        Price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="expiredate != null">
+        ExpireDate = #{expiredate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insurance != null">
+        Insurance = #{insurance,jdbcType=BIT},
+      </if>
+      <if test="orderno != null">
+        OrderNo = #{orderno,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        Status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null">
+        Deleted = #{deleted,jdbcType=TINYINT},
+      </if>
+      <if test="createtime != null">
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
+    update LGC_Ticket
+    set SerialNo = #{serialno,jdbcType=VARCHAR},
+      Type = #{type,jdbcType=INTEGER},
+      OwnerMobileNo = #{ownermobileno,jdbcType=VARCHAR},
+      PayerOpenID = #{payeropenid,jdbcType=VARCHAR},
+      Price = #{price,jdbcType=DECIMAL},
+      ExpireDate = #{expiredate,jdbcType=TIMESTAMP},
+      Insurance = #{insurance,jdbcType=BIT},
+      OrderNo = #{orderno,jdbcType=VARCHAR},
+      Status = #{status,jdbcType=INTEGER},
+      Deleted = #{deleted,jdbcType=TINYINT},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

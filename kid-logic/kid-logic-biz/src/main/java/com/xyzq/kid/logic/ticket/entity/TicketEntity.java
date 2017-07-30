@@ -69,4 +69,23 @@ public class TicketEntity {
      * 记录变更时间
      */
     public String updatetime;
+
+    @Override
+    public String toString() {
+        return "TicketEntity{" +
+                "id=" + id +
+                ", serialno='" + serialno + '\'' +
+                ", type=" + type +
+                ", ownermobileno='" + ownermobileno + '\'' +
+                ", payeropenid='" + payeropenid + '\'' +
+                ", price=" + price +
+                ", expiredate='" + expiredate + '\'' +
+                ", insurance=" + insurance +
+                ", orderno='" + orderno + '\'' +
+                ", status=" + status +
+                ", deleted=" + deleted +
+                ", createtime='" + createtime + '\'' +
+                ", updatetime='" + updatetime + '\'' +
+                '}';
+    }
 }

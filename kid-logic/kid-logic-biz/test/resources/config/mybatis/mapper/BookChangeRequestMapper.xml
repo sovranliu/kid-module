@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyzq.kid.logic.book.dao.BookChangeRequestMapper">
+  <resultMap id="BaseResultMap" type="com.xyzq.kid.logic.book.dao.po.BookChangeRequest">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="BookId" jdbcType="INTEGER" property="bookid" />
+    <result column="ReqestType" jdbcType="VARCHAR" property="reqesttype" />
+    <result column="RequestReason" jdbcType="VARCHAR" property="requestreason" />
+    <result column="UserId" jdbcType="INTEGER" property="userid" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="LastUpdateTime" jdbcType="TIMESTAMP" property="lastupdatetime" />
+    <result column="Status" jdbcType="VARCHAR" property="status" />
+    <result column="Approval" jdbcType="VARCHAR" property="approval" />
+    <result column="ApproveTime" jdbcType="TIMESTAMP" property="approvetime" />
+    <result column="ApproveComments" jdbcType="VARCHAR" property="approvecomments" />
+    <result column="DeleteFlag" jdbcType="VARCHAR" property="deleteflag" />
+    <result column="BookTimeId" jdbcType="INTEGER" property="booktimeid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, BookId, ReqestType, RequestReason, UserId, CreateTime, LastUpdateTime, Status, 
+    Approval, ApproveTime, ApproveComments, DeleteFlag, BookTimeId
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LGC_Book_ChangeRequest
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from LGC_Book_ChangeRequest
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xyzq.kid.logic.book.dao.po.BookChangeRequest">
+    insert into LGC_Book_ChangeRequest (ID, BookId, ReqestType, 
+      RequestReason, UserId, CreateTime, 
+      LastUpdateTime, Status, Approval, 
+      ApproveTime, ApproveComments, DeleteFlag, 
+      BookTimeId)
+    values (#{id,jdbcType=INTEGER}, #{bookid,jdbcType=INTEGER}, #{reqesttype,jdbcType=VARCHAR}, 
+      #{requestreason,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{lastupdatetime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{approval,jdbcType=VARCHAR}, 
+      #{approvetime,jdbcType=TIMESTAMP}, #{approvecomments,jdbcType=VARCHAR}, #{deleteflag,jdbcType=VARCHAR}, 
+      #{booktimeid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xyzq.kid.logic.book.dao.po.BookChangeRequest">
+    insert into LGC_Book_ChangeRequest
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="bookid != null">
+        BookId,
+      </if>
+      <if test="reqesttype != null">
+        ReqestType,
+      </if>
+      <if test="requestreason != null">
+        RequestReason,
+      </if>
+      <if test="userid != null">
+        UserId,
+      </if>
+      <if test="createtime != null">
+        CreateTime,
+      </if>
+      <if test="lastupdatetime != null">
+        LastUpdateTime,
+      </if>
+      <if test="status != null">
+        Status,
+      </if>
+      <if test="approval != null">
+        Approval,
+      </if>
+      <if test="approvetime != null">
+        ApproveTime,
+      </if>
+      <if test="approvecomments != null">
+        ApproveComments,
+      </if>
+      <if test="deleteflag != null">
+        DeleteFlag,
+      </if>
+      <if test="booktimeid != null">
+        BookTimeId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bookid != null">
+        #{bookid,jdbcType=INTEGER},
+      </if>
+      <if test="reqesttype != null">
+        #{reqesttype,jdbcType=VARCHAR},
+      </if>
+      <if test="requestreason != null">
+        #{requestreason,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastupdatetime != null">
+        #{lastupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="approval != null">
+        #{approval,jdbcType=VARCHAR},
+      </if>
+      <if test="approvetime != null">
+        #{approvetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approvecomments != null">
+        #{approvecomments,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteflag != null">
+        #{deleteflag,jdbcType=VARCHAR},
+      </if>
+      <if test="booktimeid != null">
+        #{booktimeid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xyzq.kid.logic.book.dao.po.BookChangeRequest">
+    update LGC_Book_ChangeRequest
+    <set>
+      <if test="bookid != null">
+        BookId = #{bookid,jdbcType=INTEGER},
+      </if>
+      <if test="reqesttype != null">
+        ReqestType = #{reqesttype,jdbcType=VARCHAR},
+      </if>
+      <if test="requestreason != null">
+        RequestReason = #{requestreason,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        UserId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastupdatetime != null">
+        LastUpdateTime = #{lastupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        Status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="approval != null">
+        Approval = #{approval,jdbcType=VARCHAR},
+      </if>
+      <if test="approvetime != null">
+        ApproveTime = #{approvetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approvecomments != null">
+        ApproveComments = #{approvecomments,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteflag != null">
+        DeleteFlag = #{deleteflag,jdbcType=VARCHAR},
+      </if>
+      <if test="booktimeid != null">
+        BookTimeId = #{booktimeid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xyzq.kid.logic.book.dao.po.BookChangeRequest">
+    update LGC_Book_ChangeRequest
+    set BookId = #{bookid,jdbcType=INTEGER},
+      ReqestType = #{reqesttype,jdbcType=VARCHAR},
+      RequestReason = #{requestreason,jdbcType=VARCHAR},
+      UserId = #{userid,jdbcType=INTEGER},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      LastUpdateTime = #{lastupdatetime,jdbcType=TIMESTAMP},
+      Status = #{status,jdbcType=VARCHAR},
+      Approval = #{approval,jdbcType=VARCHAR},
+      ApproveTime = #{approvetime,jdbcType=TIMESTAMP},
+      ApproveComments = #{approvecomments,jdbcType=VARCHAR},
+      DeleteFlag = #{deleteflag,jdbcType=VARCHAR},
+      BookTimeId = #{booktimeid,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="queryRequestByCond" parameterType="Map" resultType="com.xyzq.kid.logic.book.dao.po.BookChangeRequest">
+  	select * from LGC_Book_ChangeRequest
+  	where 1=1
+  	<if test="requestType != null">
+  		and RequestType = #{requestType}
+  	</if>
+  	<if test="status != null ">
+  		and Status = #{status}
+  	</if>
+  	 and DeleteFlag = '0'
+  	 order by LstUpdateTime desc
+  </select>
+</mapper>

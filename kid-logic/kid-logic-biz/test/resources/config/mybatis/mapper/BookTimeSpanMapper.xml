@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyzq.kid.logic.book.dao.BookTimeSpanMapper">
+  <resultMap id="BaseResultMap" type="com.xyzq.kid.logic.book.dao.po.BookTimeSpan">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="TimeSpan" jdbcType="VARCHAR" property="timespan" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="LastUpdateTime" jdbcType="TIMESTAMP" property="lastupdatetime" />
+    <result column="DeleteFlag" jdbcType="VARCHAR" property="deleteflag" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, TimeSpan, CreateTime, LastUpdateTime, DeleteFlag
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LGC_Book_TimeSpan
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from LGC_Book_TimeSpan
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xyzq.kid.logic.book.dao.po.BookTimeSpan">
+    insert into LGC_Book_TimeSpan (ID, TimeSpan, CreateTime, 
+      LastUpdateTime, DeleteFlag)
+    values (#{id,jdbcType=INTEGER}, #{timespan,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{lastupdatetime,jdbcType=TIMESTAMP}, #{deleteflag,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xyzq.kid.logic.book.dao.po.BookTimeSpan">
+    insert into LGC_Book_TimeSpan
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="timespan != null">
+        TimeSpan,
+      </if>
+      <if test="createtime != null">
+        CreateTime,
+      </if>
+      <if test="lastupdatetime != null">
+        LastUpdateTime,
+      </if>
+      <if test="deleteflag != null">
+        DeleteFlag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="timespan != null">
+        #{timespan,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastupdatetime != null">
+        #{lastupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteflag != null">
+        #{deleteflag,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xyzq.kid.logic.book.dao.po.BookTimeSpan">
+    update LGC_Book_TimeSpan
+    <set>
+      <if test="timespan != null">
+        TimeSpan = #{timespan,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastupdatetime != null">
+        LastUpdateTime = #{lastupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteflag != null">
+        DeleteFlag = #{deleteflag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xyzq.kid.logic.book.dao.po.BookTimeSpan">
+    update LGC_Book_TimeSpan
+    set TimeSpan = #{timespan,jdbcType=VARCHAR},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      LastUpdateTime = #{lastupdatetime,jdbcType=TIMESTAMP},
+      DeleteFlag = #{deleteflag,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="queryByCond" parameterType="Map" resultType="com.xyzq.kid.logic.book.dao.po.BookTimeSpan">
+  	select * from LGC_Book_TimeSpan where 1=1 
+  	<if test=" deleteFlag != null ">
+  		and deleteFlag=#{deleteFlag}
+  	</if>
+  	and DeleteFlag = '0'
+  	 order by LstUpdateTime desc
+  </select>
+</mapper>

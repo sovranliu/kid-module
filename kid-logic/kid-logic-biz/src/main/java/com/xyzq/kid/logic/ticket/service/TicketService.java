@@ -7,6 +7,8 @@ import com.xyzq.kid.logic.ticket.entity.TicketEntity;
 import com.xyzq.kid.logic.ticket.entity.TicketHistoryEntity;
 import com.xyzq.kid.logic.user.entity.UserEntity;
 import com.xyzq.kid.logic.user.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.security.krb5.internal.Ticket;
@@ -23,6 +25,11 @@ import java.util.List;
 @Service("ticketService")
 public class TicketService {
     /**
+     * 日志对象
+     */
+    public static Logger logger = LoggerFactory.getLogger(TicketService.class);
+
+    /**
      * 票信息
      */
     @Autowired
@@ -32,7 +39,9 @@ public class TicketService {
      */
     @Autowired
     private TicketHistoryBean ticketHistoryBean;
-
+    /**
+     * 用户信息
+     */
     @Autowired
     private UserService userService;
 
@@ -42,6 +51,7 @@ public class TicketService {
      * @return
      */
     public void buySingleTickets(TicketEntity ticketEntity){
+        logger.info("TicketService.buySingleTickets[in]-ticketEntity:" + ticketEntity.toString());
         ticketEntity.type = TicketEntity.TICKET_TYPE_SINGLE;
         buyTickets(ticketEntity);
         return;
@@ -54,6 +64,7 @@ public class TicketService {
      * @return
      */
     public void buyGroupleTickets(TicketEntity ticketEntity, int num){
+        logger.info("TicketService.buyGroupleTickets[in]-ticketEntity:" + ticketEntity.toString() + ",num:" + num);
         if(num >= 3) {
             for (int i = 0; i < num; i++) {
                 ticketEntity.type = TicketEntity.TICKET_TYPE_GROUP;
@@ -70,6 +81,7 @@ public class TicketService {
      * @return 成功返回-success
      */
     public String handselTickets(int ticketId, String mobileNo){
+        logger.info("TicketService.handselTickets[in]-ticketId:" + ticketId + ",mobileNo:" + mobileNo);
         TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
         if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
             return "ticket has been deleted!";
@@ -98,6 +110,7 @@ public class TicketService {
      * @return 成功返回-success
      */
     public String useTickets(int ticketId) {
+        logger.info("TicketService.useTickets[in]-ticketId:" + ticketId);
         TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
         if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
             return "ticket has been deleted!";
@@ -120,14 +133,18 @@ public class TicketService {
      * @return 成功返回-success
      */
     public String extendTickets(int ticketId, String extendDate) {
+        logger.info("TicketService.extendTickets[in]-ticketId:" + ticketId + ",extendDate:" + extendDate);
         TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
         if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
             return "ticket has been deleted!";
         }
+        if(ticketEntity.status != TicketEntity.TICKET_STATUS_NEW) {
+            return "ticket status error!";
+        }
         if(CommonTool.checkExpire(ticketEntity.expiredate)) {
             return "ticket expire!";
         }
-        if(!CommonTool.checkExpire(extendDate)) {
+        if(CommonTool.checkExpire(extendDate)) {
             return "wrong extendDate!";
         }
         extendTicketHistory(ticketId,ticketEntity.expiredate);
@@ -139,21 +156,12 @@ public class TicketService {
     }
 
     /**
-     * 获取个人票务信息
-     * @param entity
-     * @return
-     */
-    public int getPersionTickets(TicketEntity entity){
-        entity.deleted = 0;
-        return ticketBean.insert(entity);
-    }
-
-    /**
      * 根据流水号获取个人票务信息
      * @param serialno
      * @return 入参为空返回空
      */
     public TicketEntity getTicketsInfoBySerialno (String serialno ){
+        logger.info("TicketService.getTicketsInfoBySerialno[in]-serialno:" + serialno);
         if(null == serialno || serialno.length() == 0) {
             return null;
         }
@@ -166,6 +174,7 @@ public class TicketService {
      * @return
      */
     public List<TicketEntity> getTicketsInfoByOwnerMobileNo(String mobileNo) {
+        logger.info("TicketService.getTicketsInfoByOwnerMobileNo[in]-mobileNo:" + mobileNo);
         List<TicketEntity> ticketEntityList = ticketBean.getTicketsInfoByOwnerMobileNo(mobileNo);
         List<TicketHistoryEntity> ticketHistoryEntityList = ticketHistoryBean.selectHandselByPreMobile(mobileNo);
         for (int i = 0; i < ticketHistoryEntityList.size(); i++) {
@@ -198,13 +207,19 @@ public class TicketService {
      * @return
      */
     public List<TicketEntity> getTicketsInfoByPayerOpenID(String openID) {
+        logger.info("TicketService.getTicketsInfoByPayerOpenID[in]-openID:" + openID);
         return ticketBean.getTicketsInfoByPayerOpenID(openID);
     }
 
-
     /**
      * 获取飞行票操作历史
+     * @param ticketId
+     * @return
      */
+    public List<TicketHistoryEntity> getTicketHistoryByTickedId(int ticketId) {
+        logger.info("TicketService.getTicketsInfoByPayerOpenID[in]-ticketId:" + ticketId);
+        return ticketHistoryBean.selectByTicketId(ticketId);
+    }
 
     /**
      * 生成飞行票流水号

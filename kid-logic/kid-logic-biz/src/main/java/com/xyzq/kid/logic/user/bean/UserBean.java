@@ -101,6 +101,9 @@ public class UserBean {
         if(null != po.getRealname()) {
             entity.realname = po.getRealname();
         }
+        if(null != po.getAddress()) {
+            entity.address = po.getAddress();
+        }
         if(null != po.getGender()) {
             entity.gender = po.getGender();
         }
@@ -137,6 +140,9 @@ public class UserBean {
         }
         if(null != entity.realname) {
             po.setRealname(entity.realname);
+        }
+        if(null != entity.address) {
+            po.setAddress( entity.address);
         }
         if(null != entity.gender) {
             po.setGender(entity.gender);

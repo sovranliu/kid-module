@@ -11,6 +11,8 @@ public class UserPO {
 
     private String realname;
 
+    private String address;
+
     private Integer gender;
 
     private Date subscribetime;
@@ -51,6 +53,14 @@ public class UserPO {
 
     public void setRealname(String realname) {
         this.realname = realname == null ? null : realname.trim();
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address == null ? null : address.trim();
     }
 
     public Integer getGender() {
