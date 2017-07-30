@@ -2,6 +2,8 @@ package com.xyzq.kid.logic.ticket.dao;
 
 import com.xyzq.kid.logic.ticket.dao.po.TicketPO;
 
+import java.util.List;
+
 public interface TicketDAO {
     int deleteByPrimaryKey(Integer id);
 
@@ -12,6 +14,10 @@ public interface TicketDAO {
     TicketPO selectByPrimaryKey(Integer id);
 
     TicketPO getTicketsInfoBySerialno(String serialno);
+
+    List<TicketPO> getTicketsInfoByOwnerMobileNo(String serialno);
+
+    List<TicketPO> getTicketsInfoByPayerOpenID(String serialno);
 
     int updateByPrimaryKeySelective(TicketPO record);
 

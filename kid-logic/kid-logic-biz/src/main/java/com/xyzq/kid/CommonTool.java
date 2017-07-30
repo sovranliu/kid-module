@@ -56,7 +56,6 @@ public class CommonTool {
         return null;
     }
 
-
     /**
      * 方法描述 Date转化为string
      *
@@ -70,5 +69,19 @@ public class CommonTool {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 是否过期
+     * @param expireDay
+     * @return
+     */
+    public static boolean checkExpire(String expireDay) {
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String now = sdf.format(new Date());
+        if(now.compareTo(expireDay) > 0) {
+            return true;
+        }
+        return false;
     }
 }

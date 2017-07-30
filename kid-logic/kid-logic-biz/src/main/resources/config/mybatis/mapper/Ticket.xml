@@ -36,6 +36,20 @@
     where SerialNo = #{serialno,jdbcType=VARCHAR} and Deleted = 0
   </select>
 
+  <select id="getTicketsInfoByOwnerMobileNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_Ticket
+    where OwnerMobileNo = #{ownermobileno,jdbcType=VARCHAR} and Deleted = 0
+  </select>
+
+  <select id="getTicketsInfoByPayerOpenID" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_Ticket
+    where PayerOpenID = #{payeropenid,jdbcType=VARCHAR} and Deleted = 0
+  </select>
+
   <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     update LGC_Ticket
     set Deleted = 1
@@ -48,7 +62,7 @@
     </selectKey>
     insert into LGC_Ticket (ID, SerialNo, Type, 
       OwnerMobileNo, PayerOpenID, Price, 
-      ExpireDate, Insurance, OrderNo, 
+      ExpireDate, Insurance, OrderNo,
       Status, Deleted, CreateTime, 
       UpdateTime)
     values (#{id,jdbcType=INTEGER}, #{serialno,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 

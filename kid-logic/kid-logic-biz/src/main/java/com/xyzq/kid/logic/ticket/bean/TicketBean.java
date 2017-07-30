@@ -7,6 +7,9 @@ import com.xyzq.kid.logic.ticket.entity.TicketEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 这是一个范例Java逻辑功能Bean
  */
@@ -37,6 +40,28 @@ public class TicketBean {
     public TicketEntity getTicketsInfoBySerialno(String serialno ){
         TicketPO ticketPO = ticketDAO.getTicketsInfoBySerialno(serialno);
         return TicketPOToEntity(ticketPO);
+    }
+
+    public List<TicketEntity> getTicketsInfoByOwnerMobileNo(String mobileNo) {
+        List<TicketEntity> ticketEntityList = new ArrayList<>();
+        List<TicketPO> ticketPOList = ticketDAO.getTicketsInfoByOwnerMobileNo(mobileNo);
+        if(null != ticketPOList) {
+            for (int i = 0; i < ticketPOList.size(); i++) {
+                ticketEntityList.add(TicketPOToEntity(ticketPOList.get(i)));
+            }
+        }
+        return ticketEntityList;
+    }
+
+    public List<TicketEntity> getTicketsInfoByPayerOpenID(String openID) {
+        List<TicketEntity> ticketEntityList = new ArrayList<>();
+        List<TicketPO> ticketPOList = ticketDAO.getTicketsInfoByPayerOpenID(openID);
+        if(null != ticketPOList) {
+            for (int i = 0; i < ticketPOList.size(); i++) {
+                ticketEntityList.add(TicketPOToEntity(ticketPOList.get(i)));
+            }
+        }
+        return ticketEntityList;
     }
 
     /**
