@@ -46,7 +46,7 @@ public class CustomerAction implements IAction {
             context.set("action", "login");
             return "success.json";
         }
-        String info = cache.get(sId);
+        String info = cache.get("sid-" + sId);
         if(Text.isBlank(info) || !info.contains(",")) {
             context.set("code", "-8");
             context.set("action", "login");
