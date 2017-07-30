@@ -1,5 +1,6 @@
 package com.xyzq.kid.logic.ticket.service;
 
+import com.xyzq.kid.CommonTool;
 import com.xyzq.kid.logic.ticket.bean.TicketBean;
 import com.xyzq.kid.logic.ticket.bean.TicketHistoryBean;
 import com.xyzq.kid.logic.ticket.entity.TicketEntity;
@@ -7,6 +8,8 @@ import com.xyzq.kid.logic.ticket.entity.TicketHistoryEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,53 +28,109 @@ public class TicketService {
     @Autowired
     private TicketHistoryBean ticketHistoryBean;
 
-
     /**
-     * 方法描述 根据id查找票信息
-     *
-     * @return 返回值 TicketEntity
-     */
-    public TicketEntity getTicketById(int id) {
-        return ticketBean.selectByPrimaryKey(id);
-    }
-
-    /**
-     * 根据主键删除飞行票信息
-     * @param id
+     * 个人购票
+     * @param ticketEntity
      * @return
      */
-    public int deleteTicket(Integer id) {
-        return ticketBean.deleteByPrimaryKey(id);
+    public void buySingleTickets(TicketEntity ticketEntity){
+        ticketEntity.type = TicketEntity.TICKET_TYPE_SINGLE;
+        buyTickets(ticketEntity);
+        return;
     }
 
     /**
-     * 全量新增飞行票信息
+     * 团队购票
+     * @param ticketEntity 票信息
+     * @param num 购买张数
+     * @return
+     */
+    public void buyGroupleTickets(TicketEntity ticketEntity, int num){
+        if(num >= 3) {
+            for (int i = 0; i < num; i++) {
+                ticketEntity.type = TicketEntity.TICKET_TYPE_GROUP;
+                buyTickets(ticketEntity);
+            }
+        }
+        return;
+    }
+
+    /**
+     *
+     * @param ticketEntity
+     */
+    private void buyTickets(TicketEntity ticketEntity){
+        ticketEntity.deleted = CommonTool.STATUS_NORMAL;
+        ticketEntity.serialno = getSerialno();
+        ticketEntity.status = TicketEntity.TICKET_STATUS_NEW;
+        int ticketId = ticketBean.insert(ticketEntity);
+
+        TicketHistoryEntity ticketHistoryEntity = new TicketHistoryEntity();
+        ticketHistoryEntity.ticketid = ticketId;
+        ticketHistoryEntity.action = TicketHistoryEntity.TICKET_ACTION_NEW;
+        ticketHistoryEntity.deleted = CommonTool.STATUS_NORMAL;
+
+        ticketHistoryBean.insertSelective(ticketHistoryEntity);
+
+        return;
+    }
+
+    /**
+     * 增票
      * @param entity
      * @return
      */
-    public int insert(TicketEntity entity){
+    public int handselTickets(TicketEntity entity){
         entity.deleted = 0;
         return ticketBean.insert(entity);
     }
 
     /**
-     * 方法描述 根据id查找票历史记录信息
-     *
-     * @return 返回值 TicketHistoryEntity
+     * 获取个人票务信息
+     * @param entity
+     * @return
      */
-    public TicketHistoryEntity getTicketHistoryById(int id) {
-        return ticketHistoryBean.selectByPrimaryKey(id);
+    public int getPersionTickets(TicketEntity entity){
+        entity.deleted = 0;
+        return ticketBean.insert(entity);
     }
 
     /**
-     * 方法描述 根据ticketid查找票历史记录信息
-     *
-     * @return 返回值 TicketHistoryEntity
+     * 根据流水号获取个人票务信息
+     * @param serialno
+     * @return 入参为空返回空
      */
-    public List<TicketHistoryEntity> getTicketHistory(int ticketId) {
-        return null;
+    public TicketEntity getTicketsInfoBySerialno (String serialno ){
+        if(null == serialno || serialno.length() == 0) {
+            return null;
+        }
+        return ticketBean.getTicketsInfoBySerialno(serialno);
     }
 
+    /**
+     * 获取飞行票状态
+     */
 
+    /**
+     * 获取飞行票操作历史
+     */
+
+    /**
+     * 处理用户增票--自己是增票者
+     */
+
+    /**
+     * 处理用户增票--自己是被增者
+     */
+
+    /**
+     * 生成飞行票流水号
+     * @return
+     */
+    private String getSerialno() {
+        //TODO 仅仅时间
+        SimpleDateFormat sdf =   new SimpleDateFormat( "yyyyMMddhhmmssSSS" );
+        return sdf.format(new Date());
+    }
 
 }

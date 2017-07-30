@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.xyzq.kid.logic.ticket.dao.po.TicketHistoryPO">
     <id column="ID" jdbcType="INTEGER" property="id" />
     <result column="TicketID" jdbcType="INTEGER" property="ticketid" />
-    <result column="Action" jdbcType="BIT" property="action" />
+    <result column="Action" jdbcType="INTEGER" property="action" />
     <result column="PreValidPeriod" jdbcType="TIMESTAMP" property="prevalidperiod" />
     <result column="PreMobile" jdbcType="VARCHAR" property="premobile" />
     <result column="Deleted" jdbcType="TINYINT" property="deleted" />

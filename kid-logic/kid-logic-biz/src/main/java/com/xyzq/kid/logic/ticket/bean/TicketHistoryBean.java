@@ -1,6 +1,6 @@
 package com.xyzq.kid.logic.ticket.bean;
 
-import com.xyzq.kid.logic.user.common.CommonTool;
+import com.xyzq.kid.CommonTool;
 import com.xyzq.kid.logic.ticket.dao.TicketHistoryDAO;
 import com.xyzq.kid.logic.ticket.dao.po.TicketHistoryPO;
 import com.xyzq.kid.logic.ticket.entity.TicketHistoryEntity;
@@ -75,14 +75,30 @@ public class TicketHistoryBean {
             return null;
         }
         TicketHistoryEntity entity = new TicketHistoryEntity();
-        entity.id = po.getId();
-        entity.ticketid = po.getId();
-        entity.action = po.getAction();
-        entity.prevalidperiod = CommonTool.DataToStringYMD(po.getPrevalidperiod());
-        entity.premobile = po.getPremobile();
-        entity.deleted = po.getDeleted();
-        entity.createtime = CommonTool.DataToStringYMDHMS(po.getCreatetime());
-        entity.updatetime = CommonTool.DataToStringYMDHMS(po.getUpdatetime());
+        if(null != po.getId()) {
+            entity.id = po.getId();
+        }
+        if(null != po.getTicketid()) {
+            entity.ticketid = po.getTicketid();
+        }
+        if(null != po.getAction()) {
+            entity.action = po.getAction();
+        }
+        if(null != po.getPrevalidperiod()) {
+            entity.prevalidperiod = CommonTool.DataToStringYMD(po.getPrevalidperiod());
+        }
+        if(null != po.getPremobile()) {
+            entity.premobile = po.getPremobile();
+        }
+        if(null != po.getDeleted()) {
+            entity.deleted = po.getDeleted();
+        }
+        if(null != po.getCreatetime()) {
+            entity.createtime = CommonTool.DataToStringYMDHMS(po.getCreatetime());
+        }
+        if(null != po.getUpdatetime()) {
+            entity.updatetime = CommonTool.DataToStringYMDHMS(po.getUpdatetime());
+        }
         return entity;
     }
 
@@ -97,7 +113,7 @@ public class TicketHistoryBean {
             po.setId(entity.id);
         }
         if(null != entity.ticketid ) {
-            po.setId(entity.ticketid );
+            po.setTicketid(entity.ticketid );
         }
         if(null != entity.action ) {
             po.setAction(entity.action);

@@ -1,4 +1,4 @@
-package com.xyzq.kid.logic.user.common;
+package com.xyzq.kid;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -12,6 +12,10 @@ import java.util.Date;
  * 本目录用于存放通用工具类、抽奖接口等
  */
 public class CommonTool {
+
+    public final static int STATUS_NORMAL = 0;//记录正常
+    public final static int STATUS_DELETE = 1;//记录删除
+
     /**
      * 隐藏构造函数
      */

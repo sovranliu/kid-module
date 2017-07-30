@@ -24,9 +24,22 @@ public class UserService {
      *
      * @return 返回值
      */
-    public UserEntity getUserById() {
-        return userBean.selectByPrimaryKey(1);
+    public UserEntity getUserById(int id) {
+        return userBean.selectByPrimaryKey(id);
     }
+
+    /**
+     * 用户注册
+     */
+
+    /**
+     * 根据手机号获取用户信息
+     */
+
+    /**
+     * 根据openId获取用户信息
+     */
+
 
 
 }

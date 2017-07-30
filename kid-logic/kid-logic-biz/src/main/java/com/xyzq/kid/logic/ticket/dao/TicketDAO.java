@@ -11,6 +11,8 @@ public interface TicketDAO {
 
     TicketPO selectByPrimaryKey(Integer id);
 
+    TicketPO getTicketsInfoBySerialno(String serialno);
+
     int updateByPrimaryKeySelective(TicketPO record);
 
     int updateByPrimaryKey(TicketPO record);

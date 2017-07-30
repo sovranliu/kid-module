@@ -1,6 +1,6 @@
 package com.xyzq.kid.logic.ticket.bean;
 
-import com.xyzq.kid.logic.user.common.CommonTool;
+import com.xyzq.kid.CommonTool;
 import com.xyzq.kid.logic.ticket.dao.TicketDAO;
 import com.xyzq.kid.logic.ticket.dao.po.TicketPO;
 import com.xyzq.kid.logic.ticket.entity.TicketEntity;
@@ -26,6 +26,16 @@ public class TicketBean {
      */
     public TicketEntity selectByPrimaryKey(int id) {
         TicketPO ticketPO = ticketDAO.selectByPrimaryKey(id);
+        return TicketPOToEntity(ticketPO);
+    }
+
+    /**
+     * 根据流水号获取个人票务信息
+     * @param serialno
+     * @return
+     */
+    public TicketEntity getTicketsInfoBySerialno(String serialno ){
+        TicketPO ticketPO = ticketDAO.getTicketsInfoBySerialno(serialno);
         return TicketPOToEntity(ticketPO);
     }
 
@@ -84,19 +94,45 @@ public class TicketBean {
             return null;
         }
         TicketEntity entity = new TicketEntity();
-        entity.id = po.getId();
-        entity.serialno = po.getSerialno();
-        entity.type = po.getType();
-        entity.ownermobileno = po.getOwnermobileno();
-        entity.payeropenid = po.getPayeropenid();
-        entity.price = po.getPrice();
-        entity.expiredate = CommonTool.DataToStringYMD(po.getExpiredate());
-        entity.insurance = po.getInsurance();
-        entity.orderno = po.getOrderno();
-        entity.status = po.getStatus();
-        entity.deleted = po.getDeleted();
-        entity.createtime = CommonTool.DataToStringYMDHMS(po.getCreatetime());
-        entity.updatetime = CommonTool.DataToStringYMDHMS(po.getUpdatetime());
+        if(null != po.getId()) {
+            entity.id = po.getId();
+        }
+        if(null != po.getSerialno()) {
+            entity.serialno = po.getSerialno();
+        }
+        if(null != po.getType()) {
+            entity.type = po.getType();
+        }
+        if(null != po.getOwnermobileno()) {
+            entity.ownermobileno = po.getOwnermobileno();
+        }
+        if(null != po.getPayeropenid()) {
+            entity.payeropenid = po.getPayeropenid();
+        }
+        if(null != po.getPrice()) {
+            entity.price = po.getPrice();
+        }
+        if(null != po.getExpiredate()) {
+            entity.expiredate = CommonTool.DataToStringYMD(po.getExpiredate());
+        }
+        if(null != po.getInsurance()) {
+            entity.insurance = po.getInsurance();
+        }
+        if(null != po.getOrderno()) {
+            entity.orderno = po.getOrderno();
+        }
+        if(null != po.getStatus()) {
+            entity.status = po.getStatus();
+        }
+        if(null != po.getDeleted()) {
+            entity.deleted = po.getDeleted();
+        }
+        if(null != po.getCreatetime()) {
+            entity.createtime = CommonTool.DataToStringYMDHMS(po.getCreatetime());
+        }
+        if(null != po.getUpdatetime()) {
+            entity.updatetime = CommonTool.DataToStringYMDHMS(po.getUpdatetime());
+        }
         return entity;
     }
 
