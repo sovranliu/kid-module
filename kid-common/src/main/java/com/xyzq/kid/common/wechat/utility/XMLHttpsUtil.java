@@ -1,4 +1,4 @@
-package comm.xyzq.kid.common.wechat.utility;
+package com.xyzq.kid.common.wechat.utility;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

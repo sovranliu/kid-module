@@ -1,19 +1,20 @@
-package comm.xyzq.kid.common.wechat.mp;
+package com.xyzq.kid.common.wechat.mp;
 
 import com.xyzq.simpson.base.json.JSONObject;
 import com.xyzq.simpson.base.json.JSONString;
 import com.xyzq.simpson.base.time.DateTime;
-import comm.xyzq.kid.common.wechat.utility.XMLHttpsUtil;
+import com.xyzq.kid.common.wechat.utility.WechatConfig;
+import com.xyzq.kid.common.wechat.utility.XMLHttpsUtil;
 import org.apache.log4j.Logger;
 
 /**
  * 访问票据管理类
  */
-public class JSTicketHelper {
+public class TokenHelper {
     /**
      * 获取凭据URL
      */
-    private final static String URL_GETTICKET = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=[ACCESS_TOKEN]&type=jsapi";
+    private final static String URL_ACCESSTOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=[APPID]&secret=[APPSECRET]";
     /**
      * 缓存周期
      */
@@ -35,7 +36,7 @@ public class JSTicketHelper {
     /**
      * 隐藏构造函数
      */
-    private JSTicketHelper() { }
+    private TokenHelper() { }
 
 
     /**
@@ -43,9 +44,9 @@ public class JSTicketHelper {
      *
      * @return 有效票据
      */
-    public static String getTicket() {
+    public static String getToken() {
         if(DateTime.now().toLong() > PERIOD_CACHE + tick) {
-            String newToken = fetchTicket();
+            String newToken = fetchToken();
             if(null != newToken) {
                 token = newToken;
             }
@@ -58,11 +59,11 @@ public class JSTicketHelper {
      *
      * @return 有效票据
      */
-    public synchronized static String fetchTicket() {
+    public synchronized static String fetchToken() {
         if(DateTime.now().toLong() < PERIOD_CACHE + tick) {
             return token;
         }
-        String url = URL_GETTICKET.replace("[ACCESS_TOKEN]", TokenHelper.getToken());
+        String url = URL_ACCESSTOKEN.replace("[APPID]", WechatConfig.appId).replace("[APPSECRET]", WechatConfig.appSecret);
         String result = null;
         try {
             result = XMLHttpsUtil.get(url);
@@ -76,12 +77,12 @@ public class JSTicketHelper {
             logger.error("empty response in HttpUtil.send(" + url + ")");
             return null;
         }
-        JSONString ticket = (JSONString) json.get("ticket");
-        if(null == ticket) {
+        JSONString token = (JSONString) json.get("access_token");
+        if(null == token) {
             logger.error("error response in HttpUtil.send(" + url + "), " + token);
             return null;
         }
         tick = DateTime.now().toLong();
-        return ticket.get();
+        return token.get();
     }
 }

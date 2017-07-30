@@ -1,4 +1,4 @@
-package comm.xyzq.kid.common.wechat.utility;
+package com.xyzq.kid.common.wechat.utility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
-package comm.xyzq.kid.common.wechat.pay.protocol;
+package com.xyzq.kid.common.wechat.pay.protocol;
 
-import comm.xyzq.kid.common.wechat.pay.annotation.ProtocolField;
+import com.xyzq.kid.common.wechat.pay.annotation.ProtocolField;
 
 /**
  * 退款反馈结构体

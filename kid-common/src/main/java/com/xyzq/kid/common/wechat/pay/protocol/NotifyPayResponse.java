@@ -1,10 +1,10 @@
-package comm.xyzq.kid.common.wechat.pay.protocol;
+package com.xyzq.kid.common.wechat.pay.protocol;
 
 import com.xyzq.simpson.base.text.Text;
 import com.xyzq.simpson.base.time.DateTime;
 import com.xyzq.simpson.base.xml.XMLNode;
 import com.xyzq.simpson.base.xml.core.IXMLNode;
-import comm.xyzq.kid.common.wechat.utility.WechatHelper;
+import com.xyzq.kid.common.wechat.utility.WechatHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

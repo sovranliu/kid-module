@@ -1,4 +1,4 @@
-package comm.xyzq.kid.common.wechat.pay.annotation;
+package com.xyzq.kid.common.wechat.pay.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

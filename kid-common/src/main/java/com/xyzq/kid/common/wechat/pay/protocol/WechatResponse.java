@@ -1,10 +1,10 @@
-package comm.xyzq.kid.common.wechat.pay.protocol;
+package com.xyzq.kid.common.wechat.pay.protocol;
 
+import com.xyzq.kid.common.wechat.pay.annotation.ProtocolField;
 import com.xyzq.simpson.base.runtime.Kind;
 import com.xyzq.simpson.base.text.Text;
 import com.xyzq.simpson.base.type.Table;
 import com.xyzq.simpson.base.xml.core.IXMLNode;
-import comm.xyzq.kid.common.wechat.pay.annotation.ProtocolField;
 
 import java.lang.reflect.Field;
 

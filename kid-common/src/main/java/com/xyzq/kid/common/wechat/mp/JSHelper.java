@@ -1,9 +1,9 @@
-package comm.xyzq.kid.common.wechat.mp;
+package com.xyzq.kid.common.wechat.mp;
 
+import com.xyzq.kid.common.wechat.utility.WechatConfig;
 import com.xyzq.simpson.base.etc.Serial;
 import com.xyzq.simpson.base.time.DateTime;
-import comm.xyzq.kid.common.wechat.utility.WechatConfig;
-import comm.xyzq.kid.common.wechat.utility.WechatHelper;
+import com.xyzq.kid.common.wechat.utility.WechatHelper;
 
 /**
  * JS 帮助类

@@ -1,4 +1,4 @@
-package comm.xyzq.kid.common.wechat.mp;
+package com.xyzq.kid.common.wechat.mp;
 
 import com.xyzq.simpson.base.async.Operator;
 import com.xyzq.simpson.base.async.core.IOperation;
@@ -7,7 +7,7 @@ import com.xyzq.simpson.base.json.JSONObject;
 import com.xyzq.simpson.base.json.JSONString;
 import com.xyzq.simpson.base.type.core.ILink;
 import com.xyzq.simpson.base.type.core.ITable;
-import comm.xyzq.kid.common.wechat.utility.XMLHttpsUtil;
+import com.xyzq.kid.common.wechat.utility.XMLHttpsUtil;
 import org.apache.log4j.Logger;
 
 import java.util.concurrent.BlockingQueue;

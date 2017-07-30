@@ -1,4 +1,4 @@
-package comm.xyzq.kid.common.wechat.utility;
+package com.xyzq.kid.common.wechat.utility;
 
 import com.xyzq.simpson.base.etc.Serial;
 import com.xyzq.simpson.base.text.Text;

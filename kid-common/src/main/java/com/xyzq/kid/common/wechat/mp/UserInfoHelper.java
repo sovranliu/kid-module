@@ -1,8 +1,8 @@
-package comm.xyzq.kid.common.wechat.mp;
+package com.xyzq.kid.common.wechat.mp;
 
 import com.xyzq.simpson.base.json.JSONNumber;
 import com.xyzq.simpson.base.json.JSONObject;
-import comm.xyzq.kid.common.wechat.utility.XMLHttpsUtil;
+import com.xyzq.kid.common.wechat.utility.XMLHttpsUtil;
 import org.apache.log4j.Logger;
 
 /**

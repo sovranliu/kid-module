@@ -1,9 +1,9 @@
-package comm.xyzq.kid.common.wechat.pay;
+package com.xyzq.kid.common.wechat.pay;
 
+import com.xyzq.kid.common.wechat.pay.protocol.*;
 import com.xyzq.simpson.base.text.Text;
 import com.xyzq.simpson.base.xml.XMLNode;
-import comm.xyzq.kid.common.wechat.pay.protocol.*;
-import comm.xyzq.kid.common.wechat.utility.XMLHttpsUtil;
+import com.xyzq.kid.common.wechat.utility.XMLHttpsUtil;
 
 import java.io.IOException;
 

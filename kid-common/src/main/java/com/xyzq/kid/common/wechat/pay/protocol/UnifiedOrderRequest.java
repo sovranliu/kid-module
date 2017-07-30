@@ -1,10 +1,10 @@
-package comm.xyzq.kid.common.wechat.pay.protocol;
+package com.xyzq.kid.common.wechat.pay.protocol;
 
+import com.xyzq.kid.common.wechat.pay.annotation.ProtocolField;
 import com.xyzq.simpson.base.etc.Serial;
 import com.xyzq.simpson.base.time.DateTime;
 import com.xyzq.simpson.base.time.Duration;
-import comm.xyzq.kid.common.wechat.pay.annotation.ProtocolField;
-import comm.xyzq.kid.common.wechat.utility.WechatConfig;
+import com.xyzq.kid.common.wechat.utility.WechatConfig;
 
 /**
  * 统一下单请求结构体

@@ -1,4 +1,4 @@
-package comm.xyzq.kid.common.wechat.mp;
+package com.xyzq.kid.common.wechat.mp;
 
 /**
  * JS配置
