@@ -1,27 +1,32 @@
-package com.xyzq.kid.logic.record.dao.po;
+package com.xyzq.kid.logic.admin.dao.po;
 
 import java.sql.Timestamp;
 
 /**
+ * CNS_Admin
  * Created by Brann on 17/7/27.
  */
-public class FlyRecordPO {
+public class AdminPO {
     /**
      * 主键ID，自增长的流水号
      */
-    private int id;
+    private Integer id;
     /**
      * 票券的id
      */
-    private int ticketID;
+    private Integer userName;
     /**
      * 飞行日志文件名称
      */
-    private String path;
+    private String password;
     /**
      * 是否被购买，0:未购买，1:已购买
      */
-    private String purchased;
+    private String email;
+    /**
+     * 记录是否被软删，1:删除，0:未删除
+     */
+    private String mobile;
     /**
      * 记录是否被软删，1:删除，0:未删除
      */
@@ -43,37 +48,44 @@ public class FlyRecordPO {
      */
     private Timestamp updateTime;
 
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getTicketID() {
-        return ticketID;
+    public Integer getUserName() {
+        return userName;
     }
 
-    public void setTicketID(int ticketID) {
-        this.ticketID = ticketID;
+    public void setUserName(Integer userName) {
+        this.userName = userName;
     }
 
-    public String getPath() {
-        return path;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getPurchased() {
-        return purchased;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPurchased(String purchased) {
-        this.purchased = purchased;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getDeleted() {

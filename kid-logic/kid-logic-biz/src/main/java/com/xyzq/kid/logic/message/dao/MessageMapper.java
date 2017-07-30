@@ -1,5 +1,8 @@
 package com.xyzq.kid.logic.message.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.xyzq.kid.logic.message.dao.po.Message;
 
 public interface MessageMapper {
@@ -14,4 +17,8 @@ public interface MessageMapper {
     int updateByPrimaryKeySelective(Message record);
 
     int updateByPrimaryKey(Message record);
+    
+    List<Message> selectBySelectiveKey(Message message);
+    
+    List<Message> queryByCond(Map params);
 }

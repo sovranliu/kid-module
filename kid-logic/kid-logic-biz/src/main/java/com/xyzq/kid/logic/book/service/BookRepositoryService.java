@@ -1,10 +1,12 @@
 package com.xyzq.kid.logic.book.service;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.mysql.jdbc.StringUtils;
 import com.xyzq.kid.logic.book.dao.BookTimeRepositoryMapper;
@@ -12,6 +14,12 @@ import com.xyzq.kid.logic.book.dao.BookTimeSpanMapper;
 import com.xyzq.kid.logic.book.dao.po.BookTimeRepository;
 import com.xyzq.kid.logic.book.dao.po.BookTimeSpan;
 
+/**
+ * 可预约库存服务
+ * @author keyanggui
+ *
+ */
+@Service("bookRepositoryService")
 public class BookRepositoryService {
 	
 	@Autowired
@@ -19,6 +27,9 @@ public class BookRepositoryService {
 	
 	@Autowired
 	BookTimeSpanMapper bookTimeSpanMapper;
+	
+	@Autowired
+	BookTimeSpanService bookTimeSpanService;
 	
 	/**
 	 * 预约库存初始化
@@ -29,7 +40,7 @@ public class BookRepositoryService {
 	public boolean initRepositoryByDate(String bookDate,Integer total){
 		boolean flag=false;
 		try{
-			List<BookTimeSpan> spanList=bookTimeSpanMapper.queryValidTimeSpan();
+			List<BookTimeSpan> spanList=bookTimeSpanService.queryValidTimeSpans();
 			if(spanList!=null&&spanList.size()>0){
 				for(BookTimeSpan span:spanList){
 					BookTimeRepository repo=new BookTimeRepository();
@@ -100,9 +111,11 @@ public class BookRepositoryService {
 	 * @return
 	 */
 	public List<BookTimeRepository> queryRepositoryByDate(String bookDate){
-		List<BookTimeRepository> repoList=new ArrayList<>();
+		List<BookTimeRepository> repoList=null;
+		Map<String,Object> map=new HashMap<>();
+		map.put("bookDate", bookDate);
 		try{
-			repoList=bookTimeRepositoryMapper.selectByBookDate(bookDate);
+			repoList=bookTimeRepositoryMapper.queryByCond(map);
 		}catch(Exception e){
 			System.out.println("query repository by date fail,caused by "+e.getMessage());
 			e.printStackTrace();
@@ -119,13 +132,39 @@ public class BookRepositoryService {
 	 */
 	public BookTimeRepository queryRepositoryByDateAndTimeSpan(String bookDate,Integer timeSpanId){
 		BookTimeRepository repository=null;
+		Map<String,Object> map=new HashMap<>();
+		map.put("bookDate", bookDate);
+		map.put("timeSpanId", timeSpanId);
 		try{
-			repository=bookTimeRepositoryMapper.selectByBookDateAndTimeSpan(bookDate, timeSpanId);
+			if(bookTimeRepositoryMapper.queryByCond(map)!=null){
+				repository=bookTimeRepositoryMapper.queryByCond(map).get(0);
+			}
 		}catch(Exception e){
 			System.out.println("query repository by date and time span id fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return repository;
+	}
+	
+	/**
+	 * 检查指定可预约时间是否有库存
+	 * @param bookTimeId
+	 * @return
+	 */
+	public boolean checkAmount(Integer bookTimeId){
+		boolean flag=false;
+		try{
+			BookTimeRepository repo=bookTimeRepositoryMapper.selectByPrimaryKey(bookTimeId);
+			if(repo!=null){
+				if(repo.getBookamount()>0){
+					flag=true;
+				}
+			}
+		}catch(Exception e){
+			System.out.println("check book time repository amount fail,caused by "+e.getMessage());
+			e.printStackTrace();
+		}
+		return flag;
 	}
 	
 	/**

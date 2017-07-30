@@ -1,6 +1,7 @@
 package com.xyzq.kid.logic.book.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.xyzq.kid.logic.book.dao.po.Book;
 
@@ -16,6 +17,8 @@ public interface BookMapper {
     int updateByPrimaryKeySelective(Book record);
 
     int updateByPrimaryKey(Book record);
+    
+    List<Book> queryBookByCond(Map<String,Object> params);
     
     List<Book> selectAll();
 }

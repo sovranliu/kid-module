@@ -23,7 +23,7 @@ public class BookEntity {
      */
     private String bookDate;
     /**
-     * 预约时段 HH24:MI-HH24:MI
+     * 预约时段 HH24:MI
      */
     private String bookTime;
     /**
@@ -31,8 +31,7 @@ public class BookEntity {
      */
     private Integer bookTimeId;
     /**
-     * 预约状态
-     * 1：已预约未使用，2：已预约已使用，3：已撤销
+     * 预约状态，1：已预约，2：改期申请中，3：改期通过，4：改期拒绝，5：核销完成，6：撤销申请中，7：撤销通过，8：拒绝撤销
      */
     private String bookStatus;
     /**
