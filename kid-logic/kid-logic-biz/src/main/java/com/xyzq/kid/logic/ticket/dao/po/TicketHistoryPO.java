@@ -7,7 +7,7 @@ public class TicketHistoryPO {
 
     private Integer ticketid;
 
-    private Boolean action;
+    private Integer action;
 
     private Date prevalidperiod;
 
@@ -35,11 +35,11 @@ public class TicketHistoryPO {
         this.ticketid = ticketid;
     }
 
-    public Boolean getAction() {
+    public Integer getAction() {
         return action;
     }
 
-    public void setAction(Boolean action) {
+    public void setAction(Integer action) {
         this.action = action;
     }
 

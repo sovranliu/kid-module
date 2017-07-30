@@ -1,11 +1,8 @@
 package com.xyzq.kid.logic.user.bean;
 
-import com.xyzq.kid.logic.user.common.CommonTool;
-import com.xyzq.kid.logic.user.dao.DemoDAO;
+import com.xyzq.kid.CommonTool;
 import com.xyzq.kid.logic.user.dao.UserDAO;
-import com.xyzq.kid.logic.user.dao.po.DemoPO;
 import com.xyzq.kid.logic.user.dao.po.UserPO;
-import com.xyzq.kid.logic.user.entity.DemoEntity;
 import com.xyzq.kid.logic.user.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -87,15 +84,33 @@ public class UserBean {
             return null;
         }
         UserEntity entity = new UserEntity();
-        entity.id = po.getId();
-        entity.mobileno = po.getMobileno();
-        entity.openid = po.getOpenid();
-        entity.realname = po.getRealname();
-        entity.gender = po.getGender();
-        entity.subscribetime = CommonTool.DataToStringYMDHMS(po.getSubscribetime());
-        entity.deleted = po.getDeleted();
-        entity.createtime = CommonTool.DataToStringYMDHMS(po.getCreatetime());
-        entity.updatetime = CommonTool.DataToStringYMDHMS(po.getUpdatetime());
+        if(null != po.getId()) {
+            entity.id = po.getId();
+        }
+        if(null != po.getMobileno()) {
+            entity.mobileno = po.getMobileno();
+        }
+        if(null != po.getOpenid()) {
+            entity.openid = po.getOpenid();
+        }
+        if(null != po.getRealname()) {
+            entity.realname = po.getRealname();
+        }
+        if(null != po.getGender()) {
+            entity.gender = po.getGender();
+        }
+        if(null != po.getSubscribetime()) {
+            entity.subscribetime = CommonTool.DataToStringYMDHMS(po.getSubscribetime());
+        }
+        if(null != po.getDeleted()) {
+            entity.deleted = po.getDeleted();
+        }
+        if(null != po.getCreatetime()) {
+            entity.createtime = CommonTool.DataToStringYMDHMS(po.getCreatetime());
+        }
+        if(null != po.getUpdatetime()) {
+            entity.updatetime = CommonTool.DataToStringYMDHMS(po.getUpdatetime());
+        }
         return entity;
     }
 

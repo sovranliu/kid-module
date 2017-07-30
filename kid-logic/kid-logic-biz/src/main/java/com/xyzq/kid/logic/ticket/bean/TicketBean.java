@@ -1,11 +1,14 @@
 package com.xyzq.kid.logic.ticket.bean;
 
-import com.xyzq.kid.logic.user.common.CommonTool;
+import com.xyzq.kid.CommonTool;
 import com.xyzq.kid.logic.ticket.dao.TicketDAO;
 import com.xyzq.kid.logic.ticket.dao.po.TicketPO;
 import com.xyzq.kid.logic.ticket.entity.TicketEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 这是一个范例Java逻辑功能Bean
@@ -27,6 +30,42 @@ public class TicketBean {
     public TicketEntity selectByPrimaryKey(int id) {
         TicketPO ticketPO = ticketDAO.selectByPrimaryKey(id);
         return TicketPOToEntity(ticketPO);
+    }
+
+    /**
+     * 根据流水号获取个人票务信息
+     * @param serialno
+     * @return
+     */
+    public TicketEntity getTicketsInfoBySerialno(String serialno ){
+        TicketPO ticketPO = ticketDAO.getTicketsInfoBySerialno(serialno);
+        return TicketPOToEntity(ticketPO);
+    }
+
+    public List<TicketEntity> getTicketsInfoByOwnerMobileNo(String mobileNo) {
+        List<TicketEntity> ticketEntityList = new ArrayList<>();
+        List<TicketPO> ticketPOList = ticketDAO.getTicketsInfoByOwnerMobileNo(mobileNo);
+        if(null != ticketPOList) {
+            for (int i = 0; i < ticketPOList.size(); i++) {
+                if(ticketPOList.get(i).getDeleted() == 0) {
+                    ticketEntityList.add(TicketPOToEntity(ticketPOList.get(i)));
+                }
+            }
+        }
+        return ticketEntityList;
+    }
+
+    public List<TicketEntity> getTicketsInfoByPayerOpenID(String openID) {
+        List<TicketEntity> ticketEntityList = new ArrayList<>();
+        List<TicketPO> ticketPOList = ticketDAO.getTicketsInfoByPayerOpenID(openID);
+        if(null != ticketPOList) {
+            for (int i = 0; i < ticketPOList.size(); i++) {
+                if(ticketPOList.get(i).getDeleted() == 0) {
+                    ticketEntityList.add(TicketPOToEntity(ticketPOList.get(i)));
+                }
+            }
+        }
+        return ticketEntityList;
     }
 
     /**
@@ -84,19 +123,45 @@ public class TicketBean {
             return null;
         }
         TicketEntity entity = new TicketEntity();
-        entity.id = po.getId();
-        entity.serialno = po.getSerialno();
-        entity.type = po.getType();
-        entity.ownermobileno = po.getOwnermobileno();
-        entity.payeropenid = po.getPayeropenid();
-        entity.price = po.getPrice();
-        entity.expiredate = CommonTool.DataToStringYMD(po.getExpiredate());
-        entity.insurance = po.getInsurance();
-        entity.orderno = po.getOrderno();
-        entity.status = po.getStatus();
-        entity.deleted = po.getDeleted();
-        entity.createtime = CommonTool.DataToStringYMDHMS(po.getCreatetime());
-        entity.updatetime = CommonTool.DataToStringYMDHMS(po.getUpdatetime());
+        if(null != po.getId()) {
+            entity.id = po.getId();
+        }
+        if(null != po.getSerialno()) {
+            entity.serialno = po.getSerialno();
+        }
+        if(null != po.getType()) {
+            entity.type = po.getType();
+        }
+        if(null != po.getOwnermobileno()) {
+            entity.ownermobileno = po.getOwnermobileno();
+        }
+        if(null != po.getPayeropenid()) {
+            entity.payeropenid = po.getPayeropenid();
+        }
+        if(null != po.getPrice()) {
+            entity.price = po.getPrice();
+        }
+        if(null != po.getExpiredate()) {
+            entity.expiredate = CommonTool.DataToStringYMD(po.getExpiredate());
+        }
+        if(null != po.getInsurance()) {
+            entity.insurance = po.getInsurance();
+        }
+        if(null != po.getOrderno()) {
+            entity.orderno = po.getOrderno();
+        }
+        if(null != po.getStatus()) {
+            entity.status = po.getStatus();
+        }
+        if(null != po.getDeleted()) {
+            entity.deleted = po.getDeleted();
+        }
+        if(null != po.getCreatetime()) {
+            entity.createtime = CommonTool.DataToStringYMDHMS(po.getCreatetime());
+        }
+        if(null != po.getUpdatetime()) {
+            entity.updatetime = CommonTool.DataToStringYMDHMS(po.getUpdatetime());
+        }
         return entity;
     }
 

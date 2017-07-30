@@ -7,6 +7,12 @@ import java.util.Date;
  * 范例实体
  */
 public class TicketHistoryEntity {
+
+    public final static int TICKET_ACTION_NEW = 1;//新建
+    public final static int TICKET_ACTION_HANDSEL = 2;//赠送
+    public final static int TICKET_ACTION_USE = 3;//使用
+    public final static int TICKET_ACTION_EXTEND = 4;//有效期延长
+    public final static int TICKET_ACTION_EXPPIRED = 5;//过期
     /**
      * 飞行票历史操作主键
      */
@@ -18,7 +24,7 @@ public class TicketHistoryEntity {
     /**
      * 1-新建，2-赠送，3-使用，4-有效期延长
      */
-    public Boolean action;
+    public Integer action;
     /**
      * Action为4时，记录下上次截止日
      */
