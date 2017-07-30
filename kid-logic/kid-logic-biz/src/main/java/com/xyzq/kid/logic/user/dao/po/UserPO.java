@@ -11,7 +11,7 @@ public class UserPO {
 
     private String realname;
 
-    private Boolean gender;
+    private Integer gender;
 
     private Date subscribetime;
 
@@ -53,11 +53,11 @@ public class UserPO {
         this.realname = realname == null ? null : realname.trim();
     }
 
-    public Boolean getGender() {
+    public Integer getGender() {
         return gender;
     }
 
-    public void setGender(Boolean gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 

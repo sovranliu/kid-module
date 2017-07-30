@@ -5,12 +5,16 @@ import com.xyzq.kid.logic.ticket.bean.TicketBean;
 import com.xyzq.kid.logic.ticket.bean.TicketHistoryBean;
 import com.xyzq.kid.logic.ticket.entity.TicketEntity;
 import com.xyzq.kid.logic.ticket.entity.TicketHistoryEntity;
+import com.xyzq.kid.logic.user.entity.UserEntity;
+import com.xyzq.kid.logic.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.security.krb5.internal.Ticket;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -28,6 +32,9 @@ public class TicketService {
      */
     @Autowired
     private TicketHistoryBean ticketHistoryBean;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 个人购票
@@ -159,11 +166,34 @@ public class TicketService {
      * @return
      */
     public List<TicketEntity> getTicketsInfoByOwnerMobileNo(String mobileNo) {
+        List<TicketEntity> ticketEntityList = ticketBean.getTicketsInfoByOwnerMobileNo(mobileNo);
+        List<TicketHistoryEntity> ticketHistoryEntityList = ticketHistoryBean.selectHandselByPreMobile(mobileNo);
+        for (int i = 0; i < ticketHistoryEntityList.size(); i++) {
+            //如果用户在user表中存在，代表赠送生效
+            //如果用户在user表中不存在，且已超过24小时，赠送失效
+            TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketHistoryEntityList.get(i).ticketid);
+            UserEntity userEntity = userService.selectByMolieNo(ticketEntity.ownermobileno);
+            if(null != userEntity && userEntity.mobileno.length() >0 ) {
+                handselEffectiveTicketHistory(ticketHistoryEntityList.get(i).id);
+            } else {
+                Date handseldate = CommonTool.StringToDataYMDHMS(ticketHistoryEntityList.get(i).createtime);
+                Date nowDate = new Date();
+                Calendar calendar = new GregorianCalendar();
+                calendar.setTime(handseldate);
+                calendar.add(calendar.DATE,1);
+                handseldate = calendar.getTime();
+                if(handseldate.before(nowDate)) {
+                    handselExpiredTicketHistory(ticketHistoryEntityList.get(i).id);
+                }
+            }
+
+        }
+
         return ticketBean.getTicketsInfoByOwnerMobileNo(mobileNo);
     }
 
     /**
-     * 根据手机号获取飞行票信息
+     * 根据OpenID获取飞行票信息
      * @param openID
      * @return
      */
@@ -174,14 +204,6 @@ public class TicketService {
 
     /**
      * 获取飞行票操作历史
-     */
-
-    /**
-     * 处理用户增票--自己是增票者
-     */
-
-    /**
-     * 处理用户增票--自己是被增者
      */
 
     /**
@@ -203,7 +225,7 @@ public class TicketService {
         ticketEntity.serialno = getSerialno();
         ticketEntity.status = TicketEntity.TICKET_STATUS_NEW;
         //TODO 未正确返回tickedId
-        int ticketId = ticketBean.insert(ticketEntity);
+        int ticketId = ticketBean.insertSelective(ticketEntity);
         newTicketHistory(ticketId);
 
         return;
@@ -224,6 +246,29 @@ public class TicketService {
      */
     private void handselTicketHistory(int ticketId, String preMobileNo) {
         doInsertTicketHistory(ticketId, TicketHistoryEntity.TICKET_ACTION_HANDSEL, null, preMobileNo);
+    }
+
+    /**
+     * 飞行票赠送过期
+     * @param id
+     */
+    private void handselExpiredTicketHistory(int id) {
+        TicketHistoryEntity ticketHistoryEntityUpdate = new TicketHistoryEntity();
+        ticketHistoryEntityUpdate.id = id;
+        ticketHistoryEntityUpdate.action = TicketHistoryEntity.TICKET_ACTION_HANDSEL_EXPPIRED;
+        ticketHistoryBean.updateByPrimaryKeySelective(ticketHistoryEntityUpdate);
+    }
+
+    /**
+     * 飞行票赠生效
+     * @param id
+     */
+    private void handselEffectiveTicketHistory(int id) {
+        TicketHistoryEntity ticketHistoryEntityUpdate = new TicketHistoryEntity();
+        ticketHistoryEntityUpdate.id = id;
+        ticketHistoryEntityUpdate.action = TicketHistoryEntity.TICKET_ACTION_HANDSEL_EFFECTIVE;
+        ticketHistoryBean.updateByPrimaryKeySelective(ticketHistoryEntityUpdate);
+
     }
 
     /**

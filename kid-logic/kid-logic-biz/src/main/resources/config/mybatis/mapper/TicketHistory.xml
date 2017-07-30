@@ -17,10 +17,25 @@
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from LGC_TicketHistory
     where ID = #{id,jdbcType=INTEGER} and Deleted = 0
+  </select>
+
+  <select id="selectByTicketId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_TicketHistory
+    where TicketID = #{ticketid,jdbcType=INTEGER} and Deleted = 0
+  </select>
+
+
+  <select id="selectByPreMobile" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_TicketHistory
+    where PreMobile = #{premobile,jdbcType=VARCHAR} and Deleted = 0
   </select>
 
   <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">

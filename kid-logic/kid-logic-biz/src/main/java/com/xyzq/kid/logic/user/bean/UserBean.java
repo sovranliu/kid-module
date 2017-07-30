@@ -29,6 +29,11 @@ public class UserBean {
         return UserPOToEntity(userPO);
     }
 
+    public UserEntity selectByMolieNo(String mobileNo) {
+        UserPO userPO = userDAO.selectByMolieNo(mobileNo);
+        return UserPOToEntity(userPO);
+    }
+
     /**
      * 根据主键删除用户
      * @param id

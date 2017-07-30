@@ -11,6 +11,8 @@ public interface UserDAO {
 
     UserPO selectByPrimaryKey(Integer id);
 
+    UserPO selectByMolieNo(String mobileno);
+
     int updateByPrimaryKeySelective(UserPO record);
 
     int updateByPrimaryKey(UserPO record);
