@@ -2,6 +2,8 @@ package com.xyzq.kid.logic.ticket.dao;
 
 import com.xyzq.kid.logic.ticket.dao.po.TicketHistoryPO;
 
+import java.util.List;
+
 public interface TicketHistoryDAO {
     int deleteByPrimaryKey(Integer id);
 
@@ -10,6 +12,10 @@ public interface TicketHistoryDAO {
     int insertSelective(TicketHistoryPO record);
 
     TicketHistoryPO selectByPrimaryKey(Integer id);
+
+    List<TicketHistoryPO> selectByTicketId(Integer ticketid);
+
+    List<TicketHistoryPO> selectByPreMobile(String premobile);
 
     int updateByPrimaryKeySelective(TicketHistoryPO record);
 

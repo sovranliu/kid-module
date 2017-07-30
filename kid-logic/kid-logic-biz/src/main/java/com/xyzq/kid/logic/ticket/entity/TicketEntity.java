@@ -10,7 +10,7 @@ import java.util.Date;
 public class TicketEntity {
 
     public final static int TICKET_TYPE_SINGLE = 1;//个人票
-    public final static int TICKET_TYPE_GROUP = 2;//团体票
+    public final static int TICKET_TYPE_GROUP = 0;//团体票
 
     public final static int TICKET_STATUS_NEW = 0;//未使用
     public final static int TICKET_STATUS_USED = 1;//已使用

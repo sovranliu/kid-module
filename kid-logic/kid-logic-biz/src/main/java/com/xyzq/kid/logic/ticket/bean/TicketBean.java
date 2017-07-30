@@ -4,6 +4,7 @@ import com.xyzq.kid.CommonTool;
 import com.xyzq.kid.logic.ticket.dao.TicketDAO;
 import com.xyzq.kid.logic.ticket.dao.po.TicketPO;
 import com.xyzq.kid.logic.ticket.entity.TicketEntity;
+import com.xyzq.kid.logic.ticket.entity.TicketHistoryEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,7 +48,7 @@ public class TicketBean {
         List<TicketPO> ticketPOList = ticketDAO.getTicketsInfoByOwnerMobileNo(mobileNo);
         if(null != ticketPOList) {
             for (int i = 0; i < ticketPOList.size(); i++) {
-                if(ticketPOList.get(i).getDeleted() == 0) {
+                if(ticketPOList.get(i).getDeleted() == CommonTool.STATUS_NORMAL) {
                     ticketEntityList.add(TicketPOToEntity(ticketPOList.get(i)));
                 }
             }
@@ -60,7 +61,7 @@ public class TicketBean {
         List<TicketPO> ticketPOList = ticketDAO.getTicketsInfoByPayerOpenID(openID);
         if(null != ticketPOList) {
             for (int i = 0; i < ticketPOList.size(); i++) {
-                if(ticketPOList.get(i).getDeleted() == 0) {
+                if(ticketPOList.get(i).getDeleted() == CommonTool.STATUS_NORMAL) {
                     ticketEntityList.add(TicketPOToEntity(ticketPOList.get(i)));
                 }
             }

@@ -7,6 +7,9 @@ import com.xyzq.kid.logic.ticket.entity.TicketHistoryEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 这是一个范例Java逻辑功能Bean
  */
@@ -27,6 +30,51 @@ public class TicketHistoryBean {
     public TicketHistoryEntity selectByPrimaryKey(int id) {
         TicketHistoryPO ticketHistoryPO = ticketHistoryDAO.selectByPrimaryKey(id);
         return TicketHistoryPOToEntity(ticketHistoryPO);
+    }
+
+    public List<TicketHistoryEntity> selectByTicketId(int ticketId) {
+        List<TicketHistoryEntity> ticketHistoryEntities = new ArrayList<>();
+        List<TicketHistoryPO> ticketHistoryPOList = ticketHistoryDAO.selectByTicketId(ticketId);
+        if(null != ticketHistoryPOList) {
+            for (int i = 0; i < ticketHistoryPOList.size(); i++) {
+                if(ticketHistoryPOList.get(i).getDeleted() == CommonTool.STATUS_NORMAL) {
+                    ticketHistoryEntities.add(TicketHistoryPOToEntity(ticketHistoryPOList.get(i)));
+                }
+            }
+        }
+        return ticketHistoryEntities;
+    }
+
+    public List<TicketHistoryEntity> selectByPreMobile(String mobileNo) {
+        List<TicketHistoryEntity> ticketHistoryEntities = new ArrayList<>();
+        List<TicketHistoryPO> ticketHistoryPOList = ticketHistoryDAO.selectByPreMobile(mobileNo);
+        if(null != ticketHistoryPOList) {
+            for (int i = 0; i < ticketHistoryPOList.size(); i++) {
+                if(ticketHistoryPOList.get(i).getDeleted() == CommonTool.STATUS_NORMAL) {
+                    ticketHistoryEntities.add(TicketHistoryPOToEntity(ticketHistoryPOList.get(i)));
+                }
+            }
+        }
+        return ticketHistoryEntities;
+    }
+
+    /**
+     * 获取增票记录
+     * @param mobileNo
+     * @return
+     */
+    public List<TicketHistoryEntity> selectHandselByPreMobile(String mobileNo) {
+        List<TicketHistoryEntity> ticketHistoryEntities = new ArrayList<>();
+        List<TicketHistoryPO> ticketHistoryPOList = ticketHistoryDAO.selectByPreMobile(mobileNo);
+        if(null != ticketHistoryPOList) {
+            for (int i = 0; i < ticketHistoryPOList.size(); i++) {
+                if(ticketHistoryPOList.get(i).getDeleted() == CommonTool.STATUS_NORMAL  &&
+                        ticketHistoryPOList.get(i).getAction() == TicketHistoryEntity.TICKET_ACTION_HANDSEL) {
+                    ticketHistoryEntities.add(TicketHistoryPOToEntity(ticketHistoryPOList.get(i)));
+                }
+            }
+        }
+        return ticketHistoryEntities;
     }
 
     /**

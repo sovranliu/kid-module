@@ -17,10 +17,17 @@
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from LGC_User
     where ID = #{id,jdbcType=INTEGER} and Deleted = 0
+  </select>
+
+  <select id="selectByMolieNo" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_User
+    where MobileNo = #{mobileno,jdbcType=VARCHAR} and Deleted = 0
   </select>
 
   <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">

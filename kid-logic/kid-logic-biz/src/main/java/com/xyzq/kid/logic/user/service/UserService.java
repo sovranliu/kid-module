@@ -28,6 +28,14 @@ public class UserService {
         return userBean.selectByPrimaryKey(id);
     }
 
+    public UserEntity selectByMolieNo(String mobileNo) {
+        return userBean.selectByMolieNo(mobileNo);
+    }
+
+    public int insertSelective(UserEntity entity) {
+        return userBean.insertSelective(entity);
+    }
+
     /**
      * 用户注册
      */

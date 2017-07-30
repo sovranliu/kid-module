@@ -1,6 +1,8 @@
 package com.xyzq.kid.logic.config.service;
 
 import com.xyzq.kid.logic.config.bean.ConfigBean;
+import com.xyzq.kid.logic.config.common.ConfigCommon;
+import com.xyzq.kid.logic.config.dao.po.ConfigPO;
 import com.xyzq.kid.logic.config.entity.ConfigEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,7 @@ public class ConfigService {
      */
     public Map getPriceInfo() {
         Map result = new HashMap();
-        String[] nameArr = {"single", "group", "refundInsurance"};
+        String[] nameArr = {ConfigCommon.PRICE_SINGLE, ConfigCommon.PRICE_GROUP, ConfigCommon.PRICE_REFUNDINSURANCE};
         List<ConfigEntity> configEntityList = configBean.selectByNameArr(nameArr);
         if(null == configEntityList) {
             return null;
@@ -37,6 +39,11 @@ public class ConfigService {
             result.put(configEntityList.get(i).name, Integer.parseInt(configEntityList.get(i).content));
         }
         return result;
+    }
+
+    public String selectContentByName(String name) {
+        ConfigEntity configEntity = configBean.selectByName(name);
+        return configEntity.content;
     }
 
 

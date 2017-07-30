@@ -24,7 +24,7 @@ public class UserEntity {
     /**
      * 性别，0位置，1男，2女
      */
-    public Boolean gender;
+    public int gender;
     /**
      * 关注时间，null表示未关注
      */
