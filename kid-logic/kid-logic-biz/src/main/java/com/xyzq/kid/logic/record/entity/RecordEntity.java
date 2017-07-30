@@ -8,42 +8,45 @@ import java.sql.Timestamp;
  * Created by Brann on 17/7/27.
  */
 public class RecordEntity {
+
+    public final static String PURCHASED = "1";//已购买
+    public final static String UNPURCHASED = "0";//未购买
     /**
      * 主键ID，自增长的流水号
      */
-    private Integer id;
+    public Integer id;
     /**
      * 票券的id
      */
-    private Integer ticketID;
+    public Integer ticketID;
     /**
      * 飞行日志文件名称
      */
-    private String path;
+    public String path;
     /**
      * 是否被购买，0:未购买，1:已购买
      */
-    private String purchased;
+    public String purchased;
     /**
      * 记录是否被软删，1:删除，0:未删除
      */
-    private String deleted;
+    public String deleted;
     /**
      * 记录创建人的id
      */
-    private String creator;
+    public String creator;
     /**
      * 创建时间
      */
-    private Timestamp createTime;
+    public Timestamp createTime;
     /**
      * 最后一次更新人的id
      */
-    private String updator;
+    public String updator;
     /**
      * 更新时间
      */
-    private Timestamp updateTime;
+    public Timestamp updateTime;
 
 
     public RecordEntity(RecordPO recordPO){
