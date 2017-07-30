@@ -3,7 +3,7 @@ package com.xyzq.kid.common.wechat.pay.protocol;
 import com.xyzq.kid.common.wechat.pay.annotation.ProtocolField;
 
 /**
- * 订单查询请求结构体
+ * 订单查询反馈结构体
  */
 public class QueryOrderResponse extends WechatResponse {
     /**
@@ -25,7 +25,7 @@ public class QueryOrderResponse extends WechatResponse {
      * 微信用户开放ID
      */
     @ProtocolField("openid")
-    public String openId = null;
+    public String openId;
     /**
      * 微信支付订单号
      */

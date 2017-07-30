@@ -20,30 +20,30 @@ public class UnifiedOrderResponse extends WechatResponse {
      * 设备号
      */
     @ProtocolField("device_info")
-    public String deviceInfo = null;
+    public String deviceInfo;
     /**
      * 随机字符串
      */
     @ProtocolField("nonce_str")
-    public String nonceString = null;
+    public String nonceString;
     /**
      * 签名
      */
     @ProtocolField("sign")
-    public String sign = null;
+    public String sign;
     /**
      * 交易类型
      */
     @ProtocolField("trade_type")
-    public String tradeType = null;
+    public String tradeType;
     /**
      * 预支付交易会话标识
      */
     @ProtocolField("prepay_id")
-    public String prepayId = null;
+    public String prepayId;
     /**
      * 二维码链接
      */
     @ProtocolField("code_url")
-    public String codeUrl = null;
+    public String codeUrl;
 }

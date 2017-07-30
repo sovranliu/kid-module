@@ -68,6 +68,7 @@ public class RefundRequest extends WechatRequest {
     @ProtocolField("refund_desc")
     public String refundDescription;
 
+
     /**
      * 构建退款请求结构体
      *

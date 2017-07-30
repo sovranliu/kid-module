@@ -20,6 +20,10 @@ public class WechatPayHelper {
      */
     public final static String URL_ORDERQUERY = "https://api.mch.weixin.qq.com/pay/orderquery";
     /**
+     * 关闭订单
+     */
+    public final static String URL_CLOSEORDER = "https://api.mch.weixin.qq.com/pay/closeorder";
+    /**
      * 退款
      */
     public final static String URL_REFUND = "https://api.mch.weixin.qq.com/secapi/pay/refund";
@@ -65,11 +69,33 @@ public class WechatPayHelper {
         }
         XMLNode xml = XMLNode.convert(response);
         if(null == xml) {
-            throw new IOException("parse data failed in queryOrder:" + response);
+            throw new IOException("parse xml failed in queryOrder:" + response);
         }
         QueryOrderResponse result = new QueryOrderResponse();
         if(!result.parse(xml)) {
-            return null;
+            throw new IOException("parse structure failed in queryOrder:" + response);
+        }
+        return result;
+    }
+
+    /**
+     * 关闭订单
+     *
+     * @param request 关闭订单参数
+     * @return 订单关闭结果
+     */
+    public static CloseOrderResponse closeOrder(CloseOrderRequest request) throws IOException {
+        String response = XMLHttpsUtil.post(URL_CLOSEORDER, request.toString());
+        if(Text.isBlank(response)) {
+            throw new IOException("receive empty data in closeOrder");
+        }
+        XMLNode xml = XMLNode.convert(response);
+        if(null == xml) {
+            throw new IOException("parse xml failed in closeOrder:" + response);
+        }
+        CloseOrderResponse result = new CloseOrderResponse();
+        if(!result.parse(xml)) {
+            throw new IOException("parse structure failed in closeOrder:" + response);
         }
         return result;
     }
@@ -87,11 +113,54 @@ public class WechatPayHelper {
         }
         XMLNode xml = XMLNode.convert(response);
         if(null == xml) {
-            throw new IOException("parse data failed in refund:" + response);
+            throw new IOException("parse xml failed in refund:" + response);
         }
         RefundResponse result = new RefundResponse();
         if(!result.parse(xml)) {
-            return null;
+            throw new IOException("parse structure failed in refund:" + response);
+        }
+        return result;
+    }
+
+    /**
+     * 退款查询
+     *
+     * @param request 退款查询参数
+     * @return 退款查询结果
+     */
+    public static QueryRefundResponse queryRefund(QueryRefundRequest request) throws IOException {
+        String response = XMLHttpsUtil.post(URL_ORDERQUERY, request.toString());
+        if(Text.isBlank(response)) {
+            throw new IOException("receive empty data in queryRefund");
+        }
+        XMLNode xml = XMLNode.convert(response);
+        if(null == xml) {
+            throw new IOException("parse xml failed in queryRefund:" + response);
+        }
+        QueryRefundResponse result = new QueryRefundResponse();
+        if(!result.parse(xml)) {
+            throw new IOException("parse structure failed in queryRefund:" + response);
+        }
+        return result;
+    }
+
+    /**
+     * 处理支付回调
+     *
+     * @param protocol 回调内容
+     * @return 支付回调对象
+     */
+    public static PayNotify onPayNotify(String protocol) throws IOException {
+        if(Text.isBlank(protocol)) {
+            throw new IOException("receive empty data in pay notify");
+        }
+        XMLNode xml = XMLNode.convert(protocol);
+        if(null == xml) {
+            throw new IOException("parse xml failed in pay notify:" + protocol);
+        }
+        PayNotify result = new PayNotify();
+        if(!result.parse(xml)) {
+            throw new IOException("parse structure failed in pay notify:" + protocol);
         }
         return result;
     }
