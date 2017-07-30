@@ -22,7 +22,7 @@ public class QueryOrderRequest extends WechatRequest {
      * 订单号
      */
     @ProtocolField("out_trade_no")
-    public String orderNo;
+    public String tradeNo;
     /**
      * 微信支付订单号
      */
@@ -47,15 +47,15 @@ public class QueryOrderRequest extends WechatRequest {
     /**
      * 构建订单查询请求结构体
      *
-     * @param orderNo 订单号
+     * @param tradeNo 订单号
      * @param transactionId 微信支付订单号
      * @return 订单查询请求结构体
      */
-    public static QueryOrderRequest build(String orderNo, String transactionId) {
+    public static QueryOrderRequest build(String tradeNo, String transactionId) {
         QueryOrderRequest result = new QueryOrderRequest();
         result.appId = WechatConfig.appId;
         result.merchantId = WechatConfig.merchantId;
-        result.orderNo = orderNo;
+        result.tradeNo = tradeNo;
         result.transactionId = transactionId;
         result.nonceString = Serial.makeRandomString(32).toUpperCase();
         result.signType = "MD5";
