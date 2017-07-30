@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias alias="OrderPO" type="com.xyzq.kid.finance.dao.po.OrderPO" />
+        <typeAlias alias="ReceiptPO" type="com.xyzq.kid.finance.dao.po.ReceiptPO" />
+        <typeAlias alias="RefundPO" type="com.xyzq.kid.finance.dao.po.RefundPO" />
+    </typeAliases>
+    <mappers>
+        <mapper resource="config/mybatis/mapper/Order.xml" />
+        <mapper resource="config/mybatis/mapper/Receipt.xml" />
+        <mapper resource="config/mybatis/mapper/Refund.xml" />
+    </mappers>
+</configuration>
