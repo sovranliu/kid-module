@@ -150,6 +150,6 @@
   		and BookTimeSpanId = #{timeSpanId} 
   	</if>
   	 and DeleteFlag = '0'
-  	 order by LstUpdateTime desc
+  	 order by BookTimeSpanId asc, LastUpdateTime desc
   </select>
 </mapper>

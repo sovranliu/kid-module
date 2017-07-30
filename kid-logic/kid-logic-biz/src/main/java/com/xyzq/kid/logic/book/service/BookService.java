@@ -105,6 +105,19 @@ public class BookService {
 		return bookRec;
 	}
 	
+	public List<Book> queryBookRecByUserId(Integer userId){
+		List<Book> bookList=null;
+		try{
+			Map<String,Object> map=new HashMap<>();
+			map.put("usdrId", userId);
+			bookList=bookMapper.queryBookByCond(map);
+		}catch(Exception e){
+			System.out.println("query book record by user id fail ,caused by "+e.getMessage());
+			e.printStackTrace();
+		}
+		return bookList;
+	}
+	
 	/**
 	 * 创建预约单
 	 * @param ticketId

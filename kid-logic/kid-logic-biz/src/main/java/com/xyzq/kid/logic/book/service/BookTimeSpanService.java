@@ -1,5 +1,6 @@
 package com.xyzq.kid.logic.book.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import com.xyzq.kid.logic.book.dao.po.BookTimeSpan;
  */
 @Service("bookTimeSpanService")
 public class BookTimeSpanService {
+	
 	@Autowired
 	BookTimeSpanMapper bookTimeSpanMapper;
 	
@@ -33,31 +35,29 @@ public class BookTimeSpanService {
 		boolean flag=false;
 		try{
 			if(60%intervl==0){
+				List<String> timeList=new ArrayList<String>();
 				for(int i=startHour;i<endHour;i++){
 					int spans=60/intervl;
 					for(int j=0;j<spans;j++){
-						String bookTime=null;
-						if(j<10){
-							if(j*intervl==0){
-								bookTime="0"+String.valueOf(i)+":"+"00";
-							}else{
-								bookTime="0"+String.valueOf(i)+":"+String.valueOf(j*intervl);
-							}
+					String bookTime=null;
+						if(j*intervl==0){
+							bookTime=String.valueOf(i)+":"+"00";
 						}else{
-							if(j*intervl==0){
-								bookTime=String.valueOf(i)+":"+"00";
-							}else{
-								bookTime=String.valueOf(i)+":"+String.valueOf(j*intervl);
-							}
+							bookTime=String.valueOf(i)+":"+String.valueOf(j*intervl);
 						}
-						
-						BookTimeSpan timeSpan=new BookTimeSpan();
-						timeSpan.setTimespan(bookTime);;
-						timeSpan.setDeleteflag("0");
-						timeSpan.setCreatetime(new Date());
-						timeSpan.setLastupdatetime(new Date());
-						bookTimeSpanMapper.insertSelective(timeSpan);
+					timeList.add(bookTime);
 					}
+				}
+				timeList.add(String.valueOf(endHour)+":00");
+				System.out.println(timeList.toString());
+				for(int i=0;i<timeList.size()-1;i++){
+					String span=timeList.get(i)+"-"+timeList.get(i+1);
+					BookTimeSpan timeSpan=new BookTimeSpan();
+					timeSpan.setTimespan(span);;
+					timeSpan.setDeleteflag("0");
+					timeSpan.setCreatetime(new Date());
+					timeSpan.setLastupdatetime(new Date());
+					bookTimeSpanMapper.insertSelective(timeSpan);
 				}
 				flag=true;
 			}
@@ -124,5 +124,35 @@ public class BookTimeSpanService {
 			e.printStackTrace();
 		}
 		return flag;
+	}
+	
+	public BookTimeSpan queryByPrimaryKey(Integer id){
+		BookTimeSpan span=null;
+		try{
+			span=bookTimeSpanMapper.selectByPrimaryKey(id);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return span;
+	}
+	
+	/**
+	 * 根据可预约时间段查询
+	 * @param timeSpan
+	 * @return
+	 */
+	public BookTimeSpan queryByTimeSpan(String timeSpan){
+		BookTimeSpan span=null;
+		Map<String,Object> map=new HashMap<>();
+		map.put("timeSpan", timeSpan);
+		try{
+			List<BookTimeSpan> spanList=bookTimeSpanMapper.queryByCond(map);
+			if(spanList!=null&&spanList.size()>0)
+			span=spanList.get(0);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return span;
+				
 	}
 }

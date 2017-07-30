@@ -195,6 +195,9 @@
    <if test="ticketId != null">
    	TicketId = #{ticketId}
    </if>
+   <if test="userId != null">
+   UserId = #{userId}
+   </if>
     and DeleteFlag = '0'
     order by LastUpdateTime desc
   </select>

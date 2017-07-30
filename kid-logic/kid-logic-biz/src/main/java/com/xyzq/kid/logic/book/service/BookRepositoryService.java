@@ -105,7 +105,7 @@ public class BookRepositoryService {
 	}
 	
 	/**
-	 * 根据日期和票类型，查询可预约时间
+	 * 根据日期，查询可预约时间
 	 * @param bookDate
 	 * @param ticketType
 	 * @return
@@ -124,7 +124,7 @@ public class BookRepositoryService {
 	}
 	
 	/**
-	 * 根据预约日期、时间段ID、票类型，查询库存情况
+	 * 根据预约日期、时间段ID，查询库存情况
 	 * @param bookDate
 	 * @param timeSpanId
 	 * @param ticketType
@@ -144,6 +144,17 @@ public class BookRepositoryService {
 			e.printStackTrace();
 		}
 		return repository;
+	}
+	
+	public BookTimeRepository queryByPrimaryKey(Integer id){
+		BookTimeRepository repo=null;
+		try{
+			repo=bookTimeRepositoryMapper.selectByPrimaryKey(id);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return repo;
+				
 	}
 	
 	/**
