@@ -28,7 +28,7 @@ public class CustomerAction implements IAction {
      * 缓存中内容为：mobileNo,openId
      */
     @Resource(name = "cache")
-    private ITimeLimitedCache<String, String> cache;
+    protected ITimeLimitedCache<String, String> cache;
 
 
     /**
