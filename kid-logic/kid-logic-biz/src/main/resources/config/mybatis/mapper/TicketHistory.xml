@@ -44,7 +44,7 @@
     where ID = #{id,jdbcType=INTEGER}
   </update>
 
-  <insert id="insert" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketHistoryPO">
+  <insert id="insert" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketHistoryPO" useGeneratedKeys="true" keyProperty="id">
     insert into LGC_TicketHistory (ID, TicketID, Action, 
       PreValidPeriod, PreMobile, Deleted, 
       CreateTime, UpdateTime)
@@ -53,7 +53,7 @@
       #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP})
   </insert>
 
-  <insert id="insertSelective" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketHistoryPO">
+  <insert id="insertSelective" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketHistoryPO" useGeneratedKeys="true" keyProperty="id">
     insert into LGC_TicketHistory
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

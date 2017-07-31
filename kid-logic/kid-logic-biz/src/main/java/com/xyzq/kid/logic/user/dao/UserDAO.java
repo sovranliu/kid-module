@@ -13,6 +13,8 @@ public interface UserDAO {
 
     UserPO selectByMolieNo(String mobileno);
 
+    int updateByMobileNo(UserPO record);
+
     int updateByPrimaryKeySelective(UserPO record);
 
     int updateByPrimaryKey(UserPO record);

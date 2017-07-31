@@ -175,7 +175,7 @@ public class TicketService {
      */
     public List<TicketEntity> getTicketsInfoByOwnerMobileNo(String mobileNo) {
         logger.info("TicketService.getTicketsInfoByOwnerMobileNo[in]-mobileNo:" + mobileNo);
-        List<TicketEntity> ticketEntityList = ticketBean.getTicketsInfoByOwnerMobileNo(mobileNo);
+
         List<TicketHistoryEntity> ticketHistoryEntityList = ticketHistoryBean.selectHandselByPreMobile(mobileNo);
         for (int i = 0; i < ticketHistoryEntityList.size(); i++) {
             //如果用户在user表中存在，代表赠送生效

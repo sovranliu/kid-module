@@ -28,7 +28,7 @@ public class TicketServiceTest {
     @Test
     public void buySingleTickets() throws Exception {
         TicketEntity ticketEntity = new TicketEntity();
-        ticketEntity.ownermobileno = "1388888888";
+        ticketEntity.ownermobileno = "13999999999";
         ticketEntity.payeropenid = "myjtest_single";
         ticketEntity.price = new BigDecimal(560);
         ticketEntity.expiredate = "2017-09-30";
@@ -72,7 +72,7 @@ public class TicketServiceTest {
 
     @Test
     public void getTicketsInfoBySerialno() throws Exception {
-        TicketEntity ticketEntity = ticketService.getTicketsInfoBySerialno("20170730115501783");
+        TicketEntity ticketEntity = ticketService.getTicketsInfoBySerialno("20170730110949896");
         Assert.assertSame("fail!", ticketEntity.id, 40);
     }
 
@@ -83,10 +83,12 @@ public class TicketServiceTest {
 
     @Test
     public void getTicketsInfoByPayerOpenID() throws Exception {
+
     }
 
     @Test
     public void getTicketHistoryBuTickedId() throws Exception {
+
     }
 
 }

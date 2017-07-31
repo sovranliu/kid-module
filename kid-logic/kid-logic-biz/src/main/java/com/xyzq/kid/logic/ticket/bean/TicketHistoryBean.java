@@ -92,7 +92,9 @@ public class TicketHistoryBean {
      * @return
      */
     public int insert(TicketHistoryEntity entity){
-        return ticketHistoryDAO.insert(TicketHistoryEntityToPO(entity));
+        TicketHistoryPO ticketHistoryPO = TicketHistoryEntityToPO(entity);
+        ticketHistoryDAO.insert(ticketHistoryPO);
+        return ticketHistoryPO.getId();
     }
 
     /**
@@ -101,7 +103,9 @@ public class TicketHistoryBean {
      * @return
      */
     public int insertSelective(TicketHistoryEntity entity){
-        return ticketHistoryDAO.insertSelective(TicketHistoryEntityToPO(entity));
+        TicketHistoryPO ticketHistoryPO = TicketHistoryEntityToPO(entity);
+        ticketHistoryDAO.insertSelective(ticketHistoryPO);
+        return ticketHistoryPO.getId();
     }
 
     /**

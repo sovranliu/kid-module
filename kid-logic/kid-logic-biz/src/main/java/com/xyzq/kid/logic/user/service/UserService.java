@@ -28,25 +28,32 @@ public class UserService {
         return userBean.selectByPrimaryKey(id);
     }
 
+    /**
+     * 根据手机号获取用户信息
+     * @param mobileNo
+     * @return
+     */
     public UserEntity selectByMolieNo(String mobileNo) {
         return userBean.selectByMolieNo(mobileNo);
     }
 
+    /**
+     * 用户注册
+     * @param entity
+     * @return
+     */
     public int insertSelective(UserEntity entity) {
         return userBean.insertSelective(entity);
     }
 
     /**
-     * 用户注册
+     * 用户更新
+     * @param entity
+     * @return
      */
-
-    /**
-     * 根据手机号获取用户信息
-     */
-
-    /**
-     * 根据openId获取用户信息
-     */
+    public int updateByMobileNo(UserEntity entity) {
+        return userBean.updateByMobileNo(entity);
+    }
 
 
 

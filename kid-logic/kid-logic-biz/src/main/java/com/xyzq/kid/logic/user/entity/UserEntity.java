@@ -5,6 +5,9 @@ package com.xyzq.kid.logic.user.entity;
  * 用户信息
  */
 public class UserEntity {
+    public final static int USER_MALE = 1;//男
+    public final static int USER_FEMALE = 1;//女
+
     /**
      * 用户主键
      */
@@ -45,4 +48,20 @@ public class UserEntity {
      * 记录变更时间
      */
     public String updatetime;
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + id +
+                ", mobileno='" + mobileno + '\'' +
+                ", openid='" + openid + '\'' +
+                ", realname='" + realname + '\'' +
+                ", address='" + address + '\'' +
+                ", gender=" + gender +
+                ", subscribetime='" + subscribetime + '\'' +
+                ", deleted=" + deleted +
+                ", createtime='" + createtime + '\'' +
+                ", updatetime='" + updatetime + '\'' +
+                '}';
+    }
 }

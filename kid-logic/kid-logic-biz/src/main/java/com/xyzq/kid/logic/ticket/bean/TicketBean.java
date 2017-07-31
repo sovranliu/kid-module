@@ -84,7 +84,9 @@ public class TicketBean {
      * @return
      */
     public int insert(TicketEntity entity){
-        return ticketDAO.insert(TicketEntityToPO(entity));
+        TicketPO ticketPO = TicketEntityToPO(entity);
+        ticketDAO.insert(ticketPO);
+        return ticketPO.getId();
     }
 
     /**
@@ -93,7 +95,9 @@ public class TicketBean {
      * @return
      */
     public int insertSelective(TicketEntity entity){
-        return ticketDAO.insertSelective(TicketEntityToPO(entity));
+        TicketPO ticketPO = TicketEntityToPO(entity);
+        ticketDAO.insertSelective(ticketPO);
+        return ticketPO.getId();
     }
 
     /**

@@ -25,13 +25,11 @@ public class UserBean {
      * @return
      */
     public UserEntity selectByPrimaryKey(int id) {
-        UserPO userPO = userDAO.selectByPrimaryKey(id);
-        return UserPOToEntity(userPO);
+        return UserPOToEntity(userDAO.selectByPrimaryKey(id));
     }
 
     public UserEntity selectByMolieNo(String mobileNo) {
-        UserPO userPO = userDAO.selectByMolieNo(mobileNo);
-        return UserPOToEntity(userPO);
+        return UserPOToEntity(userDAO.selectByMolieNo(mobileNo));
     }
 
     /**
@@ -49,7 +47,9 @@ public class UserBean {
      * @return
      */
     public int insert(UserEntity entity){
-        return userDAO.insert(UserEntityToPO(entity));
+        UserPO userPO = UserEntityToPO(entity);
+        userDAO.insert(userPO);
+        return userPO.getId();
     }
 
     /**
@@ -58,7 +58,13 @@ public class UserBean {
      * @return
      */
     public int insertSelective(UserEntity entity){
-        return userDAO.insertSelective(UserEntityToPO(entity));
+        UserPO userPO = UserEntityToPO(entity);
+        userDAO.insertSelective(userPO);
+        return userPO.getId();
+    }
+
+    public int updateByMobileNo(UserEntity entity){
+        return userDAO.updateByMobileNo(UserEntityToPO(entity));
     }
 
     /**
