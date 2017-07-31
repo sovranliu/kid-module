@@ -67,6 +67,11 @@
         <property name="sqlSessionFactory" ref="logicSqlSessionFactory"></property>
     </bean>
 
+    <bean id="dateUnviableDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.dateUnviable.dao.DateUnviableDAO"></property>
+        <property name="sqlSessionFactory" ref="logicSqlSessionFactory"></property>
+    </bean>
+
 </beans>
 
 
