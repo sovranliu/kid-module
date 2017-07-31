@@ -1,5 +1,6 @@
 package com.xyzq.kid.logic.book.service;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,6 +18,8 @@ import com.xyzq.kid.logic.book.dao.po.BookTimeRepository;
 import com.xyzq.kid.logic.book.dao.po.BookTimeSpan;
 import com.xyzq.kid.logic.ticket.dao.TicketDAO;
 import com.xyzq.kid.logic.ticket.dao.po.TicketPO;
+import com.xyzq.kid.logic.ticket.entity.TicketEntity;
+import com.xyzq.kid.logic.ticket.service.TicketService;
 /**
  * 飞行预约服务
  * @author keyanggui
@@ -43,6 +46,11 @@ public class BookService {
 	@Autowired
 	BookChangeRequestService bookChangeRequestService;
 	
+	@Autowired
+	TicketService ticketService;
+	
+	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
 	public List<Book> getAllBooks(){
 		return bookMapper.selectAll();
 	}
@@ -63,11 +71,16 @@ public class BookService {
 				//检查预约当天飞行票是否过期
 				Calendar expirTime=Calendar.getInstance();
 				expirTime.setTime(ticket.getExpiredate());
+				expirTime.add(Calendar.HOUR_OF_DAY, 23);
+				expirTime.add(Calendar.MINUTE, 59);
+				expirTime.add(Calendar.SECOND, 59);
 				Calendar bookTime=Calendar.getInstance();
-				String[] dates=repo.getBookdate().split("-");//预约日期格式 为YYYY-MM-DD
-				bookTime.set(Calendar.YEAR, Integer.valueOf(dates[0]));
-				bookTime.set(Calendar.MONTH, Integer.valueOf(dates[1])-1);
-				bookTime.set(Calendar.DATE, Integer.valueOf(dates[2]));
+//				String[] dates=repo.getBookdate().split("-");//预约日期格式 为YYYY-MM-DD
+//				bookTime.set(Calendar.YEAR, Integer.valueOf(dates[0]));
+//				bookTime.set(Calendar.MONTH, Integer.valueOf(dates[1])-1);
+//				bookTime.set(Calendar.DATE, Integer.valueOf(dates[2]));
+				Date bookDate=sdf.parse(repo.getBookdate()+" 00:00:00");
+				bookTime.setTime(bookDate);
 				if(bookTime.before(expirTime)){
 					//在有效期内，则检查所选时间段是否有库存
 					if(bookRepositoryService.checkAmount(bookTimeId)){
@@ -119,19 +132,20 @@ public class BookService {
 	}
 	
 	/**
-	 * 创建预约单
+	 * 创建预约单(检验)
 	 * @param ticketId
 	 * @param bookTimeId
 	 * @param userId
 	 * @return
 	 */
-	public boolean createBook(Integer ticketId,Integer bookTimeId,Integer userId){
+	public boolean createBook(String serialNum,Integer bookTimeId,Integer userId){
 		boolean flag=false;
 		try{
 			BookTimeRepository repo=bookTimeRepositoryMapper.selectByPrimaryKey(bookTimeId);
-			if(checkBook(ticketId, bookTimeId)){
+			TicketEntity ticket=ticketService.getTicketsInfoBySerialno(serialNum);
+			if(checkBook(ticket.id, bookTimeId)){
 				Book book=new Book();
-				book.setTicketid(ticketId);
+				book.setTicketid(ticket.id);
 				book.setUserid(userId);
 				book.setBooktimeid(bookTimeId);
 				book.setBookstatus("1");//1：已预约，2：改期申请中，3：改期通过，4：改期拒绝，5：核销完成，6：撤销
@@ -142,11 +156,47 @@ public class BookService {
 				book.setLastupdatetime(new Date());
 				book.setDeleteflag("0");
 				book.setSmsnotified("0");
-				bookMapper.updateByPrimaryKeySelective(book);
+				bookMapper.insertSelective(book);
 				//预约成功则扣减库存
 				if(bookRepositoryService.updateAmount(bookTimeId, "1")){
 					flag=true;
 				}
+			}
+		}catch(Exception e){
+			System.out.println("create book fail,caused by "+e.getMessage());
+			e.printStackTrace();
+		}
+		return flag;
+	}
+	
+	/**
+	 * 创建预约单(强制预约)
+	 * @param ticketId
+	 * @param bookTimeId
+	 * @param userId
+	 * @return
+	 */
+	public boolean createBookNoCheck(String serialNum,Integer bookTimeId,Integer userId){
+		boolean flag=false;
+		try{
+			BookTimeRepository repo=bookTimeRepositoryMapper.selectByPrimaryKey(bookTimeId);
+			TicketEntity ticket=ticketService.getTicketsInfoBySerialno(serialNum);
+			Book book=new Book();
+			book.setTicketid(ticket.id);
+			book.setUserid(userId);
+			book.setBooktimeid(bookTimeId);
+			book.setBookstatus("1");//1：已预约，2：改期申请中，3：改期通过，4：改期拒绝，5：核销完成，6：撤销
+			book.setBookdate(repo.getBookdate());
+			BookTimeSpan span=bookTimeSpanMapper.selectByPrimaryKey(repo.getBooktimespanid());
+			book.setBooktime(span.getTimespan());
+			book.setCreatetime(new Date());
+			book.setLastupdatetime(new Date());
+			book.setDeleteflag("0");
+			book.setSmsnotified("0");
+			bookMapper.updateByPrimaryKeySelective(book);
+			//预约成功则扣减库存
+			if(bookRepositoryService.updateAmount(bookTimeId, "1")){
+				flag=true;
 			}
 		}catch(Exception e){
 			System.out.println("create book fail,caused by "+e.getMessage());
