@@ -76,9 +76,6 @@ public class BookService {
 				expirTime.add(Calendar.SECOND, 59);
 				Calendar bookTime=Calendar.getInstance();
 //				String[] dates=repo.getBookdate().split("-");//预约日期格式 为YYYY-MM-DD
-//				bookTime.set(Calendar.YEAR, Integer.valueOf(dates[0]));
-//				bookTime.set(Calendar.MONTH, Integer.valueOf(dates[1])-1);
-//				bookTime.set(Calendar.DATE, Integer.valueOf(dates[2]));
 				Date bookDate=sdf.parse(repo.getBookdate()+" 00:00:00");
 				bookTime.setTime(bookDate);
 				if(bookTime.before(expirTime)){
@@ -148,7 +145,7 @@ public class BookService {
 				book.setTicketid(ticket.id);
 				book.setUserid(userId);
 				book.setBooktimeid(bookTimeId);
-				book.setBookstatus("1");//1：已预约，2：改期申请中，3：改期通过，4：改期拒绝，5：核销完成，6：撤销
+				book.setBookstatus("1");//1：已预约，2：改期申请中，3：改期通过，4：改期拒绝，5：核销完成，6：撤销申请中，7：撤销通过，8：拒绝撤销
 				book.setBookdate(repo.getBookdate());
 				BookTimeSpan span=bookTimeSpanMapper.selectByPrimaryKey(repo.getBooktimespanid());
 				book.setBooktime(span.getTimespan());
@@ -185,7 +182,7 @@ public class BookService {
 			book.setTicketid(ticket.id);
 			book.setUserid(userId);
 			book.setBooktimeid(bookTimeId);
-			book.setBookstatus("1");//1：已预约，2：改期申请中，3：改期通过，4：改期拒绝，5：核销完成，6：撤销
+			book.setBookstatus("1");//1：已预约，2：改期申请中，3：改期通过，4：改期拒绝，5：核销完成，6：撤销申请中，7：撤销通过，8：拒绝撤销
 			book.setBookdate(repo.getBookdate());
 			BookTimeSpan span=bookTimeSpanMapper.selectByPrimaryKey(repo.getBooktimespanid());
 			book.setBooktime(span.getTimespan());
