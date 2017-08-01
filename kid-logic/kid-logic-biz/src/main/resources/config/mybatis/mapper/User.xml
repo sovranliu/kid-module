@@ -195,4 +195,11 @@
       UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_User
+    where OpenID = #{openId,jdbcType=VARCHAR}
+  </select>
 </mapper>

@@ -55,6 +55,13 @@ public class UserService {
         return userBean.updateByMobileNo(entity);
     }
 
-
+    /**
+     * 根据openId查询用户信息
+     * @param openId
+     * @return UserEntity
+     */
+    public UserEntity selectByOpenId(String openId) {
+        return userBean.selectByOpenId(openId);
+    }
 
 }
