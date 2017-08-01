@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyzq.kid.logic.dateUnviable.dao.DateUnviableDAO">
+    <select id="load" resultType="DateUnviablePO">
+        SELECT *
+        FROM LGC_Book_DateUnviable
+        WHERE Deleted = 0 AND ID = #{id}
+        LIMIT 1
+    </select>
+
+    <select id="findBy" resultType="DateUnviablePO">
+    SELECT *
+    FROM LGC_Book_DateUnviable
+    WHERE Deleted = 0 AND UnviableDate = #{unviableDate}
+    LIMIT 1
+    </select>
+
+    <insert id="insertDateUnviable" parameterType="java.lang.Integer">
+    INSERT
+    INTO LGC_Book_DateUnviable
+    (UnviableDate, Deleted)
+    VALUES ( #{unviableDate} ,0);
+    </insert>
+
+    <update id="deleteDateUnviable" parameterType="java.lang.Integer" >
+    update LGC_Book_DateUnviable
+    set Deleted = 1
+    where UnviableDate = #{unviableDate} AND Deleted = 0
+    </update>
+
+</mapper>
