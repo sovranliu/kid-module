@@ -43,5 +43,29 @@ public class AdminBean {
         AdminEntity entity = new AdminEntity(adminPO);
         return entity;
     }
+    /**
+     * 新增管理用户
+     * @Param userName
+     * @return AdminPO
+     */
+    public void addAdmin(AdminPO adminPO){
+        adminDAO.addAdmin(adminPO);
+    }
+    /**
+     * 更新管理用户
+     * @Param userName
+     * @return AdminPO
+     */
+    public void updateAdmin(AdminPO adminPO){
+        adminDAO.updateAdmin(adminPO);
+    }
+    /**
+     * 删除管理用户
+     * @Param userName
+     * @return AdminPO
+     */
+    public void deleteAdmin(Integer id){
+        adminDAO.deleteAdmin(id);
+    }
 
 }
