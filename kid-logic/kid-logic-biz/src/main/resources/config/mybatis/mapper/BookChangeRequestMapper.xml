@@ -194,6 +194,9 @@
   	<if test="status != null ">
   		and Status = #{status}
   	</if>
+  	<if test="pageStart != null ">
+  		 limit #{pageStart},#{limit} 
+  	</if>
   	 and DeleteFlag = '0'
   	 order by LstUpdateTime desc
   </select>

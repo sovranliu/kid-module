@@ -17,6 +17,7 @@ import com.xyzq.kid.logic.book.dao.po.Book;
 import com.xyzq.kid.logic.book.dao.po.BookChangeRequest;
 import com.xyzq.kid.logic.book.dao.po.BookTimeRepository;
 import com.xyzq.kid.logic.book.dao.po.BookTimeSpan;
+import com.xyzq.kid.logic.ticket.service.TicketService;
 
 /**
  * 预约变更请求服务
@@ -41,6 +42,9 @@ public class BookChangeRequestService {
 	
 	@Autowired
 	BookTimeSpanMapper bookTimeSpanMapper;
+	
+	@Autowired
+	TicketService ticketService;
 
 	/**
 	 * 创建预约改期申请单
@@ -134,6 +138,10 @@ public class BookChangeRequestService {
 					if(bookRepositoryService.updateAmount(book.getBooktimeid(), "2")){
 						flag=true;
 					}
+					if(request.getReqesttype().equals("2")){
+						//撤销预约申请审批通过，则将票状态变更为未使用状态
+						ticketService.recoverTickets(book.getTicketid());
+					}
 				}else if(approveStatus.equals("3")){
 					//审批拒绝，则修改原预约单为改期申请拒绝，改期则回退新占用的时间库存
 					Book book=bookMapper.selectByPrimaryKey(request.getBookid());
@@ -168,7 +176,7 @@ public class BookChangeRequestService {
 	 * @param requestType
 	 * @return
 	 */
-	public List<BookChangeRequest> queryRequesting(String status,String requestType){
+	public List<BookChangeRequest> queryRequesting(String status,String requestType,Integer currentPage,Integer limit){
 		List<BookChangeRequest> reqList=null;
 		Map<String,Object> map=new HashMap<>();
 		if(StringUtils.isNullOrEmpty(status)){
@@ -176,6 +184,11 @@ public class BookChangeRequestService {
 		}
 		if(StringUtils.isNullOrEmpty(status)){
 			map.put("status", status);
+		}
+		if(currentPage!=null&&currentPage>0){
+			Integer pageStart=(currentPage-1)*limit;
+			map.put("pageStart", "pageStart");
+			map.put("limit", limit);
 		}
 		try{
 			reqList=bookChangeRequestMapper.queryRequestByCond(map);
