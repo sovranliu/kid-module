@@ -193,11 +193,23 @@
    select * from LGC_Book
    where 1=1
    <if test="ticketId != null">
-   	TicketId = #{ticketId}
+   	and TicketId = #{ticketId}
    </if>
    <if test="userId != null">
-   UserId = #{userId}
+   and  UserId = #{userId}
    </if>
+   <if test=" status !=null ">
+    and BookStatus = #{status}
+   </if>
+    <if test=" startDate !=null">
+  		and CreatTime > #{startDate,jdbcType=TIMESTAMP}
+  	</if>
+  	<if test=" endDate !=null ">
+  		and CreateTime < #{endDate,jdbcType=TIMESTAMP}
+  	</if>
+    <if test="pageStart != null ">
+  		 limit #{pageStart},#{limit} 
+  	</if>
     and DeleteFlag = '0'
     order by LastUpdateTime desc
   </select>
