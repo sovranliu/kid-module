@@ -119,6 +119,41 @@ public class TicketBean {
     }
 
     /**
+     * 展期
+     * @param entity
+     * @return
+     */
+    public int updateExtendByPrimaryKey(TicketEntity entity){
+        return ticketDAO.updateExtendByPrimaryKey(TicketEntityToPO(entity));
+    }
+    /**
+     * 赠送
+     * @param entity
+     * @return
+     */
+    public int updateHandselByPrimaryKey(TicketEntity entity){
+        return ticketDAO.updateHandselByPrimaryKey(TicketEntityToPO(entity));
+    }
+
+    /**
+     * 使用
+     * @param entity
+     * @return
+     */
+    public int updateUseByPrimaryKey(TicketEntity entity){
+        return ticketDAO.updateUseByPrimaryKey(TicketEntityToPO(entity));
+    }
+
+    /**
+     * 恢复
+     * @param entity
+     * @return
+     */
+    public int updateRecoverByPrimaryKey(TicketEntity entity){
+        return ticketDAO.updateRecoverByPrimaryKey(TicketEntityToPO(entity));
+    }
+
+    /**
      * TicketPO 转化为 TicketEntity
      * @param po
      * @return TicketEntity

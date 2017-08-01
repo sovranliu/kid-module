@@ -22,4 +22,12 @@ public interface TicketDAO {
     int updateByPrimaryKeySelective(TicketPO record);
 
     int updateByPrimaryKey(TicketPO record);
+
+    int updateExtendByPrimaryKey(TicketPO record);
+
+    int updateHandselByPrimaryKey(TicketPO record);
+
+    int updateUseByPrimaryKey(TicketPO record);
+
+    int updateRecoverByPrimaryKey(TicketPO record);
 }

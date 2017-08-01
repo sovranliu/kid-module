@@ -217,4 +217,29 @@
       UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=INTEGER}
   </update>
+
+  <update id="updateExtendByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
+    update LGC_Ticket
+    set Status = #{status,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER} and Status = 0
+  </update>
+
+  <update id="updateHandselByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
+    update LGC_Ticket
+    set Status = #{status,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER} and Status = 0
+  </update>
+
+  <update id="updateUseByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
+    update LGC_Ticket
+    set Status = #{status,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER} and Status = 0
+  </update>
+
+  <update id="updateRecoverByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
+    update LGC_Ticket
+    set Status = #{status,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER} and Status = 1
+  </update>
+
 </mapper>

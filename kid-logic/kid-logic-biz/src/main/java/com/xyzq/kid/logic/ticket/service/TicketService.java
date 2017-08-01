@@ -89,6 +89,9 @@ public class TicketService {
         if(ticketEntity.type == TicketEntity.TICKET_TYPE_SINGLE) {
             return "single ticket can not handsel!";
         }
+        if(ticketEntity.status != TicketEntity.TICKET_STATUS_NEW) {
+            return "ticket status error!";
+        }
         if(null == mobileNo) {
             return "mobileno is null!";
         }
@@ -99,7 +102,7 @@ public class TicketService {
         handselTicketHistory(ticketId, ticketEntity.ownermobileno);
 
         ticketEntity.ownermobileno = mobileNo;
-        ticketBean.updateByPrimaryKey(ticketEntity);
+        ticketBean.updateHandselByPrimaryKey(ticketEntity);
 
         return "success";
     }
@@ -115,13 +118,41 @@ public class TicketService {
         if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
             return "ticket has been deleted!";
         }
+        if(ticketEntity.status != TicketEntity.TICKET_STATUS_NEW) {
+            return "ticket status error!";
+        }
         if(CommonTool.checkExpire(ticketEntity.expiredate)) {
             return "ticket expire!";
         }
         useTicketHistory(ticketId);
 
         ticketEntity.status = TicketEntity.TICKET_STATUS_USED;
-        ticketBean.updateByPrimaryKey(ticketEntity);
+        ticketBean.updateUseByPrimaryKey(ticketEntity);
+
+        return "success";
+    }
+
+    /**
+     * 用票恢复
+     * @param ticketId 飞行票ID
+     * @return 成功返回-success
+     */
+    public String recoverTickets(int ticketId) {
+        logger.info("TicketService.recoverTickets[in]-ticketId:" + ticketId);
+        TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
+        if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
+            return "ticket has been deleted!";
+        }
+        if(ticketEntity.status != TicketEntity.TICKET_STATUS_USED) {
+            return "ticket status error!";
+        }
+        if(CommonTool.checkExpire(ticketEntity.expiredate)) {
+            return "ticket expire!";
+        }
+        recoverTicketHistory(ticketId);
+
+        ticketEntity.status = TicketEntity.TICKET_STATUS_NEW;
+        ticketBean.updateRecoverByPrimaryKey(ticketEntity);
 
         return "success";
     }
@@ -150,7 +181,7 @@ public class TicketService {
         extendTicketHistory(ticketId,ticketEntity.expiredate);
 
         ticketEntity.expiredate = extendDate;
-        ticketBean.updateByPrimaryKey(ticketEntity);
+        ticketBean.updateExtendByPrimaryKey(ticketEntity);
 
         return "success";
     }
@@ -292,6 +323,14 @@ public class TicketService {
      */
     private void useTicketHistory(int ticketId) {
         doInsertTicketHistory(ticketId, TicketHistoryEntity.TICKET_ACTION_USE, null, null);
+    }
+
+    /**
+     * 创建飞行票使用历史记录
+     * @param ticketId
+     */
+    private void recoverTicketHistory(int ticketId) {
+        doInsertTicketHistory(ticketId, TicketHistoryEntity.TICKET_ACTION_RECOVER, null, null);
     }
 
     /**

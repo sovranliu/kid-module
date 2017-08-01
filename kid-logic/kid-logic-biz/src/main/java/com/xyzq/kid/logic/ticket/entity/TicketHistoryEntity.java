@@ -14,6 +14,7 @@ public class TicketHistoryEntity {
     public final static int TICKET_ACTION_EXTEND = 4;//有效期延长
     public final static int TICKET_ACTION_HANDSEL_EXPPIRED = 5;//赠送过期
     public final static int TICKET_ACTION_HANDSEL_EFFECTIVE = 6;//赠送过期
+    public final static int TICKET_ACTION_RECOVER = 7;//赠送过期
     /**
      * 飞行票历史操作主键
      */
