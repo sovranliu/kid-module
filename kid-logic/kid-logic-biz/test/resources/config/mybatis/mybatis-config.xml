@@ -6,6 +6,7 @@
         <typeAlias alias="RecordPO" type="com.xyzq.kid.logic.record.dao.po.RecordPO" />
         <typeAlias alias="UserPO" type="com.xyzq.kid.logic.user.dao.po.UserPO" />
         <typeAlias alias="TicketPO" type="com.xyzq.kid.logic.ticket.dao.po.TicketPO" />
+        <typeAlias alias="TicketRefundPO" type="com.xyzq.kid.logic.ticket.dao.po.TicketRefundPO" />
         <typeAlias alias="TicketHistoryPO" type="com.xyzq.kid.logic.ticket.dao.po.TicketHistoryPO" />
         <typeAlias alias="AdminPO" type="com.xyzq.kid.logic.admin.dao.po.AdminPO" />
         <typeAlias alias="ConfigPO" type="com.xyzq.kid.logic.config.dao.po.ConfigPO" />
@@ -21,6 +22,7 @@
         <mapper resource="config/mybatis/mapper/User.xml" />
         <mapper resource="config/mybatis/mapper/Ticket.xml" />
         <mapper resource="config/mybatis/mapper/TicketHistory.xml" />
+        <mapper resource="config/mybatis/mapper/TicketRefund.xml" />
         <mapper resource="config/mybatis/mapper/Record.xml" />
         <mapper resource="config/mybatis/mapper/Admin.xml" />
         <mapper resource="config/mybatis/mapper/Config.xml" />

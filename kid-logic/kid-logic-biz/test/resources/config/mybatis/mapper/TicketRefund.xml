@@ -20,7 +20,7 @@
     where ID = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="selectRefunding" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectRefunding" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from LGC_TicketRefund
@@ -34,7 +34,7 @@
     where Status = 1
   </select>
 
-  <select id="selectRefunded" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectRefunded" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from LGC_TicketRefund
@@ -66,7 +66,7 @@
     where ID = #{id,jdbcType=INTEGER}
   </update>
 
-  <insert id="insert" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketRefundPO">
+  <insert id="insert" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketRefundPO" useGeneratedKeys="true" keyProperty="id" >
     insert into LGC_TicketRefund (ID, TicketID, Status, 
       Deleted, CreateTime, UpdateTime
       )
@@ -75,7 +75,7 @@
       )
   </insert>
 
-  <insert id="insertSelective" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketRefundPO">
+  <insert id="insertSelective" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketRefundPO" useGeneratedKeys="true" keyProperty="id">
     insert into LGC_TicketRefund
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

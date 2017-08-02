@@ -30,6 +30,7 @@
     <include refid="Base_Column_List" />
     from LGC_User
     where MobileNo = #{mobileno,jdbcType=VARCHAR} and Deleted = 0
+    limit 1
   </select>
 
   <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">

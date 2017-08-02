@@ -96,7 +96,10 @@
   	<if test=" deleteFlag != null ">
   		and deleteFlag=#{deleteFlag}
   	</if>
+  	<if test="timeSpan != null">
+  		and TimeSpan = #{timeSpan}
+  	</if>
   	and DeleteFlag = '0'
-  	 order by LstUpdateTime desc
+  	 order by TimeSpan asc,LastUpdateTime desc
   </select>
 </mapper>

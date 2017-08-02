@@ -1,6 +1,9 @@
 package com.xyzq.kid.logic.ticket.service;
 
+import com.xyzq.kid.CommonTool;
+import com.xyzq.kid.logic.Page;
 import com.xyzq.kid.logic.ticket.entity.TicketEntity;
+import com.xyzq.kid.logic.ticket.entity.TicketRefundEntity;
 import com.xyzq.kid.logic.user.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -89,6 +92,28 @@ public class TicketServiceTest {
     @Test
     public void getTicketHistoryBuTickedId() throws Exception {
 
+    }
+
+    @Test
+    public void insertSelective() throws Exception {
+        for (int i = 2; i < 101; i++) {
+            TicketRefundEntity ticketRefundEntity = new TicketRefundEntity();
+            ticketRefundEntity.status = TicketRefundEntity.REFUND_STATUS_NEW;
+            ticketRefundEntity.ticketid = i;
+            ticketRefundEntity.deleted = CommonTool.STATUS_NORMAL;
+            ticketService.insertRefundSelective(ticketRefundEntity);
+        }
+    }
+
+    @Test
+    public void getTicketRefunding() throws Exception {
+        Page<TicketRefundEntity> result = ticketService.getTicketRefunding(1, 20);
+        System.out.println("begin:" + result.getBegin());
+        System.out.println("end:" + result.getEnd());
+        System.out.println("current:" + result.getCurrentPage());
+        System.out.println("pagesize" + result.getPageSize());
+        System.out.println("rows" + result.getRows());
+        System.out.println("Totalpage" + result.getTotalPage());
     }
 
 }

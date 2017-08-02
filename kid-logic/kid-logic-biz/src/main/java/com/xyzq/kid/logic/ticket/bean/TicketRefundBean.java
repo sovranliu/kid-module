@@ -1,6 +1,7 @@
 package com.xyzq.kid.logic.ticket.bean;
 
 import com.xyzq.kid.CommonTool;
+import com.xyzq.kid.logic.Page;
 import com.xyzq.kid.logic.ticket.dao.TicketRefundDAO;
 import com.xyzq.kid.logic.ticket.dao.TicketRefundDAO;
 import com.xyzq.kid.logic.ticket.dao.po.TicketRefundPO;
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 这是一个范例Java逻辑功能Bean
@@ -26,26 +29,45 @@ public class TicketRefundBean {
         return ticketRefundDAO.insertSelective(TicketRefundEntityToPO(ticketRefundEntity));
     }
 
-    public List<TicketRefundEntity> selectRefunding(Integer num) {
+    public Page<TicketRefundEntity> selectRefunding(Integer begin, Integer limit) {
         List<TicketRefundEntity> ticketRefundEntityList = new ArrayList<>();
-        List<TicketRefundPO> ticketRefundPOList = ticketRefundDAO.selectRefunding(num);
+        Map paramMap = new HashMap<>();
+        paramMap.put("begin", begin);
+        paramMap.put("limit", limit);
+        List<TicketRefundPO> ticketRefundPOList = ticketRefundDAO.selectRefunding(paramMap);
         if(null != ticketRefundPOList) {
             for (int i = 0; i < ticketRefundPOList.size(); i++) {
                 ticketRefundEntityList.add(TicketRefundPOToEntity(ticketRefundPOList.get(i)));
             }
         }
-        return ticketRefundEntityList;
+        int sum = ticketRefundDAO.selectRefundingCount();
+        Page result = new Page();
+        result.setCurrentPage(begin);
+        result.setPageSize(limit);
+        result.setRows(sum);
+        result.setResultList(ticketRefundEntityList);
+
+        return result;
     }
 
-    public List<TicketRefundEntity> selectRefunded(Integer limit) {
+    public Page<TicketRefundEntity> selectRefunded(Integer begin, Integer limit) {
         List<TicketRefundEntity> ticketRefundEntityList = new ArrayList<>();
-        List<TicketRefundPO> ticketRefundPOList = ticketRefundDAO.selectRefunded(limit);
+        Map paramMap = new HashMap<>();
+        paramMap.put("begin", begin);
+        paramMap.put("limit", limit);
+        List<TicketRefundPO> ticketRefundPOList = ticketRefundDAO.selectRefunded(paramMap);
         if(null != ticketRefundPOList) {
             for (int i = 0; i < ticketRefundPOList.size(); i++) {
                 ticketRefundEntityList.add(TicketRefundPOToEntity(ticketRefundPOList.get(i)));
             }
         }
-        return ticketRefundEntityList;
+        int sum = ticketRefundDAO.selectRefundedCount();
+        Page result = new Page();
+        result.setCurrentPage(begin);
+        result.setRows(sum);
+        result.setResultList(ticketRefundEntityList);
+
+        return result;
     }
 
     public int refuseByPrimaryKey(Integer id) {

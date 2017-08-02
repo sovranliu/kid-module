@@ -1,6 +1,7 @@
 package com.xyzq.kid.logic.ticket.service;
 
 import com.xyzq.kid.CommonTool;
+import com.xyzq.kid.logic.Page;
 import com.xyzq.kid.logic.ticket.bean.TicketBean;
 import com.xyzq.kid.logic.ticket.bean.TicketHistoryBean;
 import com.xyzq.kid.logic.ticket.bean.TicketRefundBean;
@@ -209,6 +210,12 @@ public class TicketService {
 
         refundingTicketHistory(ticketId);
 
+        TicketRefundEntity ticketRefundEntity = new TicketRefundEntity();
+        ticketRefundEntity.status = TicketRefundEntity.REFUND_STATUS_NEW;
+        ticketRefundEntity.ticketid = ticketId;
+        ticketRefundEntity.deleted = CommonTool.STATUS_NORMAL;
+        insertRefundSelective(ticketRefundEntity);
+
         ticketBean.updateRefundingByPrimaryKey(ticketEntity.id);
 
         return "success";
@@ -228,11 +235,10 @@ public class TicketService {
         if(ticketEntity.status != TicketEntity.TICKET_STATUS_BACKING) {
             return "ticket status error!";
         }
-        if(CommonTool.checkExpire(ticketEntity.expiredate)) {
-            return "ticket expire!";
-        }
 
         refundTicketHistory(ticketId);
+
+        accessByPrimaryKey(ticketId);
 
         ticketBean.updateRefundByPrimaryKey(ticketEntity.id);
 
@@ -322,7 +328,7 @@ public class TicketService {
      * @param ticketRefundEntity
      * @return
      */
-    public int insertSelective(TicketRefundEntity ticketRefundEntity) {
+    public int insertRefundSelective(TicketRefundEntity ticketRefundEntity) {
         ticketRefundEntity.status = TicketRefundEntity.REFUND_STATUS_NEW;
         return ticketRefundBean.insertSelective(ticketRefundEntity);
     }
@@ -347,20 +353,20 @@ public class TicketService {
 
     /**
      * 退款申请记录查询（未处理）
-     * @param limits
+     * @param limit
      * @return
      */
-    public List<TicketRefundEntity> getTicketRefunding(int limits) {
-        return ticketRefundBean.selectRefunding(limits);
+    public Page<TicketRefundEntity> getTicketRefunding(Integer begin, int limit) {
+        return ticketRefundBean.selectRefunding(begin, limit);
     }
 
     /**
      * 退款申请历史记录查询（已处理）
-     * @param limits
+     * @param limit
      * @return
      */
-    public List<TicketRefundEntity> getTicketRefunded(int limits) {
-        return ticketRefundBean.selectRefunded(limits);
+    public Page<TicketRefundEntity> getTicketRefunded(Integer begin, int limit) {
+        return ticketRefundBean.selectRefunded(begin, limit);
     }
 
     /**
@@ -370,7 +376,6 @@ public class TicketService {
     private String getSerialno() {
         SimpleDateFormat sdf =   new SimpleDateFormat( "yyyyMMddhhmmssSSS" );
         UUID uuid = UUID.randomUUID();
-
         return sdf.format(new Date()) + uuid.toString().substring(1, 5);
     }
 

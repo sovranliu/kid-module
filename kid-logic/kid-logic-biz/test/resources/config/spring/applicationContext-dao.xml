@@ -57,6 +57,10 @@
         <property name="mapperInterface" value="com.xyzq.kid.logic.ticket.dao.TicketHistoryDAO"></property>
         <property name="sqlSessionFactory" ref="logicSqlSessionFactory"></property>
     </bean>
+    <bean id="ticketRefundDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.ticket.dao.TicketRefundDAO"></property>
+        <property name="sqlSessionFactory" ref="logicSqlSessionFactory"></property>
+    </bean>
     <bean id="userDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.xyzq.kid.logic.user.dao.UserDAO"></property>
         <property name="sqlSessionFactory" ref="logicSqlSessionFactory"></property>
@@ -79,6 +83,7 @@
 
     <bean id="userBean" class="com.xyzq.kid.logic.user.bean.UserBean"></bean>
     <bean id="ticketBean" class="com.xyzq.kid.logic.ticket.bean.TicketBean"></bean>
+    <bean id="ticketRefundBean" class="com.xyzq.kid.logic.ticket.bean.TicketRefundBean"></bean>
     <bean id="ticketHistoryBean" class="com.xyzq.kid.logic.ticket.bean.TicketHistoryBean"></bean>
     <bean id="ticketService" class="com.xyzq.kid.logic.ticket.service.TicketService"></bean>
     <bean id="userService" class="com.xyzq.kid.logic.user.service.UserService"></bean>

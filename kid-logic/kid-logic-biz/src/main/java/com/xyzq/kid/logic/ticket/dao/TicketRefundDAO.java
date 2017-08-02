@@ -3,6 +3,7 @@ package com.xyzq.kid.logic.ticket.dao;
 import com.xyzq.kid.logic.ticket.dao.po.TicketRefundPO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TicketRefundDAO {
     int deleteByPrimaryKey(Integer id);
@@ -13,9 +14,11 @@ public interface TicketRefundDAO {
 
     TicketRefundPO selectByPrimaryKey(Integer id);
 
-    List<TicketRefundPO> selectRefunding(Integer num);
+    List<TicketRefundPO> selectRefunding(Map paramMap);
+    int selectRefundingCount();
 
-    List<TicketRefundPO> selectRefunded(Integer num);
+    List<TicketRefundPO> selectRefunded(Map paramMap);
+    int selectRefundedCount();
 
     int refuseByPrimaryKey(Integer id);
 

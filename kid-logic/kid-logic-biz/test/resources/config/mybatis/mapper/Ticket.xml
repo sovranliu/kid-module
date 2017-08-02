@@ -70,7 +70,7 @@
   </insert>
 
   <insert id="insertSelective" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO" useGeneratedKeys="true" keyProperty="id">
-    <selectKey resultType="int" keyProperty="id" order="AFTER">
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into LGC_Ticket
@@ -217,4 +217,47 @@
       UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=INTEGER}
   </update>
+
+  <update id="updateExtendByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
+    update LGC_Ticket
+    set ExpireDate = #{expiredate,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER} and Status = 0
+  </update>
+
+  <update id="updateExpiredByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
+    update LGC_Ticket
+    set Status = 2
+    where ID = #{id,jdbcType=INTEGER} and Status = 0
+  </update>
+
+  <update id="updateRefundingByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
+    update LGC_Ticket
+    set Status = 3
+    where ID = #{id,jdbcType=INTEGER} and Status = 0
+  </update>
+
+  <update id="updateRefundByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
+    update LGC_Ticket
+    set Status = 4
+    where ID = #{id,jdbcType=INTEGER} and Status = 0
+  </update>
+
+  <update id="updateHandselByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
+    update LGC_Ticket
+    set OwnerMobileNo = #{ownermobileno,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER} and Status = 0
+  </update>
+
+  <update id="updateUseByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
+    update LGC_Ticket
+    set Status = 1
+    where ID = #{id,jdbcType=INTEGER} and Status = 0
+  </update>
+
+  <update id="updateRecoverByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
+    update LGC_Ticket
+    set Status = 0
+    where ID = #{id,jdbcType=INTEGER} and Status = 1
+  </update>
+
 </mapper>
