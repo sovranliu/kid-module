@@ -1,5 +1,7 @@
 package com.xyzq.kid.logic.admin.dao.po;
 
+import com.xyzq.kid.logic.admin.entity.AdminEntity;
+
 import java.sql.Timestamp;
 
 /**
@@ -12,9 +14,9 @@ public class AdminPO {
      */
     private Integer id;
     /**
-     * 票券的id
+     * 登录用户名
      */
-    private Integer userName;
+    private String userName;
     /**
      * 飞行日志文件名称
      */
@@ -48,6 +50,19 @@ public class AdminPO {
      */
     private Timestamp updateTime;
 
+    public AdminPO(AdminEntity entity){
+        if (entity != null) {
+            id = entity.id;
+            userName = entity.userName;
+            password = entity.password;
+            email = entity.email;
+            mobile = entity.mobile;
+            deleted = entity.deleted;
+            createTime = entity.createTime;
+            updateTime = entity.updateTime;
+        }
+    }
+
     public Integer getId() {
         return id;
     }
@@ -56,11 +71,11 @@ public class AdminPO {
         this.id = id;
     }
 
-    public Integer getUserName() {
+    public String getUserName() {
         return userName;
     }
 
-    public void setUserName(Integer userName) {
+    public void setUserName(String userName) {
         this.userName = userName;
     }
 

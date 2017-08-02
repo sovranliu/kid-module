@@ -10,6 +10,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mysql.jdbc.StringUtils;
 import com.xyzq.kid.logic.book.dao.BookMapper;
 import com.xyzq.kid.logic.book.dao.BookTimeRepositoryMapper;
 import com.xyzq.kid.logic.book.dao.BookTimeSpanMapper;
@@ -243,5 +244,39 @@ public class BookService {
 	public boolean notifyUser(Integer bookId){
 		boolean flag=false;
 		return flag;
+	}
+	/**
+	 * 条件查询预约记录
+	 * @param status
+	 * @param startDate
+	 * @param endDate
+	 * @param currentPage
+	 * @param limit
+	 * @return
+	 */
+	public List<Book> queryByCondLimt(String status,Date startDate,Date endDate,Integer currentPage,Integer limit){
+		List<Book> bookList=null;
+		try{
+			Map<String,Object> map=new HashMap<>();
+			if(!StringUtils.isNullOrEmpty(status)){
+				map.put("status", status);
+			}
+			if(startDate!=null){
+				map.put("startDate", startDate);
+			}
+			if(endDate!=null){
+				map.put("endDate", endDate);
+			}
+			if(currentPage!=null&&currentPage>0){
+				Integer pageStart=(currentPage-1)*limit;
+				map.put("pageStart", pageStart);
+				map.put("limit", limit);
+			}
+			bookList=bookMapper.queryBookByCond(map);
+		}catch(Exception e){
+			System.out.println("query by condition fail,caused by "+e.getMessage());
+			e.printStackTrace();
+		}
+		return bookList;
 	}
 }

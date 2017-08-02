@@ -8,47 +8,50 @@ import java.sql.Timestamp;
  * Created by Brann on 17/7/27.
  */
 public class AdminEntity {
+	public final static String DELETED = "1";//已删除
+	public final static String UNDELETED = "0";//未删除
 	/**
 	 * 主键ID，自增长的流水号
 	 */
-	private Integer id;
+	public Integer id;
 	/**
-	 * 票券的id
+	 * 登录用户名
 	 */
-	private Integer userName;
+	public String userName;
 	/**
 	 * 飞行日志文件名称
 	 */
-	private String password;
+	public String password;
 	/**
 	 * 是否被购买，0:未购买，1:已购买
 	 */
-	private String email;
+	public String email;
 	/**
 	 * 记录是否被软删，1:删除，0:未删除
 	 */
-	private String mobile;
+	public String mobile;
 	/**
 	 * 记录是否被软删，1:删除，0:未删除
 	 */
-	private String deleted;
-	/**
-	 * 记录创建人的id
-	 */
-	private String creator;
+	public String deleted;
+
 	/**
 	 * 创建时间
 	 */
-	private Timestamp createTime;
-	/**
-	 * 最后一次更新人的id
-	 */
-	private String updator;
+	public Timestamp createTime;
+
 	/**
 	 * 更新时间
 	 */
-	private Timestamp updateTime;
+	public Timestamp updateTime;
 
+	public AdminEntity(Integer id,String userName, String password, String email, String mobile) {
+		this.userName = userName;
+		this.password = password;
+		this.email = email;
+		this.mobile = mobile;
+		this.deleted = UNDELETED;
+	}
 
 	public AdminEntity(AdminPO adminPO) {
 		if (adminPO != null) {
@@ -58,9 +61,7 @@ public class AdminEntity {
 			email = adminPO.getEmail();
 			mobile = adminPO.getMobile();
 			deleted = adminPO.getDeleted();
-			creator = adminPO.getCreator();
 			createTime = adminPO.getCreateTime();
-			updator = adminPO.getUpdator();
 			updateTime = adminPO.getUpdateTime();
 		}
 	}

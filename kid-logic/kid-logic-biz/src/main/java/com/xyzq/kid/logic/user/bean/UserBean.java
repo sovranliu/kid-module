@@ -168,5 +168,12 @@ public class UserBean {
         }
         return po;
     }
-
+    /**
+     * 根据openId查询用户信息
+     * @param openId
+     * @return UserEntity
+     */
+    public UserEntity selectByOpenId(String openId) {
+        return UserPOToEntity(userDAO.selectByOpenId(openId));
+    }
 }
