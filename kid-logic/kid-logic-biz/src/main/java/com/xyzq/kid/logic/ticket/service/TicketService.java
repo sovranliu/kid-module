@@ -3,8 +3,11 @@ package com.xyzq.kid.logic.ticket.service;
 import com.xyzq.kid.CommonTool;
 import com.xyzq.kid.logic.ticket.bean.TicketBean;
 import com.xyzq.kid.logic.ticket.bean.TicketHistoryBean;
+import com.xyzq.kid.logic.ticket.bean.TicketRefundBean;
+import com.xyzq.kid.logic.ticket.dao.po.TicketRefundPO;
 import com.xyzq.kid.logic.ticket.entity.TicketEntity;
 import com.xyzq.kid.logic.ticket.entity.TicketHistoryEntity;
+import com.xyzq.kid.logic.ticket.entity.TicketRefundEntity;
 import com.xyzq.kid.logic.user.entity.UserEntity;
 import com.xyzq.kid.logic.user.service.UserService;
 import org.slf4j.Logger;
@@ -14,10 +17,7 @@ import org.springframework.stereotype.Service;
 import sun.security.krb5.internal.Ticket;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * 票务服务
@@ -35,7 +35,12 @@ public class TicketService {
     @Autowired
     private TicketBean ticketBean;
     /**
-     * 票历史信息
+     * 退票申请信息
+     */
+    @Autowired
+    private TicketRefundBean ticketRefundBean;
+    /**
+     * 票信息
      */
     @Autowired
     private TicketHistoryBean ticketHistoryBean;
@@ -126,8 +131,7 @@ public class TicketService {
         }
         useTicketHistory(ticketId);
 
-        ticketEntity.status = TicketEntity.TICKET_STATUS_USED;
-        ticketBean.updateUseByPrimaryKey(ticketEntity);
+        ticketBean.updateUseByPrimaryKey(ticketEntity.id);
 
         return "success";
     }
@@ -151,8 +155,7 @@ public class TicketService {
         }
         recoverTicketHistory(ticketId);
 
-        ticketEntity.status = TicketEntity.TICKET_STATUS_NEW;
-        ticketBean.updateRecoverByPrimaryKey(ticketEntity);
+        ticketBean.updateRecoverByPrimaryKey(ticketEntity.id);
 
         return "success";
     }
@@ -182,6 +185,56 @@ public class TicketService {
 
         ticketEntity.expiredate = extendDate;
         ticketBean.updateExtendByPrimaryKey(ticketEntity);
+
+        return "success";
+    }
+
+    /**
+     * 申请退票
+     * @param ticketId
+     * @return
+     */
+    public String refundingTickets(int ticketId) {
+        logger.info("TicketService.backingTickets[in]-ticketId:" + ticketId);
+        TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
+        if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
+            return "ticket has been deleted!";
+        }
+        if(ticketEntity.status != TicketEntity.TICKET_STATUS_NEW) {
+            return "ticket status error!";
+        }
+        if(CommonTool.checkExpire(ticketEntity.expiredate)) {
+            return "ticket expire!";
+        }
+
+        refundingTicketHistory(ticketId);
+
+        ticketBean.updateRefundingByPrimaryKey(ticketEntity.id);
+
+        return "success";
+    }
+
+    /**
+     * 退票成功
+     * @param ticketId
+     * @return
+     */
+    public String refundTickets(int ticketId) {
+        logger.info("TicketService.backingTickets[in]-ticketId:" + ticketId);
+        TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
+        if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
+            return "ticket has been deleted!";
+        }
+        if(ticketEntity.status != TicketEntity.TICKET_STATUS_BACKING) {
+            return "ticket status error!";
+        }
+        if(CommonTool.checkExpire(ticketEntity.expiredate)) {
+            return "ticket expire!";
+        }
+
+        refundTicketHistory(ticketId);
+
+        ticketBean.updateRefundByPrimaryKey(ticketEntity.id);
 
         return "success";
     }
@@ -229,7 +282,19 @@ public class TicketService {
 
         }
 
-        return ticketBean.getTicketsInfoByOwnerMobileNo(mobileNo);
+        List<TicketEntity> ticketEntityList = ticketBean.getTicketsInfoByOwnerMobileNo(mobileNo);
+        if(null != ticketEntityList) {
+            for (int i = 0; i < ticketEntityList.size(); i++) {
+                if(ticketEntityList.get(i).status == TicketEntity.TICKET_STATUS_NEW) {
+                    if(CommonTool.checkExpire(ticketEntityList.get(i).expiredate)) {
+                        ticketBean.updateExpiredByPrimaryKey(ticketEntityList.get(i).id);
+                    }
+                }
+            }
+            return ticketBean.getTicketsInfoByOwnerMobileNo(mobileNo);
+        }
+        return ticketEntityList;
+
     }
 
     /**
@@ -253,13 +318,60 @@ public class TicketService {
     }
 
     /**
-     * 生成飞行票流水号
+     * 发起退款申请
+     * @param ticketRefundEntity
+     * @return
+     */
+    public int insertSelective(TicketRefundEntity ticketRefundEntity) {
+        ticketRefundEntity.status = TicketRefundEntity.REFUND_STATUS_NEW;
+        return ticketRefundBean.insertSelective(ticketRefundEntity);
+    }
+
+    /**
+     * 退款申请通过
+     * @param id
+     * @return
+     */
+    public int accessByPrimaryKey(Integer id) {
+        return ticketRefundBean.accessByPrimaryKey(id);
+    }
+
+    /**
+     * 退款申请拒绝
+     * @param id
+     * @return
+     */
+    public int refuseByPrimaryKey(Integer id) {
+        return ticketRefundBean.refuseByPrimaryKey(id);
+    }
+
+    /**
+     * 退款申请记录查询（未处理）
+     * @param limits
+     * @return
+     */
+    public List<TicketRefundEntity> getTicketRefunding(int limits) {
+        return ticketRefundBean.selectRefunding(limits);
+    }
+
+    /**
+     * 退款申请历史记录查询（已处理）
+     * @param limits
+     * @return
+     */
+    public List<TicketRefundEntity> getTicketRefunded(int limits) {
+        return ticketRefundBean.selectRefunded(limits);
+    }
+
+    /**
+     * 生成飞行票流水号时分秒+随机4位字母
      * @return
      */
     private String getSerialno() {
-        //TODO 仅仅时间
         SimpleDateFormat sdf =   new SimpleDateFormat( "yyyyMMddhhmmssSSS" );
-        return sdf.format(new Date());
+        UUID uuid = UUID.randomUUID();
+
+        return sdf.format(new Date()) + uuid.toString().substring(1, 5);
     }
 
     /**
@@ -270,7 +382,6 @@ public class TicketService {
         ticketEntity.deleted = CommonTool.STATUS_NORMAL;
         ticketEntity.serialno = getSerialno();
         ticketEntity.status = TicketEntity.TICKET_STATUS_NEW;
-        //TODO 未正确返回tickedId
         int ticketId = ticketBean.insertSelective(ticketEntity);
         newTicketHistory(ticketId);
 
@@ -306,7 +417,7 @@ public class TicketService {
     }
 
     /**
-     * 飞行票赠生效
+     * 飞行票赠送生效
      * @param id
      */
     private void handselEffectiveTicketHistory(int id) {
@@ -326,7 +437,7 @@ public class TicketService {
     }
 
     /**
-     * 创建飞行票使用历史记录
+     * 创建飞行票恢复历史记录
      * @param ticketId
      */
     private void recoverTicketHistory(int ticketId) {
@@ -339,6 +450,22 @@ public class TicketService {
      */
     private void extendTicketHistory(int ticketId, String preValidPeriod) {
         doInsertTicketHistory(ticketId, TicketHistoryEntity.TICKET_ACTION_EXTEND, preValidPeriod, null);
+    }
+
+    /**
+     * 创建飞行票退票申请历史记录
+     * @param ticketId
+     */
+    private void refundingTicketHistory(int ticketId) {
+        doInsertTicketHistory(ticketId, TicketHistoryEntity.TICKET_ACTION_REFUNDING, null, null);
+    }
+
+    /**
+     * 创建飞行票退票成功历史记录
+     * @param ticketId
+     */
+    private void refundTicketHistory(int ticketId) {
+        doInsertTicketHistory(ticketId, TicketHistoryEntity.TICKET_ACTION_REFUND, null, null);
     }
 
     /**

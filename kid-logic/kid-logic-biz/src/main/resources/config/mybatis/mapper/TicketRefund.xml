@@ -20,9 +20,35 @@
     where ID = #{id,jdbcType=INTEGER}
   </select>
 
+  <select id="selectRefunding" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_TicketRefund
+    where Status = 1
+  </select>
+
+  <select id="selectRefunded" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_TicketRefund
+    where Status = 2 or Status = 3
+  </select>
+
   <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     update LGC_TicketRefund
     set Deleted = 1
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="refuseByPrimaryKey" parameterType="java.lang.Integer">
+    update LGC_TicketRefund
+    set Status = 3
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="accessByPrimaryKey" parameterType="java.lang.Integer">
+    update LGC_TicketRefund
+    set Status = 2
     where ID = #{id,jdbcType=INTEGER}
   </update>
 

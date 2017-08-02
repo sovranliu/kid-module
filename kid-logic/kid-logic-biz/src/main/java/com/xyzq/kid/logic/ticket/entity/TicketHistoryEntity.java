@@ -13,8 +13,10 @@ public class TicketHistoryEntity {
     public final static int TICKET_ACTION_USE = 3;//使用
     public final static int TICKET_ACTION_EXTEND = 4;//有效期延长
     public final static int TICKET_ACTION_HANDSEL_EXPPIRED = 5;//赠送过期
-    public final static int TICKET_ACTION_HANDSEL_EFFECTIVE = 6;//赠送过期
-    public final static int TICKET_ACTION_RECOVER = 7;//赠送过期
+    public final static int TICKET_ACTION_HANDSEL_EFFECTIVE = 6;//赠送生效
+    public final static int TICKET_ACTION_RECOVER = 7;//转为未使用
+    public final static int TICKET_ACTION_REFUNDING = 8;//申请退款中
+    public final static int TICKET_ACTION_REFUND = 9;//退款成功
     /**
      * 飞行票历史操作主键
      */

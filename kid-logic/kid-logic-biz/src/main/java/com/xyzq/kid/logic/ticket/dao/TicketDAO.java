@@ -25,9 +25,15 @@ public interface TicketDAO {
 
     int updateExtendByPrimaryKey(TicketPO record);
 
+    int updateExpiredByPrimaryKey(Integer id);
+
+    int updateRefundByPrimaryKey(Integer id);
+
+    int updateRefundingByPrimaryKey(Integer id);
+
     int updateHandselByPrimaryKey(TicketPO record);
 
-    int updateUseByPrimaryKey(TicketPO record);
+    int updateUseByPrimaryKey(Integer id);
 
-    int updateRecoverByPrimaryKey(TicketPO record);
+    int updateRecoverByPrimaryKey(Integer id);
 }

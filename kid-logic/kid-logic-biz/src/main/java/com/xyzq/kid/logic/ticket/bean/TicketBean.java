@@ -126,6 +126,34 @@ public class TicketBean {
     public int updateExtendByPrimaryKey(TicketEntity entity){
         return ticketDAO.updateExtendByPrimaryKey(TicketEntityToPO(entity));
     }
+
+    /**
+     * 过期
+     * @param id
+     * @return
+     */
+    public int updateExpiredByPrimaryKey(Integer id){
+        return ticketDAO.updateExpiredByPrimaryKey(id);
+    }
+
+    /**
+     * 退票
+     * @param id
+     * @return
+     */
+    public int updateRefundByPrimaryKey(Integer id){
+        return ticketDAO.updateRefundByPrimaryKey(id);
+    }
+
+    /**
+     * 申请退票
+     * @param id
+     * @return
+     */
+    public int updateRefundingByPrimaryKey(Integer id){
+        return ticketDAO.updateRefundingByPrimaryKey(id);
+    }
+
     /**
      * 赠送
      * @param entity
@@ -137,20 +165,20 @@ public class TicketBean {
 
     /**
      * 使用
-     * @param entity
+     * @param id
      * @return
      */
-    public int updateUseByPrimaryKey(TicketEntity entity){
-        return ticketDAO.updateUseByPrimaryKey(TicketEntityToPO(entity));
+    public int updateUseByPrimaryKey(Integer id){
+        return ticketDAO.updateUseByPrimaryKey(id);
     }
 
     /**
      * 恢复
-     * @param entity
+     * @param id
      * @return
      */
-    public int updateRecoverByPrimaryKey(TicketEntity entity){
-        return ticketDAO.updateRecoverByPrimaryKey(TicketEntityToPO(entity));
+    public int updateRecoverByPrimaryKey(Integer id){
+        return ticketDAO.updateRecoverByPrimaryKey(id);
     }
 
     /**

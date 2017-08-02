@@ -15,7 +15,8 @@ public class TicketEntity {
     public final static int TICKET_STATUS_NEW = 0;//未使用
     public final static int TICKET_STATUS_USED = 1;//已使用
     public final static int TICKET_STATUS_EXPIRED = 2;//过期
-    public final static int TICKET_STATUS_BACK = 3;//退票
+    public final static int TICKET_STATUS_BACKING = 3;//退票申请中
+    public final static int TICKET_STATUS_BACK = 4;//退票
 
     /**
      * 飞行票主键
