@@ -16,9 +16,9 @@ public class RecordEntity {
 	 */
 	public Integer id;
 	/**
-	 * 票券的id
+	 * 票券的serialNumber
 	 */
-	public Integer ticketID;
+	public String serialNo;
 	/**
 	 * 飞行日志文件名称
 	 */
@@ -31,18 +31,12 @@ public class RecordEntity {
 	 * 记录是否被软删，1:删除，0:未删除
 	 */
 	public String deleted;
-	/**
-	 * 记录创建人的id
-	 */
-	public String creator;
+
 	/**
 	 * 创建时间
 	 */
 	public Timestamp createTime;
-	/**
-	 * 最后一次更新人的id
-	 */
-	public String updator;
+
 	/**
 	 * 更新时间
 	 */
@@ -52,13 +46,11 @@ public class RecordEntity {
 	public RecordEntity(RecordPO recordPO) {
 		if (recordPO != null) {
 			id = recordPO.getId();
-			ticketID = recordPO.getTicketID();
+			serialNo = recordPO.getSerialNumber();
 			path = recordPO.getPath();
 			purchased = recordPO.getPurchased();
 			deleted = recordPO.getDeleted();
-			creator = recordPO.getCreator();
 			createTime = recordPO.getCreateTime();
-			updator = recordPO.getUpdator();
 			updateTime = recordPO.getUpdateTime();
 		}
 	}

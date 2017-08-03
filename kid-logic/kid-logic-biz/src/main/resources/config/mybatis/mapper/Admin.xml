@@ -15,5 +15,33 @@
         LIMIT 1
     </select>
 
-
+    <update id="updateAdmin" parameterType="AdminPO">
+        update  CNS_Admin
+        set
+        <if test="UserName != null">
+            UserName = #{userName},
+        </if>
+        <if test="Password != null">
+            Password = #{password},
+        </if>
+        <if test="Mobile != null">
+            Mobile = #{mobile},
+        </if>
+        <if test="Email != null">
+            Email = #{email},
+        </if>
+        <if test="Deleted != null">
+            Deleted = #{deleted},
+        </if>
+        <if test="UpdateTime != null">
+            UpdateTime = #{updatetime},
+        </if>
+        where ID = #{id}
+    </update>
+    <insert id="addAdmin" parameterType="AdminPO">
+        insert into CNS_Admin ( UserName,Password,Mobile,Email,Deleted CreateTime,
+        UpdateTime)
+        values (#{userName}, #{password}, #{Mobile}, #{Email},#{Deleted}, #{createtime},
+        #{updatetime})
+    </insert>
 </mapper>

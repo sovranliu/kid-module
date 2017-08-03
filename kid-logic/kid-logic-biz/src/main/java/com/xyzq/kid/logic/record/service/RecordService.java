@@ -48,8 +48,8 @@ public class RecordService {
      * @Param ticketID
      * @Param purchased
      */
-    public List<RecordEntity> findBy(Integer ticketID, String purchased) {
-        return recordBean.findBy(ticketID, purchased);
+    public List<RecordEntity> findBy(String serialNo , String purchased) {
+        return recordBean.findBy(serialNo, purchased);
     }
     /**
      * 购买飞行日志
@@ -66,10 +66,26 @@ public class RecordService {
      * @return Integer
      * @Param RecordPO
      */
-    public Integer buyRecords(Integer ticketId) {
-        return recordBean.buyRecords(ticketId);
+    public Integer buyRecords(String serialNo ) {
+        return recordBean.buyRecords(serialNo);
     }
 
+    /**
+     * 新增飞行日志
+     * @Param RecordPO
+     * @return int
+     */
+    public int addRecord(RecordPO recordPO){
+        return recordBean.addRecord(recordPO);
+    }
+    /**
+     * 删除飞行日志
+     * @Param RecordPO
+     * @return int
+     */
+    public int deleteRecord(Integer id){
+        return recordBean.deleteRecord(id);
+    }
     /**
      * 方法描述
      * /apps/data/record/2017-07/201707271830459527.mp4。
