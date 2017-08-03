@@ -5,6 +5,7 @@ import com.xyzq.kid.finance.dao.OrderDAO;
 import com.xyzq.kid.finance.dao.ReceiptDAO;
 import com.xyzq.kid.finance.dao.po.OrderPO;
 import com.xyzq.kid.finance.dao.po.ReceiptPO;
+import com.xyzq.kid.finance.service.api.PayListener;
 import com.xyzq.kid.finance.service.entity.NewOrderEntity;
 import com.xyzq.kid.finance.service.entity.OrderEntity;
 import com.xyzq.kid.finance.service.entity.PaidOrderEntity;
@@ -40,6 +41,10 @@ public class OrderService {
      */
     @Autowired
     private ReceiptDAO receiptDAO;
+    /**
+     * 支付监听器
+     */
+    private PayListener payListener;
 
 
     /**
@@ -158,13 +163,23 @@ public class OrderService {
      * @return 通知处理是否成功，false表示让微信后续重复通知
      */
     public boolean notifyPayment(String protocol) throws IOException {
+        logger.info("receive notifyPayment:\n" + protocol);
         PayNotify payNotify = WechatPayHelper.onPayNotify(protocol);
         if(!payNotify.isValid()) {
             return false;
         }
         ReceiptPO receiptPO = new ReceiptPO();
         receiptDAO.insertReceipt(receiptPO);
-        orderDAO.updateOrderPaid(payNotify.tradeNo);
+        if(1 == orderDAO.updateOrderPaid(payNotify.tradeNo)) {
+            if(null != payListener) {
+                try {
+                    payListener.onPay(payNotify.tradeNo, payNotify.openId, Integer.parseInt(payNotify.attach), payNotify.totalFee);
+                }
+                catch (Exception ex) {
+                    logger.error("pay callback failed, payNotify = \n" + payNotify, ex);
+                }
+            }
+        }
         return true;
     }
 
