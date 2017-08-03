@@ -12,7 +12,6 @@ SELECT *
 FROM LGC_Config
 WHERE Deleted = 0 AND Name = #{name}
 DESC BY ID
-LIMIT 1
     </select>
     <update id="updateOrderClosed">
 UPDATE LGC_Config

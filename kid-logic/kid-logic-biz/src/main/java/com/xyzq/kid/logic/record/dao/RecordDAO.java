@@ -20,7 +20,7 @@ public interface RecordDAO {
      * @Param purchased
      * @return RecordEntity
      */
-    List<RecordPO> findBy(@Param("ticketID")Integer ticketID, @Param("purchased")String purchased);
+    List<RecordPO> findBy(@Param("serialNo")String serialNo, @Param("purchased")String purchased);
 
     /**
      * 购买飞行日志
@@ -34,6 +34,19 @@ public interface RecordDAO {
      * @Param RecordPO
      * @return Integer
      */
-    int buyRecords(Integer ticketID);
+    int buyRecords(String serialNo);
+
+    /**
+     * 新增飞行日志
+     * @Param RecordPO
+     * @return int
+     */
+    int addRecord(RecordPO recordPO);
+    /**
+     * 删除飞行日志
+     * @Param RecordPO
+     * @return int
+     */
+    int deleteRecord(Integer id);
 
 }
