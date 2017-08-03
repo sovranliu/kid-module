@@ -30,7 +30,7 @@ public class OrderService {
     /**
      * 日志对象
      */
-    public static Logger logger = LoggerFactory.getLogger(OrderService.class);
+    protected static Logger logger = LoggerFactory.getLogger(OrderService.class);
     /**
      * 订单数据访问对象
      */

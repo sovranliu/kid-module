@@ -1,37 +1,33 @@
 package com.xyzq.kid.logic.config.entity;
 
-import java.math.BigDecimal;
+import com.xyzq.simpson.base.time.DateTime;
 
 /**
- * 范例实体
+ * 配置参数实体
  */
 public class ConfigEntity {
     /**
-     * 飞行票主键
-     */
-    public Integer id;
-    /**
-     * 名称
+     * 参数名称
      */
     public String name;
     /**
-     * 标题
+     * 参数标题
      */
     public String title;
     /**
-     * 内容
+     * 内容值
      */
     public String content;
     /**
-     * 记录是否被软删
+     * 校验参数值合法性的正则表达式
      */
-    public Byte deleted;
-    /**
-     * 记录创建时间
-     */
-    public String createtime;
+    public String pattern;
     /**
      * 记录变更时间
      */
-    public String updatetime;
+    public DateTime createTime;
+    /**
+     * 记录变更时间
+     */
+    public DateTime updateTime;
 }

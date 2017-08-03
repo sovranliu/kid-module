@@ -1,141 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xyzq.kid.logic.config.dao.ConfigDAO">
-  <resultMap id="BaseResultMap" type="com.xyzq.kid.logic.config.dao.po.ConfigPO">
-    <id column="ID" jdbcType="INTEGER" property="id" />
-    <result column="Name" jdbcType="VARCHAR" property="name" />
-    <result column="Title" jdbcType="VARCHAR" property="title" />
-    <result column="Content" jdbcType="VARCHAR" property="content" />
-    <result column="Deleted" jdbcType="TINYINT" property="deleted" />
-    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
-    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    ID, Name, Title, Content, Deleted, CreateTime, UpdateTime
-  </sql>
-
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from LGC_Config
-    where ID = #{id,jdbcType=INTEGER}
-  </select>
-
-  <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from LGC_Config
-    where Name = #{name,jdbcType=VARCHAR}
-  </select>
-
-  <select id="selectByNameArr" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from LGC_Config
-    where Name in
-    <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
-      #{item}
-    </foreach>
-  </select>
-
-  <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    update LGC_Config
-    set Deleted = 1
-    where ID = #{id,jdbcType=INTEGER}
-  </update>
-
-  <insert id="insert" parameterType="com.xyzq.kid.logic.config.dao.po.ConfigPO">
-    insert into LGC_Config (ID, Name, Title, 
-      Content, Deleted, CreateTime, 
-      UpdateTime)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
-      #{content,jdbcType=VARCHAR}, #{deleted,jdbcType=TINYINT}, #{createtime,jdbcType=TIMESTAMP}, 
-      #{updatetime,jdbcType=TIMESTAMP})
-  </insert>
-
-  <insert id="insertSelective" parameterType="com.xyzq.kid.logic.config.dao.po.ConfigPO">
-    insert into LGC_Config
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        ID,
-      </if>
-      <if test="name != null">
-        Name,
-      </if>
-      <if test="title != null">
-        Title,
-      </if>
-      <if test="content != null">
-        Content,
-      </if>
-      <if test="deleted != null">
-        Deleted,
-      </if>
-      <if test="createtime != null">
-        CreateTime,
-      </if>
-      <if test="updatetime != null">
-        UpdateTime,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="title != null">
-        #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null">
-        #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="deleted != null">
-        #{deleted,jdbcType=TINYINT},
-      </if>
-      <if test="createtime != null">
-        #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatetime != null">
-        #{updatetime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-
-  <update id="updateByPrimaryKeySelective" parameterType="com.xyzq.kid.logic.config.dao.po.ConfigPO">
-    update LGC_Config
-    <set>
-      <if test="name != null">
-        Name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="title != null">
-        Title = #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null">
-        Content = #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="deleted != null">
-        Deleted = #{deleted,jdbcType=TINYINT},
-      </if>
-      <if test="createtime != null">
-        CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatetime != null">
-        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where ID = #{id,jdbcType=INTEGER}
-  </update>
-
-  <update id="updateByPrimaryKey" parameterType="com.xyzq.kid.logic.config.dao.po.ConfigPO">
-    update LGC_Config
-    set Name = #{name,jdbcType=VARCHAR},
-      Title = #{title,jdbcType=VARCHAR},
-      Content = #{content,jdbcType=VARCHAR},
-      Deleted = #{deleted,jdbcType=TINYINT},
-      CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
-    where ID = #{id,jdbcType=INTEGER}
-  </update>
+    <select id="select" resultType="ConfigPO">
+SELECT *
+FROM LGC_Config
+WHERE Deleted = 0
+ASC BY ID
+    </select>
+    <select id="load" resultType="ConfigPO">
+SELECT *
+FROM LGC_Config
+WHERE Deleted = 0 AND Name = #{name}
+DESC BY ID
+LIMIT 1
+    </select>
+    <update id="updateOrderClosed">
+UPDATE LGC_Config
+SET Content = #{content}, UpdateTime = NOW()
+WHERE Deleted = 0 AND Name = #{name}
+    </update>
 </mapper>
