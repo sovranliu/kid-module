@@ -65,7 +65,9 @@ public class AdminBean {
      * @return AdminPO
      */
     public void deleteAdmin(Integer id){
-        adminDAO.deleteAdmin(id);
+        AdminPO adminPO = adminDAO.load(id);
+        adminPO.setDeleted(AdminEntity.DELETED);
+        adminDAO.updateAdmin(adminPO);
     }
 
 }

@@ -11,9 +11,9 @@ public class RecordPO {
      */
     private Integer id;
     /**
-     * 票券的id
+     * 票券的serialNumber
      */
-    private Integer ticketID;
+    private String serialNo;
     /**
      * 飞行日志文件名称
      */
@@ -26,18 +26,12 @@ public class RecordPO {
      * 记录是否被软删，1:删除，0:未删除
      */
     private String deleted;
-    /**
-     * 记录创建人的id
-     */
-    private String creator;
+
     /**
      * 创建时间
      */
     private Timestamp createTime;
-    /**
-     * 最后一次更新人的id
-     */
-    private String updator;
+
     /**
      * 更新时间
      */
@@ -52,12 +46,13 @@ public class RecordPO {
         this.id = id;
     }
 
-    public Integer getTicketID() {
-        return ticketID;
+
+    public String getSerialNumber() {
+        return serialNo;
     }
 
-    public void setTicketID(Integer ticketID) {
-        this.ticketID = ticketID;
+    public void setSerialNumber(String serialNo) {
+        this.serialNo = serialNo;
     }
 
     public String getPath() {
@@ -84,13 +79,6 @@ public class RecordPO {
         this.deleted = deleted;
     }
 
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
 
     public Timestamp getCreateTime() {
         return createTime;
@@ -98,14 +86,6 @@ public class RecordPO {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
-    }
-
-    public String getUpdator() {
-        return updator;
-    }
-
-    public void setUpdator(String updator) {
-        this.updator = updator;
     }
 
     public Timestamp getUpdateTime() {

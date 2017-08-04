@@ -28,6 +28,9 @@ public class RecordBean {
      */
     public RecordEntity load(Integer id) {
         RecordPO recordPO = recordDAO.load(id);
+        if(recordPO == null){
+            return null;
+        }
         RecordEntity entity = new RecordEntity(recordPO);
         return entity;
     }
@@ -37,8 +40,8 @@ public class RecordBean {
      * @Param purchased
      * @return RecordEntity
      */
-    public List<RecordEntity> findBy(Integer ticketID, String purchased){
-        List<RecordPO> recordPOList = recordDAO.findBy(ticketID,purchased);
+    public List<RecordEntity> findBy(String serialNo, String purchased){
+        List<RecordPO> recordPOList = recordDAO.findBy(serialNo,purchased);
         List<RecordEntity> recordEntityList= new ArrayList<>();
         for (RecordPO recordPO :recordPOList
                 ) {
@@ -61,8 +64,24 @@ public class RecordBean {
      * @Param RecordPO
      * @return Integer
      */
-    public int buyRecords(Integer ticketId){
-        return recordDAO.buyRecords(ticketId);
+    public int buyRecords(String serialNo){
+        return recordDAO.buyRecords(serialNo);
+    }
+    /**
+     * 新增飞行日志
+     * @Param RecordPO
+     * @return int
+     */
+    public int addRecord(RecordPO recordPO){
+        return recordDAO.addRecord(recordPO);
+    }
+    /**
+     * 删除飞行日志
+     * @Param RecordPO
+     * @return int
+     */
+    public int deleteRecord(Integer id){
+        return recordDAO.deleteRecord(id);
     }
 }
 
