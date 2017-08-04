@@ -35,6 +35,10 @@ public class OrderPO {
      */
     private int state;
     /**
+     * 附属数据
+     */
+    private String tag;
+    /**
      * 是否被软删
      */
     private boolean deleted;
@@ -102,6 +106,14 @@ public class OrderPO {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public boolean isDeleted() {

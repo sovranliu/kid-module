@@ -56,9 +56,10 @@ public class OrderService {
      * @param goodsType 商品类型
      * @param fee 支付费用
      * @param ip 用户IP
+     * @param tag 附属数据
      * @return 订单信息
      */
-    public NewOrderEntity createOrder(String orderNo, String openId, String goodsTitle, int goodsType, int fee, String ip) throws OrderExistException, IOException, WechatResponseException {
+    public NewOrderEntity createOrder(String orderNo, String openId, String goodsTitle, int goodsType, int fee, String ip, String tag) throws OrderExistException, IOException, WechatResponseException {
         logger.info("OrderService.createOrder(" + orderNo + ", " + openId + ", " + goodsType + ", " + fee + ", " + ip + ")");
         if(Text.isBlank(orderNo)) {
             orderNo = generateOrderNo();
@@ -75,6 +76,7 @@ public class OrderService {
         orderPO.setOpenId(openId);
         orderPO.setFee(fee);
         orderPO.setGoodsType(goodsType);
+        orderPO.setTag(tag);
         orderDAO.insertOrder(orderPO);
         // 发起请求
         UnifiedOrderRequest unifiedOrderRequest = UnifiedOrderRequest.build(orderNo, openId, goodsTitle, goodsType, fee, ip);
@@ -94,6 +96,7 @@ public class OrderService {
         result.goodsType = orderPO.getGoodsType();
         result.prepayId = orderPO.getPrepayId();
         result.state = OrderEntity.STATE_PAYING;
+        result.tag = tag;
         result.makeSign();
         return result;
     }
@@ -170,10 +173,11 @@ public class OrderService {
         }
         ReceiptPO receiptPO = new ReceiptPO();
         receiptDAO.insertReceipt(receiptPO);
-        if(1 == orderDAO.updateOrderPaid(payNotify.tradeNo)) {
+        OrderPO orderPO = orderDAO.loadByOrderNo(payNotify.tradeNo);
+        if(null != orderPO && 1 == orderDAO.updateOrderPaid(payNotify.tradeNo)) {
             if(null != payListener) {
                 try {
-                    payListener.onPay(payNotify.tradeNo, payNotify.openId, Integer.parseInt(payNotify.attach), payNotify.totalFee);
+                    payListener.onPay(payNotify.tradeNo, payNotify.openId, Integer.parseInt(payNotify.attach), payNotify.totalFee, orderPO.getTag());
                 }
                 catch (Exception ex) {
                     logger.error("pay callback failed, payNotify = \n" + payNotify, ex);
@@ -209,6 +213,7 @@ public class OrderService {
         orderEntity.goodsType = orderPO.getGoodsType();
         orderEntity.prepayId = orderPO.getPrepayId();
         orderEntity.state = orderPO.getState();
+        orderEntity.tag = orderPO.getTag();
     }
 
     /**

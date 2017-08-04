@@ -54,4 +54,8 @@ public class OrderEntity {
      * 订单状态，0：初始，1：待支付，2：已支付，3：待退款，4：已退款，5：已关闭
      */
     public int state;
+    /**
+     * 附属数据
+     */
+    public String tag;
 }
