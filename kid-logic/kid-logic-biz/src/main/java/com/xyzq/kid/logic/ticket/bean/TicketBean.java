@@ -1,6 +1,7 @@
 package com.xyzq.kid.logic.ticket.bean;
 
 import com.xyzq.kid.CommonTool;
+import com.xyzq.kid.logic.Page;
 import com.xyzq.kid.logic.ticket.dao.TicketDAO;
 import com.xyzq.kid.logic.ticket.dao.po.TicketPO;
 import com.xyzq.kid.logic.ticket.entity.TicketEntity;
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 这是一个范例Java逻辑功能Bean
@@ -181,6 +184,25 @@ public class TicketBean {
         return ticketDAO.updateRecoverByPrimaryKey(id);
     }
 
+    public Page<TicketEntity> queryTicketByCond(Map paramMap) {
+        List<TicketEntity> ticketEntityList = new ArrayList<>();
+        List<TicketPO> ticketPOList = ticketDAO.queryTicketByCond(paramMap);
+        if(null != ticketPOList) {
+            for (int i = 0; i < ticketPOList.size(); i++) {
+                ticketEntityList.add(TicketPOToEntity(ticketPOList.get(i)));
+            }
+        }
+        int sum = ticketDAO.queryTicketByCondCount(paramMap);
+
+        Page result = new Page();
+        result.setCurrentPage((Integer)paramMap.get("begin") + 1);
+        result.setPageSize((Integer)paramMap.get("limit"));
+        result.setRows(sum);
+        result.setResultList(ticketEntityList);
+
+        return result;
+    }
+
     /**
      * TicketPO 转化为 TicketEntity
      * @param po
@@ -195,13 +217,13 @@ public class TicketBean {
             entity.id = po.getId();
         }
         if(null != po.getSerialno()) {
-            entity.serialno = po.getSerialno();
+            entity.serialNumber = po.getSerialno();
         }
         if(null != po.getType()) {
             entity.type = po.getType();
         }
         if(null != po.getOwnermobileno()) {
-            entity.ownermobileno = po.getOwnermobileno();
+            entity.telephone = po.getOwnermobileno();
         }
         if(null != po.getPayeropenid()) {
             entity.payeropenid = po.getPayeropenid();
@@ -210,7 +232,7 @@ public class TicketBean {
             entity.price = po.getPrice();
         }
         if(null != po.getExpiredate()) {
-            entity.expiredate = CommonTool.DataToStringYMD(po.getExpiredate());
+            entity.expire = CommonTool.dataToStringYMD(po.getExpiredate());
         }
         if(null != po.getInsurance()) {
             entity.insurance = po.getInsurance();
@@ -225,10 +247,10 @@ public class TicketBean {
             entity.deleted = po.getDeleted();
         }
         if(null != po.getCreatetime()) {
-            entity.createtime = CommonTool.DataToStringYMDHMS(po.getCreatetime());
+            entity.createtime = CommonTool.dataToStringYMDHMS(po.getCreatetime());
         }
         if(null != po.getUpdatetime()) {
-            entity.updatetime = CommonTool.DataToStringYMDHMS(po.getUpdatetime());
+            entity.updatetime = CommonTool.dataToStringYMDHMS(po.getUpdatetime());
         }
         return entity;
     }
@@ -243,14 +265,14 @@ public class TicketBean {
         if(null != entity.id ) {
             po.setId(entity.id);
         }
-        if(null != entity.serialno)  {
-            po.setSerialno(entity.serialno);
+        if(null != entity.serialNumber)  {
+            po.setSerialno(entity.serialNumber);
         }
         if(null != entity.type ) {
             po.setType(entity.type);
         }
-        if(null != entity.ownermobileno) {
-            po.setOwnermobileno(entity.ownermobileno);
+        if(null != entity.telephone) {
+            po.setOwnermobileno(entity.telephone);
         }
         if(null != entity.payeropenid) {
             po.setPayeropenid(entity.payeropenid);
@@ -258,8 +280,8 @@ public class TicketBean {
         if(null != entity.price) {
             po.setPrice(entity.price);
         }
-        if(null != entity.expiredate) {
-            po.setExpiredate(CommonTool.StringToDataYMD(entity.expiredate));
+        if(null != entity.expire) {
+            po.setExpiredate(CommonTool.stringToDataYMD(entity.expire));
         }
         if(null != entity.insurance) {
             po.setInsurance(entity.insurance);

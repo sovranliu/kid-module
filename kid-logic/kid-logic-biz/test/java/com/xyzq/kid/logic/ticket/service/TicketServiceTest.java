@@ -13,6 +13,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -30,27 +32,9 @@ public class TicketServiceTest {
 
     @Test
     public void buySingleTickets() throws Exception {
-        TicketEntity ticketEntity = new TicketEntity();
-        ticketEntity.ownermobileno = "13999999999";
-        ticketEntity.payeropenid = "myjtest_single";
-        ticketEntity.price = new BigDecimal(560);
-        ticketEntity.expiredate = "2017-09-30";
-        ticketEntity.insurance = true;
-        ticketEntity.orderno = "0000000001";
-        ticketService.buySingleTickets(ticketEntity);
+        ticketService.onPay("12345678", "myj_test_new", 20005, 80000, "myj_test_new");
     }
 
-    @Test
-    public void buyGroupleTickets() throws Exception {
-        TicketEntity ticketEntity = new TicketEntity();
-        ticketEntity.ownermobileno = "1388888888";
-        ticketEntity.payeropenid = "myjtest";
-        ticketEntity.price = new BigDecimal(380);
-        ticketEntity.expiredate = "2017-09-30";
-        ticketEntity.insurance = true;
-        ticketEntity.orderno = "0000000001";
-        ticketService.buyGroupleTickets(ticketEntity, 4);
-    }
 
     @Test
     public void handselTickets() throws Exception {
@@ -114,6 +98,17 @@ public class TicketServiceTest {
         System.out.println("pagesize" + result.getPageSize());
         System.out.println("rows" + result.getRows());
         System.out.println("Totalpage" + result.getTotalPage());
+    }
+
+    @Test
+    public void queryTicketByCond() throws Exception {
+        Page<TicketEntity>  result1 = ticketService.queryTicketByCond("2017080307061687847bf", null, null, null, null, 1, 10);
+        Page<TicketEntity>  result2 = ticketService.queryTicketByCond(null, "1388888888", null, null, null, 1, 10);
+        Page<TicketEntity>  result3 = ticketService.queryTicketByCond(null, null, "2017-08-01", "2017-08-02", null, 1, 10);
+        Page<TicketEntity>  result4 = ticketService.queryTicketByCond(null, null, null, "2017-08-02", null, 1, 10);
+        Page<TicketEntity>  result5 = ticketService.queryTicketByCond(null, null, "2017-08-04", null, null, 1, 10);
+        Page<TicketEntity>  result6 = ticketService.queryTicketByCond(null, null, null, null, 1, 1, 10);
+        System.out.println();
     }
 
 }

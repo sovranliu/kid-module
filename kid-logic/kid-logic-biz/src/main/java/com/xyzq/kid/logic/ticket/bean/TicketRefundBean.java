@@ -32,7 +32,7 @@ public class TicketRefundBean {
     public Page<TicketRefundEntity> selectRefunding(Integer begin, Integer limit) {
         List<TicketRefundEntity> ticketRefundEntityList = new ArrayList<>();
         Map paramMap = new HashMap<>();
-        paramMap.put("begin", begin);
+        paramMap.put("begin", (begin - 1) * limit);
         paramMap.put("limit", limit);
         List<TicketRefundPO> ticketRefundPOList = ticketRefundDAO.selectRefunding(paramMap);
         if(null != ticketRefundPOList) {
@@ -42,7 +42,7 @@ public class TicketRefundBean {
         }
         int sum = ticketRefundDAO.selectRefundingCount();
         Page result = new Page();
-        result.setCurrentPage(begin);
+        result.setCurrentPage(begin + 1);
         result.setPageSize(limit);
         result.setRows(sum);
         result.setResultList(ticketRefundEntityList);
@@ -53,7 +53,7 @@ public class TicketRefundBean {
     public Page<TicketRefundEntity> selectRefunded(Integer begin, Integer limit) {
         List<TicketRefundEntity> ticketRefundEntityList = new ArrayList<>();
         Map paramMap = new HashMap<>();
-        paramMap.put("begin", begin);
+        paramMap.put("begin", (begin - 1) * limit);
         paramMap.put("limit", limit);
         List<TicketRefundPO> ticketRefundPOList = ticketRefundDAO.selectRefunded(paramMap);
         if(null != ticketRefundPOList) {
@@ -63,7 +63,7 @@ public class TicketRefundBean {
         }
         int sum = ticketRefundDAO.selectRefundedCount();
         Page result = new Page();
-        result.setCurrentPage(begin);
+        result.setCurrentPage(begin + 1);
         result.setRows(sum);
         result.setResultList(ticketRefundEntityList);
 
@@ -101,10 +101,10 @@ public class TicketRefundBean {
             entity.deleted = po.getDeleted();
         }
         if(null != po.getCreatetime()) {
-            entity.createtime = CommonTool.DataToStringYMDHMS(po.getCreatetime());
+            entity.createtime = CommonTool.dataToStringYMDHMS(po.getCreatetime());
         }
         if(null != po.getUpdatetime()) {
-            entity.updatetime = CommonTool.DataToStringYMDHMS(po.getUpdatetime());
+            entity.updatetime = CommonTool.dataToStringYMDHMS(po.getUpdatetime());
         }
         return entity;
     }
@@ -129,10 +129,10 @@ public class TicketRefundBean {
             po.setDeleted(entity.deleted);
         }
         if(null != entity.createtime) {
-            po.setCreatetime(CommonTool.StringToDataYMDHMS(entity.createtime));
+            po.setCreatetime(CommonTool.stringToDataYMDHMS(entity.createtime));
         }
         if(null != entity.updatetime) {
-            po.setUpdatetime(CommonTool.StringToDataYMDHMS(entity.updatetime));
+            po.setUpdatetime(CommonTool.stringToDataYMDHMS(entity.updatetime));
         }
         return po;
     }

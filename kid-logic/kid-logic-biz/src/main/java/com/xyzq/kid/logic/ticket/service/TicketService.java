@@ -1,11 +1,16 @@
 package com.xyzq.kid.logic.ticket.service;
 
 import com.xyzq.kid.CommonTool;
+import com.xyzq.kid.finance.service.RefundService;
+import com.xyzq.kid.finance.service.api.PayListener;
 import com.xyzq.kid.logic.Page;
+import com.xyzq.kid.logic.config.common.ConfigCommon;
+import com.xyzq.kid.logic.config.entity.ConfigEntity;
+import com.xyzq.kid.logic.config.service.ConfigService;
+import com.xyzq.kid.logic.config.service.GoodsTypeService;
 import com.xyzq.kid.logic.ticket.bean.TicketBean;
 import com.xyzq.kid.logic.ticket.bean.TicketHistoryBean;
 import com.xyzq.kid.logic.ticket.bean.TicketRefundBean;
-import com.xyzq.kid.logic.ticket.dao.po.TicketRefundPO;
 import com.xyzq.kid.logic.ticket.entity.TicketEntity;
 import com.xyzq.kid.logic.ticket.entity.TicketHistoryEntity;
 import com.xyzq.kid.logic.ticket.entity.TicketRefundEntity;
@@ -15,8 +20,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.security.krb5.internal.Ticket;
 
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -24,7 +30,7 @@ import java.util.*;
  * 票务服务
  */
 @Service("ticketService")
-public class TicketService {
+public class TicketService implements PayListener {
     /**
      * 日志对象
      */
@@ -50,13 +56,59 @@ public class TicketService {
      */
     @Autowired
     private UserService userService;
+    /**
+     * 退票服务
+     */
+    @Autowired
+    private RefundService refundService;
+    /**
+     * 票价服务
+     */
+    @Autowired
+    private GoodsTypeService goodsTypeService;
+    /**
+     * 配置服务
+     */
+    @Autowired
+    private ConfigService configService;
+
+
+    @Override
+    public void onPay(String orderNo, String openId, int goodsType, int fee, String tag) {
+        logger.info("TicketService.buySingleTickets[in]-orderNo:" + orderNo + ",openId:"+ openId + ",goodsType:" + goodsType + ",fee:" + fee);
+        UserEntity userEntity = userService.selectByOpenId(tag);
+        if(null == userEntity || null == userEntity.openid) {
+            logger.error("No user by openId:" + openId);
+            return;
+        }
+        TicketEntity ticketEntity = new TicketEntity();
+        ticketEntity.telephone = userEntity.mobileno;
+        ticketEntity.orderno = orderNo;
+        ticketEntity.payeropenid = openId;
+        ticketEntity.price = new BigDecimal(goodsTypeService.calculateFee(goodsType));
+        ConfigEntity configEntity = configService.load(ConfigCommon.TICKET_EXPIREDATE);
+        ticketEntity.expire = CommonTool.addDataYMD(CommonTool.dataToStringYMD(new Date()), Integer.parseInt(configEntity.content));
+        //单人票
+        if(goodsTypeService.isSingleTicket(goodsType)) {
+            ticketEntity.insurance = goodsTypeService.containsInsurance(goodsType);
+            ticketEntity.type = TicketEntity.TICKET_TYPE_SINGLE;
+            buySingleTickets(ticketEntity);
+            return;
+        }
+        //团购票
+        if(goodsTypeService.isGroupTicket(goodsType)) {
+            ticketEntity.type = TicketEntity.TICKET_TYPE_GROUP;
+            buyGroupleTickets(ticketEntity, goodsTypeService.calculateTicketCount(goodsType));
+            return;
+        }
+    }
 
     /**
      * 个人购票
      * @param ticketEntity
      * @return
      */
-    public void buySingleTickets(TicketEntity ticketEntity){
+    private void buySingleTickets(TicketEntity ticketEntity){
         logger.info("TicketService.buySingleTickets[in]-ticketEntity:" + ticketEntity.toString());
         ticketEntity.type = TicketEntity.TICKET_TYPE_SINGLE;
         buyTickets(ticketEntity);
@@ -69,11 +121,12 @@ public class TicketService {
      * @param num 购买张数
      * @return
      */
-    public void buyGroupleTickets(TicketEntity ticketEntity, int num){
+    private void buyGroupleTickets(TicketEntity ticketEntity, int num){
         logger.info("TicketService.buyGroupleTickets[in]-ticketEntity:" + ticketEntity.toString() + ",num:" + num);
         if(num >= 3) {
             for (int i = 0; i < num; i++) {
                 ticketEntity.type = TicketEntity.TICKET_TYPE_GROUP;
+                ticketEntity.insurance = false;
                 buyTickets(ticketEntity);
             }
         }
@@ -101,13 +154,13 @@ public class TicketService {
         if(null == mobileNo) {
             return "mobileno is null!";
         }
-        if(mobileNo.equals(ticketEntity.ownermobileno)) {
+        if(mobileNo.equals(ticketEntity.telephone)) {
             return "can not handsel to self!";
         }
 
-        handselTicketHistory(ticketId, ticketEntity.ownermobileno);
+        handselTicketHistory(ticketId, ticketEntity.telephone);
 
-        ticketEntity.ownermobileno = mobileNo;
+        ticketEntity.telephone = mobileNo;
         ticketBean.updateHandselByPrimaryKey(ticketEntity);
 
         return "success";
@@ -127,7 +180,7 @@ public class TicketService {
         if(ticketEntity.status != TicketEntity.TICKET_STATUS_NEW) {
             return "ticket status error!";
         }
-        if(CommonTool.checkExpire(ticketEntity.expiredate)) {
+        if(CommonTool.checkExpire(ticketEntity.expire)) {
             return "ticket expire!";
         }
         useTicketHistory(ticketId);
@@ -151,7 +204,7 @@ public class TicketService {
         if(ticketEntity.status != TicketEntity.TICKET_STATUS_USED) {
             return "ticket status error!";
         }
-        if(CommonTool.checkExpire(ticketEntity.expiredate)) {
+        if(CommonTool.checkExpire(ticketEntity.expire)) {
             return "ticket expire!";
         }
         recoverTicketHistory(ticketId);
@@ -176,15 +229,15 @@ public class TicketService {
         if(ticketEntity.status != TicketEntity.TICKET_STATUS_NEW) {
             return "ticket status error!";
         }
-        if(CommonTool.checkExpire(ticketEntity.expiredate)) {
+        if(CommonTool.checkExpire(ticketEntity.expire)) {
             return "ticket expire!";
         }
         if(CommonTool.checkExpire(extendDate)) {
             return "wrong extendDate!";
         }
-        extendTicketHistory(ticketId,ticketEntity.expiredate);
+        extendTicketHistory(ticketId,ticketEntity.expire);
 
-        ticketEntity.expiredate = extendDate;
+        ticketEntity.expire = extendDate;
         ticketBean.updateExtendByPrimaryKey(ticketEntity);
 
         return "success";
@@ -204,7 +257,7 @@ public class TicketService {
         if(ticketEntity.status != TicketEntity.TICKET_STATUS_NEW) {
             return "ticket status error!";
         }
-        if(CommonTool.checkExpire(ticketEntity.expiredate)) {
+        if(CommonTool.checkExpire(ticketEntity.expire)) {
             return "ticket expire!";
         }
 
@@ -226,7 +279,7 @@ public class TicketService {
      * @param ticketId
      * @return
      */
-    public String refundTickets(int ticketId) {
+    public String refundTickets(int ticketId, boolean result) {
         logger.info("TicketService.backingTickets[in]-ticketId:" + ticketId);
         TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
         if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
@@ -237,8 +290,6 @@ public class TicketService {
         }
 
         refundTicketHistory(ticketId);
-
-        accessByPrimaryKey(ticketId);
 
         ticketBean.updateRefundByPrimaryKey(ticketEntity.id);
 
@@ -271,11 +322,11 @@ public class TicketService {
             //如果用户在user表中存在，代表赠送生效
             //如果用户在user表中不存在，且已超过24小时，赠送失效
             TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketHistoryEntityList.get(i).ticketid);
-            UserEntity userEntity = userService.selectByMolieNo(ticketEntity.ownermobileno);
+            UserEntity userEntity = userService.selectByMolieNo(ticketEntity.telephone);
             if(null != userEntity && userEntity.mobileno.length() >0 ) {
                 handselEffectiveTicketHistory(ticketHistoryEntityList.get(i).id);
             } else {
-                Date handseldate = CommonTool.StringToDataYMDHMS(ticketHistoryEntityList.get(i).createtime);
+                Date handseldate = CommonTool.stringToDataYMDHMS(ticketHistoryEntityList.get(i).createtime);
                 Date nowDate = new Date();
                 Calendar calendar = new GregorianCalendar();
                 calendar.setTime(handseldate);
@@ -292,7 +343,7 @@ public class TicketService {
         if(null != ticketEntityList) {
             for (int i = 0; i < ticketEntityList.size(); i++) {
                 if(ticketEntityList.get(i).status == TicketEntity.TICKET_STATUS_NEW) {
-                    if(CommonTool.checkExpire(ticketEntityList.get(i).expiredate)) {
+                    if(CommonTool.checkExpire(ticketEntityList.get(i).expire)) {
                         ticketBean.updateExpiredByPrimaryKey(ticketEntityList.get(i).id);
                     }
                 }
@@ -334,12 +385,14 @@ public class TicketService {
     }
 
     /**
-     * 退款申请通过
-     * @param id
-     * @return
+     * 退款申请通过（执行退款）
+     * @param ticketId 票号
+     * @return 退款成功or失败
      */
-    public int accessByPrimaryKey(Integer id) {
-        return ticketRefundBean.accessByPrimaryKey(id);
+    public boolean accessByPrimaryKey(Integer ticketId) {
+        ticketRefundBean.accessByPrimaryKey(ticketId);
+        return refund(ticketId);
+
     }
 
     /**
@@ -370,6 +423,40 @@ public class TicketService {
     }
 
     /**
+     * 根据条件查询飞行记录
+     * @param serialno 流水号
+     * @param ownermobileno 手机号
+     * @param beginDate 售出起
+     * @param endDate 售出止
+     * @param status 状态
+     * @param begin 分页起始
+     * @param limit 每页条数
+     * @return
+     */
+    public Page<TicketEntity> queryTicketByCond(String serialno, String ownermobileno, String beginDate, String endDate, Integer status, Integer begin, Integer limit) {
+        Map paramMap = new HashMap<>();
+        if(null != serialno && serialno.length() > 0) {
+            paramMap.put("serialno", serialno);
+        }
+        if(null != ownermobileno && ownermobileno.length() > 0) {
+            paramMap.put("ownermobileno", ownermobileno);
+        }
+        if(null != beginDate && beginDate.length() > 0) {
+            paramMap.put("beginDate", beginDate);
+        }
+        if(null != endDate && endDate.length() > 0) {
+            paramMap.put("endDate", endDate);
+        }
+        if(null != status) {
+            paramMap.put("status", status);
+        }
+        paramMap.put("begin", (begin - 1) * limit);
+        paramMap.put("limit", limit);
+        return ticketBean.queryTicketByCond(paramMap);
+    }
+
+
+    /**
      * 生成飞行票流水号时分秒+随机4位字母
      * @return
      */
@@ -385,7 +472,7 @@ public class TicketService {
      */
     private void buyTickets(TicketEntity ticketEntity){
         ticketEntity.deleted = CommonTool.STATUS_NORMAL;
-        ticketEntity.serialno = getSerialno();
+        ticketEntity.serialNumber = getSerialno();
         ticketEntity.status = TicketEntity.TICKET_STATUS_NEW;
         int ticketId = ticketBean.insertSelective(ticketEntity);
         newTicketHistory(ticketId);
@@ -494,4 +581,33 @@ public class TicketService {
         ticketHistoryBean.insertSelective(ticketHistoryEntity);
     }
 
+    /**
+     * 退款
+     * @param ticketId 票号
+     * @return true-退票成功，false-退票失败
+     */
+    private boolean refund(int ticketId) {
+        logger.info("TicketService.refund[in]-ticketId:" + ticketId);
+
+        boolean result = false;
+        TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
+        if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
+            return false;
+        }
+        if(ticketEntity.status != TicketEntity.TICKET_STATUS_BACKING) {
+            return false;
+        }
+
+        try {
+            result = refundService.refund(ticketEntity.orderno, null, null, ticketEntity.price.intValue(), null);
+        } catch (IOException e) {
+            logger.info("TicketService.refund[in]-ticketId:" + ticketId + " fail for " + e.toString());
+            return false;
+        }
+
+
+        refundTickets(ticketId, result);
+
+        return result;
+    }
 }

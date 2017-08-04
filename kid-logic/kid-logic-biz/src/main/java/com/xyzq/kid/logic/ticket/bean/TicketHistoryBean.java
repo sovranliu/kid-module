@@ -137,7 +137,7 @@ public class TicketHistoryBean {
             entity.action = po.getAction();
         }
         if(null != po.getPrevalidperiod()) {
-            entity.prevalidperiod = CommonTool.DataToStringYMD(po.getPrevalidperiod());
+            entity.prevalidperiod = CommonTool.dataToStringYMD(po.getPrevalidperiod());
         }
         if(null != po.getPremobile()) {
             entity.premobile = po.getPremobile();
@@ -146,10 +146,10 @@ public class TicketHistoryBean {
             entity.deleted = po.getDeleted();
         }
         if(null != po.getCreatetime()) {
-            entity.createtime = CommonTool.DataToStringYMDHMS(po.getCreatetime());
+            entity.createtime = CommonTool.dataToStringYMDHMS(po.getCreatetime());
         }
         if(null != po.getUpdatetime()) {
-            entity.updatetime = CommonTool.DataToStringYMDHMS(po.getUpdatetime());
+            entity.updatetime = CommonTool.dataToStringYMDHMS(po.getUpdatetime());
         }
         return entity;
     }
@@ -171,7 +171,7 @@ public class TicketHistoryBean {
             po.setAction(entity.action);
         }
         if(null != entity.prevalidperiod) {
-            po.setPrevalidperiod(CommonTool.StringToDataYMD(entity.prevalidperiod));
+            po.setPrevalidperiod(CommonTool.stringToDataYMD(entity.prevalidperiod));
         }
         if(null != entity.premobile) {
             po.setPremobile(entity.premobile);
@@ -181,10 +181,10 @@ public class TicketHistoryBean {
             po.setDeleted(entity.deleted);
         }
         if(null != entity.createtime) {
-            po.setCreatetime(CommonTool.StringToDataYMDHMS(entity.createtime));
+            po.setCreatetime(CommonTool.stringToDataYMDHMS(entity.createtime));
         }
         if(null != entity.updatetime) {
-            po.setUpdatetime(CommonTool.StringToDataYMDHMS(entity.updatetime));
+            po.setUpdatetime(CommonTool.stringToDataYMDHMS(entity.updatetime));
         }
         return po;
     }

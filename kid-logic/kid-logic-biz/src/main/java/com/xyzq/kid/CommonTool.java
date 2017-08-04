@@ -4,7 +4,9 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * 范例工具类
@@ -26,7 +28,7 @@ public class CommonTool {
      *
      * @return 返回值 年-月-日
      */
-    public static String DataToStringYMD(Date date) {
+    public static String dataToStringYMD(Date date) {
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(date);
     }
@@ -36,7 +38,7 @@ public class CommonTool {
      *
      * @return 返回值 年-月-日 时:分:秒
      */
-    public static String DataToStringYMDHMS(Date date) {
+    public static String dataToStringYMDHMS(Date date) {
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(date);
     }
@@ -46,7 +48,7 @@ public class CommonTool {
      *
      * @return 返回值 年-月-日 时:分:秒
      */
-    public static Date StringToDataYMDHMS(String dateString) {
+    public static Date stringToDataYMDHMS(String dateString) {
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             return sdf.parse(dateString);
@@ -61,10 +63,30 @@ public class CommonTool {
      *
      * @return 返回值 年-月-日
      */
-    public static Date StringToDataYMD(String dateString) {
+    public static Date stringToDataYMD(String dateString) {
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
             return sdf.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 方法描述 Date转化为string
+     *
+     * @return 返回值 年-月-日
+     */
+    public static String addDataYMD(String dateString, int day) {
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = sdf.parse(dateString);
+            Calendar calendar   =   new GregorianCalendar();
+            calendar.setTime(date);
+            calendar.add(calendar.DATE,day);//把日期往后增加一天.整数往后推,负数往前移动
+            date=calendar.getTime();   //这个时间就是日期往后推一天的结果
+            return sdf.format(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }

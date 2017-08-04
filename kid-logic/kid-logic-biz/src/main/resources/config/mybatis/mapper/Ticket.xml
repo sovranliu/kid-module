@@ -260,4 +260,56 @@
     where ID = #{id,jdbcType=INTEGER} and Status = 1
   </update>
 
+  <select id="queryTicketByCond" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_Ticket
+    where Deleted = 0
+    <if test="serialno != null">
+      and SerialNo = #{serialno,jdbcType=VARCHAR}
+    </if>
+    <if test="ownermobileno != null">
+      and OwnerMobileNo = #{ownermobileno,jdbcType=VARCHAR}
+    </if>
+    <if test="beginDate != null">
+      <![CDATA[
+      and CreateTime > #{beginDate,jdbcType=TIMESTAMP}
+      ]]>
+    </if>
+    <if test="endDate != null">
+      <![CDATA[
+      and CreateTime < #{endDate,jdbcType=TIMESTAMP}
+      ]]>
+    </if>
+    <if test="status != null">
+      and Status = #{status,jdbcType=INTEGER}
+    </if>
+    limit #{begin, jdbcType=INTEGER}, #{limit,jdbcType=INTEGER}
+  </select>
+
+  <select id="queryTicketByCondCount" resultType="java.lang.Integer">
+    select count(1)
+    from LGC_Ticket
+    where Deleted = 0
+    <if test="serialno != null">
+      and SerialNo = #{serialno,jdbcType=VARCHAR}
+    </if>
+    <if test="ownermobileno != null">
+      and OwnerMobileNo = #{ownermobileno,jdbcType=VARCHAR}
+    </if>
+    <if test="beginDate != null">
+      <![CDATA[
+      and CreateTime > #{beginDate,jdbcType=TIMESTAMP}
+      ]]>
+    </if>
+    <if test="endDate != null">
+      <![CDATA[
+      and CreateTime < #{endDate,jdbcType=TIMESTAMP}
+      ]]>
+    </if>
+    <if test="status != null">
+      and Status = #{status,jdbcType=INTEGER}
+    </if>
+  </select>
+
 </mapper>

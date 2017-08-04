@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyzq.kid.finance.dao.po.RefundPO">
+    <select id="selectByOrderNo" resultType="RefundPO">
+SELECT *
+FROM FIN_Refund
+WHERE Deleted = 0 AND OrderNo = #{orderNo}
+DESC BY ID
+    </select>
+    <select id="loadByRefundNo" resultType="RefundPO">
+SELECT *
+FROM FIN_Refund
+WHERE Deleted = 0 AND RefundNo = #{refundNo}
+DESC BY ID
+LIMIT 1
+    </select>
+    <insert id="insertRefund" parameterType="RefundPO">
+INSERT INTO FIN_Refund (RefundNo, OrderNo, RefundFee, Reason, RefundID, State, Deleted, CreateTime, UpdateTime)
+VALUES (#{refundNo}, #{orderNo}, #{refundFee}, #{reason}, NULL, 0, 0, NOW(), NOW())
+    </insert>
+    <update id="updateRefunding">
+UPDATE FIN_Refund
+SET RefundID = #{refundId}, State = 1, UpdateTime = NOW()
+WHERE RefundNo = #{refundNo} AND State = 0 AND Deleted = 0
+    </update>
+    <update id="updateRefundState">
+UPDATE FIN_Refund
+SET State = #{state}, RefundTime = #{refundTime}, UpdateTime = NOW()
+WHERE RefundNo = #{refundNo} AND State = 1 AND Deleted = 0
+    </update>
+</mapper>

@@ -114,16 +114,16 @@ public class UserBean {
             entity.gender = po.getGender();
         }
         if(null != po.getSubscribetime()) {
-            entity.subscribetime = CommonTool.DataToStringYMDHMS(po.getSubscribetime());
+            entity.subscribetime = CommonTool.dataToStringYMDHMS(po.getSubscribetime());
         }
         if(null != po.getDeleted()) {
             entity.deleted = po.getDeleted();
         }
         if(null != po.getCreatetime()) {
-            entity.createtime = CommonTool.DataToStringYMDHMS(po.getCreatetime());
+            entity.createtime = CommonTool.dataToStringYMDHMS(po.getCreatetime());
         }
         if(null != po.getUpdatetime()) {
-            entity.updatetime = CommonTool.DataToStringYMDHMS(po.getUpdatetime());
+            entity.updatetime = CommonTool.dataToStringYMDHMS(po.getUpdatetime());
         }
         return entity;
     }
@@ -154,17 +154,17 @@ public class UserBean {
             po.setGender(entity.gender);
         }
         if(null != entity.subscribetime) {
-            po.setSubscribetime(CommonTool.StringToDataYMDHMS(entity.subscribetime));
+            po.setSubscribetime(CommonTool.stringToDataYMDHMS(entity.subscribetime));
         }
 
         if(null != entity.deleted) {
             po.setDeleted(entity.deleted);
         }
         if(null != entity.createtime) {
-            po.setCreatetime(CommonTool.StringToDataYMDHMS(entity.createtime));
+            po.setCreatetime(CommonTool.stringToDataYMDHMS(entity.createtime));
         }
         if(null != entity.updatetime) {
-            po.setUpdatetime(CommonTool.StringToDataYMDHMS(entity.updatetime));
+            po.setUpdatetime(CommonTool.stringToDataYMDHMS(entity.updatetime));
         }
         return po;
     }

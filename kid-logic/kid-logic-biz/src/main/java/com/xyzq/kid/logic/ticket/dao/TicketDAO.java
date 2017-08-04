@@ -3,6 +3,7 @@ package com.xyzq.kid.logic.ticket.dao;
 import com.xyzq.kid.logic.ticket.dao.po.TicketPO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TicketDAO {
     int deleteByPrimaryKey(Integer id);
@@ -36,4 +37,8 @@ public interface TicketDAO {
     int updateUseByPrimaryKey(Integer id);
 
     int updateRecoverByPrimaryKey(Integer id);
+
+    List<TicketPO> queryTicketByCond(Map paramMap);
+
+    int queryTicketByCondCount(Map paramMap);
 }

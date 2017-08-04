@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyzq.kid.finance.dao.po.ReceiptPO">
+    <select id="loadByOrderNo" resultType="ReceiptPO">
+SELECT *
+FROM FIN_Receipt
+WHERE Deleted = 0 AND OrderNo = #{orderNo}
+LIMIT 1
+    </select>
+    <insert id="insertOrder" parameterType="ReceiptPO">
+INSERT INTO FIN_Receipt (OrderNo, OpenID, Amount, TransactionID, Mode, Deleted, CreateTime, UpdateTime)
+VALUES (#{orderNo}, #{openId}, #{amount}, #{transactionId}, #{mode}, 0, NOW(), NOW())
+    </insert>
+</mapper>

@@ -25,7 +25,7 @@ public class TicketEntity {
     /**
      * 流水号
      */
-    public String serialno;
+    public String serialNumber;
     /**
      * 类型，1：单人票，2：团体票
      */
@@ -33,7 +33,7 @@ public class TicketEntity {
     /**
      * 购买者手机号码
      */
-    public String ownermobileno;
+    public String telephone;
     /**
      * 支付者OpenID
      */
@@ -45,7 +45,7 @@ public class TicketEntity {
     /**
      * 截至日期
      */
-    public String expiredate;
+    public String expire;
     /**
      * 是否包含保险，0：没有，1：包含
      */
@@ -75,12 +75,12 @@ public class TicketEntity {
     public String toString() {
         return "TicketEntity{" +
                 "id=" + id +
-                ", serialno='" + serialno + '\'' +
+                ", serialNumber='" + serialNumber + '\'' +
                 ", type=" + type +
-                ", ownermobileno='" + ownermobileno + '\'' +
+                ", telephone='" + telephone + '\'' +
                 ", payeropenid='" + payeropenid + '\'' +
                 ", price=" + price +
-                ", expiredate='" + expiredate + '\'' +
+                ", expire='" + expire + '\'' +
                 ", insurance=" + insurance +
                 ", orderno='" + orderno + '\'' +
                 ", status=" + status +

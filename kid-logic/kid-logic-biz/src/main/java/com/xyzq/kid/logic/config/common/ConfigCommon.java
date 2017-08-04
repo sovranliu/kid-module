@@ -20,4 +20,9 @@ public class ConfigCommon {
      * 飞行日志售价
      */
     public final static String FEE_RECORD = "fee_record";
+    /**
+     * 飞行票过期时间
+     */
+    public final static String TICKET_EXPIREDATE = "ticket_expiretime";
+
 }

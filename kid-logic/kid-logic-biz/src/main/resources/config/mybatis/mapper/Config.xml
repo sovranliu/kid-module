@@ -5,13 +5,13 @@
 SELECT *
 FROM LGC_Config
 WHERE Deleted = 0
-ASC BY ID
+ORDER BY ID ASC
     </select>
     <select id="load" resultType="ConfigPO">
 SELECT *
 FROM LGC_Config
 WHERE Deleted = 0 AND Name = #{name}
-DESC BY ID
+ORDER BY ID DESC
     </select>
     <update id="updateOrderClosed">
 UPDATE LGC_Config
