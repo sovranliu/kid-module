@@ -1,6 +1,7 @@
 package com.xyzq.kid.logic.book.service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mysql.jdbc.StringUtils;
+import com.xyzq.kid.logic.Page;
 import com.xyzq.kid.logic.book.dao.BookMapper;
 import com.xyzq.kid.logic.book.dao.BookTimeRepositoryMapper;
 import com.xyzq.kid.logic.book.dao.BookTimeSpanMapper;
@@ -19,8 +21,12 @@ import com.xyzq.kid.logic.book.dao.po.BookTimeRepository;
 import com.xyzq.kid.logic.book.dao.po.BookTimeSpan;
 import com.xyzq.kid.logic.ticket.dao.TicketDAO;
 import com.xyzq.kid.logic.ticket.dao.po.TicketPO;
+import com.xyzq.kid.logic.ticket.dao.po.TicketRefundPO;
 import com.xyzq.kid.logic.ticket.entity.TicketEntity;
+import com.xyzq.kid.logic.ticket.entity.TicketRefundEntity;
 import com.xyzq.kid.logic.ticket.service.TicketService;
+import com.xyzq.kid.logic.user.entity.UserEntity;
+import com.xyzq.kid.logic.user.service.UserService;
 /**
  * 飞行预约服务
  * @author keyanggui
@@ -50,7 +56,12 @@ public class BookService {
 	@Autowired
 	TicketService ticketService;
 	
+	@Autowired
+	UserService userService;
+	
 	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
+	SimpleDateFormat sdf2=new SimpleDateFormat("yyyy-MM-dd");
 	
 	public List<Book> getAllBooks(){
 		return bookMapper.selectAll();
@@ -216,11 +227,11 @@ public class BookService {
 		try{
 			Book book=bookMapper.selectByPrimaryKey(bookId);
 			if(status.equals("1")){//改期
-				if(bookChangeRequestService.createRequest(bookId, status, reason, book.getUserid(), newBookTimeId)){
+				if(bookChangeRequestService.createRequest(bookId, status, reason, book.getUserid(), newBookTimeId,"1")){
 					flag=true;
 				}
 			}else if(status.equals("2")){//撤销
-				if(bookChangeRequestService.createRequest(bookId, status, reason, book.getUserid(), null)){
+				if(bookChangeRequestService.createRequest(bookId, status, reason, book.getUserid(), null,"1")){
 					flag=true;
 				}
 			}else if(status.equals("3")){
@@ -245,8 +256,12 @@ public class BookService {
 		boolean flag=false;
 		return flag;
 	}
+		
+	
 	/**
-	 * 条件查询预约记录
+	 * 按条件查询
+	 * @param mobileNo
+	 * @param ticketSerialNo
 	 * @param status
 	 * @param startDate
 	 * @param endDate
@@ -254,18 +269,32 @@ public class BookService {
 	 * @param limit
 	 * @return
 	 */
-	public List<Book> queryByCondLimt(String status,Date startDate,Date endDate,Integer currentPage,Integer limit){
+	public List<Book> queryByCondLimt(String mobileNo,String ticketSerialNo,String status,String startDate,String endDate,Integer currentPage,Integer limit){
 		List<Book> bookList=null;
 		try{
+			Date start=sdf2.parse(startDate);
+			Date end=sdf2.parse(endDate);
 			Map<String,Object> map=new HashMap<>();
 			if(!StringUtils.isNullOrEmpty(status)){
 				map.put("status", status);
 			}
+			if(!StringUtils.isNullOrEmpty(mobileNo)){
+				UserEntity user=userService.selectByMolieNo(mobileNo);
+				if(user!=null){
+					map.put("userId", user.id);
+				}
+			}
+			if(!StringUtils.isNullOrEmpty(ticketSerialNo)){
+				TicketEntity ticket=ticketService.getTicketsInfoBySerialno(ticketSerialNo);
+				if(ticket!=null){
+					map.put("ticketId", ticket.id);
+				}
+			}
 			if(startDate!=null){
-				map.put("startDate", startDate);
+				map.put("startDate", start);
 			}
 			if(endDate!=null){
-				map.put("endDate", endDate);
+				map.put("endDate", end);
 			}
 			if(currentPage!=null&&currentPage>0){
 				Integer pageStart=(currentPage-1)*limit;
@@ -278,5 +307,81 @@ public class BookService {
 			e.printStackTrace();
 		}
 		return bookList;
+	}
+	
+	
+	/**
+	 * 统计查询结果数
+	 * @param mobileNo
+	 * @param ticketSerialNo
+	 * @param status
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	public Integer getCountByCond(String mobileNo,String ticketSerialNo,String status,String startDate,String endDate){
+		Integer count=0;
+		try{
+			Date start=sdf2.parse(startDate);
+			Date end=sdf2.parse(endDate);
+			Map<String,Object> map=new HashMap<>();
+			if(!StringUtils.isNullOrEmpty(status)){
+				map.put("status", status);
+			}
+			if(!StringUtils.isNullOrEmpty(mobileNo)){
+				UserEntity user=userService.selectByMolieNo(mobileNo);
+				if(user!=null){
+					map.put("userId", user.id);
+				}
+			}
+			if(!StringUtils.isNullOrEmpty(ticketSerialNo)){
+				TicketEntity ticket=ticketService.getTicketsInfoBySerialno(ticketSerialNo);
+				if(ticket!=null){
+					map.put("ticketId", ticket.id);
+				}
+			}
+			if(startDate!=null){
+				map.put("startDate", start);
+			}
+			if(endDate!=null){
+				map.put("endDate", end);
+			}
+			List<Book> bookList=bookMapper.queryBookByCond(map);
+			if(bookList!=null){
+				count=bookList.size();
+			}
+		}catch(Exception e){
+			System.out.println("query by condition fail,caused by "+e.getMessage());
+			e.printStackTrace();
+		}
+		return count;
+	}
+	
+	/**
+	 * 按条件分页查询
+	 * @param mobileNo
+	 * @param ticketSerialNo
+	 * @param startDate
+	 * @param endDate
+	 * @param status
+	 * @param begin
+	 * @param limit
+	 * @return
+	 */
+	public Page<Book> queryByCondPage(String mobileNo,String ticketSerialNo,String startDate,String endDate,String status,Integer begin,Integer limit){
+		List<Book> bookList = new ArrayList<>();
+        List<Book> resultList=queryByCondLimt(mobileNo, ticketSerialNo, status, startDate, endDate, begin, limit);
+        if(null != resultList) {
+            for (int i = 0; i < resultList.size(); i++) {
+            	bookList.add(resultList.get(i));
+            }
+        }
+        int sum = getCountByCond(mobileNo, ticketSerialNo, status, startDate, endDate);
+        Page<Book> result = new Page<>();
+        result.setCurrentPage(begin);
+        result.setPageSize(limit);
+        result.setRows(sum);
+        result.setResultList(resultList);
+        return result;
 	}
 }

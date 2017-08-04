@@ -1,5 +1,7 @@
 package com.xyzq.kid.logic.book.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +47,8 @@ public class BookChangeRequestService {
 	
 	@Autowired
 	TicketService ticketService;
+	
+	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 
 	/**
 	 * 创建预约改期申请单
@@ -53,9 +57,10 @@ public class BookChangeRequestService {
 	 * @param reason
 	 * @param userId
 	 * @param bookTimeId
+	 * @param requestBy 1:用户，2管理员
 	 * @return
 	 */
-	public boolean createRequest(Integer bookId,String requestType,String reason,Integer userId,Integer bookTimeId){
+	public boolean createRequest(Integer bookId,String requestType,String reason,Integer userId,Integer bookTimeId,String requestBy){
 		boolean flag=false;
 		try{
 			BookChangeRequest request=new BookChangeRequest();
@@ -65,8 +70,15 @@ public class BookChangeRequestService {
 			if(requestType.equals("1")){//改期，则需指定新的预约时间
 				request.setBooktimeid(bookTimeId);
 			}
-			request.setRequestreason(reason);
-			request.setStatus("1"); //1：申请中，2：通过，3：拒绝
+			if(requestBy.equals("1")){//用户申请，则需审批 
+				request.setStatus("1"); //1：申请中，2：通过，3：拒绝
+				request.setRequestreason(reason);
+			}else if(requestBy.equals("2")){//管理员操作，则直接通过
+				request.setStatus("2"); //1：申请中，2：通过，3：拒绝
+				request.setRequestreason("管理员代用户操作");
+			}else{//默认为用户申请
+				request.setStatus("1"); //1：申请中，2：通过，3：拒绝
+			}
 			request.setCreatetime(new Date());
 			request.setLastupdatetime(new Date());
 			request.setDeleteflag("0");
@@ -74,23 +86,43 @@ public class BookChangeRequestService {
 			Book book=bookMapper.selectByPrimaryKey(bookId);
 			//1：已预约，2：改期申请中，3：改期通过，4：改期拒绝，5：核销完成，6：撤销申请中，7：撤销通过，8：拒绝撤销
 			if(requestType.equals("1")){
-				book.setBookstatus("2");
+				if(requestBy.equals("2")){
+					book.setBookstatus("3");//改期通过
+				}else{
+					book.setBookstatus("2");//改期申请中
+				}
 			}else if(requestType.equals("2")){
-				book.setBookstatus("6");
+				if(requestBy.equals("2")){
+					book.setBookstatus("7");//撤销通过
+				}else{
+					book.setBookstatus("6");//撤销申请中
+				}
 			}
 			book.setLastupdatetime(new Date());
 			bookMapper.updateByPrimaryKeySelective(book);
-			if(requestType.equals("1")){
+			if(requestType.equals("1")){//改期
 				BookTimeRepository repo=bookTimeRepositoryMapper.selectByPrimaryKey(bookTimeId);
-				if(repo!=null){
-					//改期申请中，占用一个新预约时间库存
-					if(bookRepositoryService.updateAmount(bookTimeId, "1")){//1：扣减库存，2：回退库存
+				if(requestBy.equals("2")){//管理员操作，直接改期成功，则直接扣减新预约时间库存，回退原时间库存
+					if(bookRepositoryService.updateAmount(bookTimeId, "1")&&bookRepositoryService.updateAmount(book.getBooktimeid(), "2")){//1：扣减库存，2：回退库存
 						flag=true;
+					}
+				}else{//用户申请，则为申请中
+					if(repo!=null){
+						//改期申请中，占用一个新预约时间库存
+						if(bookRepositoryService.updateAmount(bookTimeId, "1")){//1：扣减库存，2：回退库存
+							flag=true;
+						}
 					}
 				}
 			}else if(requestType.equals("2")){
-				//撤销申请中
-				flag=true;
+				if(requestBy.equals("2")){//管理员撤销，则直接回通库存
+					if(bookRepositoryService.updateAmount(book.getBooktimeid(), "2")){
+						flag=true;
+					}
+				}else{
+					//撤销申请中
+					flag=true;	
+				}
 			}
 		}catch(Exception e){
 			System.out.println("create book change request fail,caused by "+e.getMessage());
@@ -175,10 +207,22 @@ public class BookChangeRequestService {
 	 * @param status
 	 * @param requestType
 	 * @return
+	 * @throws ParseException 
 	 */
-	public List<BookChangeRequest> queryRequesting(String status,String requestType,Integer currentPage,Integer limit){
+	public List<BookChangeRequest> queryRequesting(String startDate,String endDate,String status,String requestType,Integer currentPage,Integer limit) throws ParseException{
 		List<BookChangeRequest> reqList=null;
 		Map<String,Object> map=new HashMap<>();
+		
+		if(!StringUtils.isNullOrEmpty(startDate)){
+			Date start=sdf.parse(startDate);
+			map.put("startDate", start);
+		}
+		
+		if(!StringUtils.isNullOrEmpty(endDate)){
+			Date end=sdf.parse(endDate);
+			map.put("endDate", end);
+		}
+		
 		if(StringUtils.isNullOrEmpty(status)){
 			map.put("requestType",requestType );
 		}
@@ -187,7 +231,7 @@ public class BookChangeRequestService {
 		}
 		if(currentPage!=null&&currentPage>0){
 			Integer pageStart=(currentPage-1)*limit;
-			map.put("pageStart", "pageStart");
+			map.put("pageStart", pageStart);
 			map.put("limit", limit);
 		}
 		try{
@@ -198,4 +242,45 @@ public class BookChangeRequestService {
 		}
 		return reqList;
 	}
+	
+	/**
+	 * 查询各类型各状态申请单
+	 * @param status
+	 * @param requestType
+	 * @return
+	 * @throws ParseException 
+	 */
+	public Integer getConuntByCond(String startDate,String endDate,String status,String requestType) throws ParseException{
+		
+		Integer count=0;
+		List<BookChangeRequest> reqList=null;
+		Map<String,Object> map=new HashMap<>();
+		
+		if(!StringUtils.isNullOrEmpty(startDate)){
+			Date start=sdf.parse(startDate);
+			map.put("startDate", start);
+		}
+		
+		if(!StringUtils.isNullOrEmpty(endDate)){
+			Date end=sdf.parse(endDate);
+			map.put("endDate", end);
+		}
+		
+		if(StringUtils.isNullOrEmpty(status)){
+			map.put("requestType",requestType );
+		}
+		if(StringUtils.isNullOrEmpty(status)){
+			map.put("status", status);
+		}
+		try{
+			reqList=bookChangeRequestMapper.queryRequestByCond(map);
+			count=reqList.size();
+		}catch(Exception e){
+			System.out.println("get count by condition fail ,caused by "+e.getMessage());
+			e.printStackTrace();
+		}
+		return count;
+	}
+	
+	
 }
