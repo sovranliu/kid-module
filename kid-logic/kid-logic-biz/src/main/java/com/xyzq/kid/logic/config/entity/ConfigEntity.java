@@ -30,4 +30,7 @@ public class ConfigEntity {
      * 记录变更时间
      */
     public DateTime updateTime;
+
+    public ConfigEntity() {
+    }
 }
