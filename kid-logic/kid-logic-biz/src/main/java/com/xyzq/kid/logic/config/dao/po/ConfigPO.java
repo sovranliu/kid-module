@@ -6,6 +6,8 @@ import java.util.Date;
  * 配置持久化对象
  */
 public class ConfigPO {
+    public final static String DELETED = "1";//
+    public final static String UNDELETED = "0";//
     /**
      * 参数ID
      */
@@ -39,6 +41,16 @@ public class ConfigPO {
      */
     private Date updateTime;
 
+    public ConfigPO() {
+    }
+
+    public ConfigPO(String name, String title, String content, String pattern) {
+        this.name = name;
+        this.title = title;
+        this.content = content;
+        this.pattern = pattern;
+        this.deleted = Byte.parseByte(UNDELETED);
+    }
 
     public Integer getId() {
         return id;

@@ -183,4 +183,26 @@ public class ConfigService {
         result.put(configEntity.name, Integer.valueOf(configEntity.content));
         return result;
     }
+    /**
+     * 新增记录
+     *
+     * @param name
+     * @param content
+     * @param title
+     * @param pattern
+     * @return 记录变更条数
+     */
+    public int addConfig(String name, String title,String content, String pattern){
+        ConfigPO configPO = new ConfigPO(name, title, content, pattern);
+        return configDAO.addConfig(configPO);
+    }
+    /**
+     * 加载指定ID的配置
+     *
+     * @param id 配置名称
+     * @return 配置实体
+     */
+    public ConfigEntity findBy(Integer id) {
+        return convert(configDAO.findBy(id));
+    }
 }

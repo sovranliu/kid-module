@@ -32,4 +32,18 @@ public interface ConfigDAO {
      * @return 记录变更条数
      */
     public int update(@Param("name") String name, @Param("content") String content);
+    /**
+     * 新增记录
+     *
+     * @param configPO 配置
+     * @return 记录变更条数
+     */
+    public int addConfig(ConfigPO configPO);
+    /**
+     * 加载指定ID的配置
+     *
+     * @param id 配置主键
+     * @return 配置持久化对象
+     */
+    public ConfigPO findBy(@Param("id") Integer id);
 }

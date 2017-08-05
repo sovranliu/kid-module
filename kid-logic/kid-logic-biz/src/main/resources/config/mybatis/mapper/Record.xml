@@ -11,7 +11,14 @@
     <select id="findBy" resultType="RecordPO">
     SELECT *
     FROM LGC_Record
-    WHERE Deleted = 0 AND SerialNo = #{serialNo}
+    WHERE Deleted = 0
+        <if test="ticketIdList!= null and ticketIdList.size()!= 0">
+            AND SerialNo in
+            <foreach collection="ticketIdList" item="listItem" open="(" close=")" separator="," >
+                #{listItem}
+            </foreach>
+        </if>
+
         <if test="purchased != null" >
             AND purchased = #{purchased,jdbcType=VARCHAR}
         </if>

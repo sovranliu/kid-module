@@ -24,5 +24,9 @@ public class ConfigCommon {
      * 飞行票过期时间
      */
     public final static String TICKET_EXPIREDATE = "ticket_expiretime";
+    /**
+     * 每张票累积计时
+     */
+    public final static String TICKET_ACCUMULATE_TIME = "ticket_accumulate_time";
 
 }

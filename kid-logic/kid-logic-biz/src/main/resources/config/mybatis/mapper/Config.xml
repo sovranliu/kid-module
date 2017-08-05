@@ -7,7 +7,7 @@ FROM LGC_Config
 WHERE Deleted = 0
 ORDER BY ID ASC
     </select>
-    <select id="load" resultType="ConfigPO">
+    <select id="load"  parameterType="java.lang.String" resultType="ConfigPO">
 SELECT *
 FROM LGC_Config
 WHERE Deleted = 0 AND Name = #{name}
@@ -18,5 +18,15 @@ UPDATE LGC_Config
 SET Content = #{content}, UpdateTime = NOW()
 WHERE Deleted = 0 AND Name = #{name}
     </update>
+    <insert id="addConfig" parameterType="ConfigPO" useGeneratedKeys="true" keyProperty="id">
+        insert into LGC_Config (Name, Content, Title, Pattern, Deleted)
+        values (#{name}, #{content}, #{title},#{pattern}, #{Deleted})
+    </insert>
+    <select id="findBy"  parameterType="java.lang.Integer" resultType="ConfigPO">
+        SELECT *
+        FROM LGC_Config
+        WHERE Deleted = 0 AND ID = #{id}
+        ORDER BY ID DESC
+    </select>
 </mapper>
 
