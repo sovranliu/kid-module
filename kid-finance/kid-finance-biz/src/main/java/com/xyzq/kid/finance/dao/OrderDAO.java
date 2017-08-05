@@ -3,6 +3,8 @@ package com.xyzq.kid.finance.dao;
 import com.xyzq.kid.finance.dao.po.OrderPO;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 订单数据访问对象
  */
@@ -47,4 +49,9 @@ public interface OrderDAO {
      * @return 记录变动条数
      */
     public int updateOrderPaid(@Param("orderNo") String orderNo);
+
+    /**
+     * 分页查询
+     */
+    // public List<OrderPO> select(@Param("orderNo") String orderNo);
 }

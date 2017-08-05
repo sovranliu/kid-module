@@ -19,3 +19,4 @@ SET Content = #{content}, UpdateTime = NOW()
 WHERE Deleted = 0 AND Name = #{name}
     </update>
 </mapper>
+
