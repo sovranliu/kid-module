@@ -1,5 +1,6 @@
 package com.xyzq.kid.logic.config.service;
 
+import com.xyzq.kid.logic.Page;
 import com.xyzq.kid.logic.config.common.ConfigCommon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -130,5 +131,29 @@ public class GoodsTypeService {
             return configService.fetch(ConfigCommon.FEE_RECORD, Integer.class);
         }
         return 0;
+    }
+
+    /**
+     * 获取商品类型标题
+     *
+     * @param goodsType 商品类型
+     * @return 商品类型标题
+     */
+    public String getGoodsTypeTitle(int goodsType) {
+        if(isSingleTicket(goodsType)) {
+            if(containsInsurance(goodsType)) {
+                return "单人票(含保险)";
+            }
+            else {
+                return "单人票";
+            }
+        }
+        else if(isGroupTicket(goodsType)) {
+            return "团体票(" + calculateTicketCount(goodsType) + "张)";
+        }
+        else if(isRecord(goodsType)) {
+            return "飞行日志";
+        }
+        return null;
     }
 }
