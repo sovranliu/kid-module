@@ -1,11 +1,16 @@
 package com.xyzq.kid.logic.user.bean;
 
 import com.xyzq.kid.CommonTool;
+import com.xyzq.kid.logic.Page;
 import com.xyzq.kid.logic.user.dao.UserDAO;
 import com.xyzq.kid.logic.user.dao.po.UserPO;
 import com.xyzq.kid.logic.user.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 这是一个范例Java逻辑功能Bean
@@ -50,6 +55,25 @@ public class UserBean {
         UserPO userPO = UserEntityToPO(entity);
         userDAO.insert(userPO);
         return userPO.getId();
+    }
+
+    public Page<UserEntity> queryUserByCond(Map paramMap) {
+        List<UserEntity> userEntityList = new ArrayList();
+        List<UserPO> userPOList = userDAO.queryUserByCond(paramMap);
+        if(null != userPOList) {
+            for (int i = 0; i < userPOList.size(); i++) {
+                userEntityList.add(UserPOToEntity(userPOList.get(i)));
+            }
+        }
+        int sum = userDAO.queryUserByCondCount(paramMap);
+
+        Page result = new Page();
+        result.setCurrentPage((Integer)paramMap.get("begin") + 1);
+        result.setPageSize((Integer)paramMap.get("limit"));
+        result.setRows(sum);
+        result.setResultList(userEntityList);
+
+        return result;
     }
 
     /**
@@ -99,19 +123,19 @@ public class UserBean {
             entity.id = po.getId();
         }
         if(null != po.getMobileno()) {
-            entity.mobileno = po.getMobileno();
+            entity.telephone = po.getMobileno();
         }
         if(null != po.getOpenid()) {
             entity.openid = po.getOpenid();
         }
         if(null != po.getRealname()) {
-            entity.realname = po.getRealname();
+            entity.userName = po.getRealname();
         }
         if(null != po.getAddress()) {
             entity.address = po.getAddress();
         }
         if(null != po.getGender()) {
-            entity.gender = po.getGender();
+            entity.sex = po.getGender();
         }
         if(null != po.getSubscribetime()) {
             entity.subscribetime = CommonTool.dataToStringYMDHMS(po.getSubscribetime());
@@ -138,20 +162,20 @@ public class UserBean {
         if(null != entity.id ) {
             po.setId(entity.id);
         }
-        if(null != entity.mobileno) {
-            po.setMobileno(entity.mobileno);
+        if(null != entity.telephone) {
+            po.setMobileno(entity.telephone);
         }
         if(null != entity.openid) {
             po.setOpenid(entity.openid);
         }
-        if(null != entity.realname) {
-            po.setRealname(entity.realname);
+        if(null != entity.userName) {
+            po.setRealname(entity.userName);
         }
         if(null != entity.address) {
             po.setAddress( entity.address);
         }
-        if(null != entity.gender) {
-            po.setGender(entity.gender);
+        if(null != entity.sex) {
+            po.setGender(entity.sex);
         }
         if(null != entity.subscribetime) {
             po.setSubscribetime(CommonTool.stringToDataYMDHMS(entity.subscribetime));
