@@ -5,13 +5,13 @@
 SELECT *
 FROM FIN_Refund
 WHERE Deleted = 0 AND OrderNo = #{orderNo}
-DESC BY ID
+ORDER BY ID DESC
     </select>
     <select id="loadByRefundNo" resultType="RefundPO">
 SELECT *
 FROM FIN_Refund
 WHERE Deleted = 0 AND RefundNo = #{refundNo}
-DESC BY ID
+ORDER BY ID DESC
 LIMIT 1
     </select>
     <insert id="insertRefund" parameterType="RefundPO">

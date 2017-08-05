@@ -5,7 +5,7 @@
 SELECT *
 FROM FIN_Order
 WHERE Deleted = 0 AND OrderNo = #{orderNo}
-DESC BY ID
+ORDER BY ID DESC
 LIMIT 1
     </select>
     <insert id="insertOrder" parameterType="OrderPO">
