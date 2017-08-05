@@ -13,7 +13,7 @@ FROM LGC_Config
 WHERE Deleted = 0 AND Name = #{name}
 ORDER BY ID DESC
     </select>
-    <update id="updateOrderClosed">
+    <update id="update">
 UPDATE LGC_Config
 SET Content = #{content}, UpdateTime = NOW()
 WHERE Deleted = 0 AND Name = #{name}
