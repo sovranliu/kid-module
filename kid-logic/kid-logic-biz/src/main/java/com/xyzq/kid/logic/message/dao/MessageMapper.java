@@ -20,5 +20,5 @@ public interface MessageMapper {
     
     List<Message> selectBySelectiveKey(Message message);
     
-    List<Message> queryByCond(Map params);
+    List<Message> queryByCond(Map<String,Object> params);
 }

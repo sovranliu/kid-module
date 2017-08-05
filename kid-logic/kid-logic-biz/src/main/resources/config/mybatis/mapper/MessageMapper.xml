@@ -139,4 +139,26 @@
       AnswerPerson = #{answerperson,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
   </update>
-</mapper>
+  
+  <select id="queryByCond" parameterType="Map" resultMap="BaseResultMap">
+  	select * from LGC_Message where 1=1
+  	<if test="userId != null">
+  		and userId = #{userId}
+  	</if>
+  	<if test="fromDate != null">
+  		<![CDATA[
+  		and CreateTime >= #{fromDate,jdbcType=TIMESTAMP}
+		]]>
+  	</if>
+  	<if test="toDate != null">
+  		<![CDATA[
+  		and CreateTime <= #{toDate,jdbcType=TIMESTAMP}
+		]]>
+  	</if>
+  	and DeleteFlag = '0' 
+  	order by CreateTime desc
+  	<if test="pageStart != null">
+  		limit #{pageStart},#{limit}
+  	</if>
+  </select>
+</mapper> 

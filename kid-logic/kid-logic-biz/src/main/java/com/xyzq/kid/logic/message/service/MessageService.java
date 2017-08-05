@@ -1,5 +1,8 @@
 package com.xyzq.kid.logic.message.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mysql.jdbc.StringUtils;
+import com.xyzq.kid.logic.Page;
+import com.xyzq.kid.logic.book.dao.po.Book;
 import com.xyzq.kid.logic.message.dao.MessageMapper;
 import com.xyzq.kid.logic.message.dao.po.Message;
 
@@ -21,6 +26,8 @@ import com.xyzq.kid.logic.message.dao.po.Message;
 public class MessageService {
 	@Autowired
 	MessageMapper messageMapper;
+	
+	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 	
 	/**
 	 * 用户留言
@@ -125,6 +132,58 @@ public class MessageService {
 		return msgList;
 	}
 	
+	public List<Message> queryByCondLimit(Integer userId,String fromDate,String toDate,Integer begin,Integer limit){
+		List<Message> msgList=null;
+		try{
+			Map<String,Object> map=new HashMap<>();
+			if(userId!=null){
+				map.put("userId", userId);
+			}
+			if(!StringUtils.isNullOrEmpty(fromDate)){
+				Date startDate=sdf.parse(fromDate);
+				map.put("fromDate", startDate);
+			}
+			if(!StringUtils.isNullOrEmpty(toDate)){
+				Date endDate=sdf.parse(toDate);
+				map.put("toDate", endDate);
+			}
+			if(begin!=null&&limit!=null){
+				map.put("pageStart", (begin-1)*limit);
+				map.put("limit", limit);
+			}
+			msgList=messageMapper.queryByCond(map);
+		}catch(Exception e){
+			System.out.println("query message list by conditions limit fail,caused by "+e.getMessage());
+			e.printStackTrace();
+		}
+		return msgList;
+	}
+	
+	public int getCountByCond(Integer userId,String fromDate,String toDate){
+		List<Message> msgList=null;
+		int count=0;
+		try{
+			Map<String,Object> map=new HashMap<>();
+			if(userId!=null){
+				map.put("userId", userId);
+			}
+			if(!StringUtils.isNullOrEmpty(fromDate)){
+				Date startDate=sdf.parse(fromDate);
+				map.put("fromDate", startDate);
+			}
+			if(!StringUtils.isNullOrEmpty(toDate)){
+				Date endDate=sdf.parse(toDate);
+				map.put("toDate", endDate);
+			}
+			msgList=messageMapper.queryByCond(map);
+			count=msgList.size();
+		}catch(Exception e){
+			System.out.println("query count by conditions fail,caused by "+e.getMessage());
+			e.printStackTrace();
+		}
+		return count;
+	}
+	
 	public List<Message> queryAllMessageByTime(Date fromDate,Date toDate,String sortType,int limit){
 		List<Message> msgList=null;
 		try{
@@ -150,6 +209,23 @@ public class MessageService {
 			e.printStackTrace();
 		}
 		return msgList;
+	}
+	
+	public Page<Message> queryByCondPage(Integer userId,String beginTime,String endTime,Integer begin,Integer limit){
+		List<Message> msgList = new ArrayList<>();
+        List<Message> resultList=queryByCondLimit(userId,beginTime,endTime,begin,limit);
+        if(null != resultList) {
+            for (int i = 0; i < resultList.size(); i++) {
+            	msgList.add(resultList.get(i));
+            }
+        }
+        int sum = getCountByCond(userId,beginTime,endTime);
+        Page<Message> result = new Page<>();
+        result.setCurrentPage(begin);
+        result.setPageSize(limit);
+        result.setRows(sum);
+        result.setResultList(resultList);
+        return result;
 	}
 	
 	/**
