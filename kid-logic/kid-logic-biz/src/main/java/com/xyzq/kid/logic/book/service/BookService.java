@@ -272,8 +272,14 @@ public class BookService {
 	public List<Book> queryByCondLimt(String mobileNo,String ticketSerialNo,String status,String startDate,String endDate,Integer currentPage,Integer limit){
 		List<Book> bookList=null;
 		try{
-			Date start=sdf2.parse(startDate);
-			Date end=sdf2.parse(endDate);
+			Date start=null;
+			if(!StringUtils.isNullOrEmpty(startDate)){
+				start=sdf2.parse(startDate);
+			}
+			Date end=null;
+			if(!StringUtils.isNullOrEmpty(startDate)){
+				end=sdf2.parse(endDate);
+			}
 			Map<String,Object> map=new HashMap<>();
 			if(!StringUtils.isNullOrEmpty(status)){
 				map.put("status", status);
@@ -296,7 +302,7 @@ public class BookService {
 			if(endDate!=null){
 				map.put("endDate", end);
 			}
-			if(currentPage!=null&&currentPage>0){
+			if(currentPage!=null&&currentPage>0&&limit!=null){
 				Integer pageStart=(currentPage-1)*limit;
 				map.put("pageStart", pageStart);
 				map.put("limit", limit);
@@ -322,8 +328,14 @@ public class BookService {
 	public Integer getCountByCond(String mobileNo,String ticketSerialNo,String status,String startDate,String endDate){
 		Integer count=0;
 		try{
-			Date start=sdf2.parse(startDate);
-			Date end=sdf2.parse(endDate);
+			Date start=null;
+			if(!StringUtils.isNullOrEmpty(startDate)){
+				start=sdf2.parse(startDate);
+			}
+			Date end=null;
+			if(!StringUtils.isNullOrEmpty(startDate)){
+				end=sdf2.parse(endDate);
+			}
 			Map<String,Object> map=new HashMap<>();
 			if(!StringUtils.isNullOrEmpty(status)){
 				map.put("status", status);

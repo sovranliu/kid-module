@@ -13,6 +13,8 @@ import com.xyzq.kid.logic.book.dao.BookTimeRepositoryMapper;
 import com.xyzq.kid.logic.book.dao.BookTimeSpanMapper;
 import com.xyzq.kid.logic.book.dao.po.BookTimeRepository;
 import com.xyzq.kid.logic.book.dao.po.BookTimeSpan;
+import com.xyzq.kid.logic.dateUnviable.entity.DateUnviableEntity;
+import com.xyzq.kid.logic.dateUnviable.service.DateUnviableService;
 
 /**
  * 可预约库存服务
@@ -31,6 +33,9 @@ public class BookRepositoryService {
 	@Autowired
 	BookTimeSpanService bookTimeSpanService;
 	
+	@Autowired
+	DateUnviableService dateUnviableService;
+	
 	/**
 	 * 预约库存初始化
 	 * @param bookDate
@@ -40,21 +45,24 @@ public class BookRepositoryService {
 	public boolean initRepositoryByDate(String bookDate,Integer total){
 		boolean flag=false;
 		try{
-			List<BookTimeSpan> spanList=bookTimeSpanService.queryValidTimeSpans();
-			if(spanList!=null&&spanList.size()>0){
-				for(BookTimeSpan span:spanList){
-					BookTimeRepository repo=new BookTimeRepository();
-					repo.setBookdate(bookDate);
-					repo.setBooktimespanid(span.getId());
-					repo.setBooktotal(total);
-					repo.setBookamount(total);
-					repo.setCreatetime(new Date());
-					repo.setLastupdatetime(new Date());
-					repo.setDeleteflag("0");
-					bookTimeRepositoryMapper.insertSelective(repo);
+			DateUnviableEntity date=dateUnviableService.findBy(bookDate);
+			if(date==null){
+				List<BookTimeSpan> spanList=bookTimeSpanService.queryValidTimeSpans();
+				if(spanList!=null&&spanList.size()>0){
+					for(BookTimeSpan span:spanList){
+						BookTimeRepository repo=new BookTimeRepository();
+						repo.setBookdate(bookDate);
+						repo.setBooktimespanid(span.getId());
+						repo.setBooktotal(total);
+						repo.setBookamount(total);
+						repo.setCreatetime(new Date());
+						repo.setLastupdatetime(new Date());
+						repo.setDeleteflag("0");
+						bookTimeRepositoryMapper.insertSelective(repo);
+					}
 				}
+				flag=true;
 			}
-			flag=true;
 		}catch(Exception e){
 			System.out.println("init repository by date fail ,caused by "+e.getMessage());
 			e.printStackTrace();

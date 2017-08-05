@@ -203,7 +203,7 @@
    </if>
     <if test=" startDate !=null">
 <![CDATA[
-  		and CreatTime > #{startDate,jdbcType=TIMESTAMP}
+  		and CreateTime > #{startDate,jdbcType=TIMESTAMP}
 ]]>
   	</if>
   	<if test=" endDate !=null ">
@@ -211,10 +211,12 @@
   		and CreateTime < #{endDate,jdbcType=TIMESTAMP}
 ]]>
   	</if>
-    <if test="pageStart != null ">
+  	and DeleteFlag = '0'
+  	
+    order by LastUpdateTime desc
+    
+        <if test="pageStart != null ">
   		 limit #{pageStart},#{limit} 
   	</if>
-    and DeleteFlag = '0'
-    order by LastUpdateTime desc
   </select>
 </mapper>
