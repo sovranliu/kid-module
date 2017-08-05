@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 
 /**
@@ -47,6 +48,7 @@ public class OrderService {
     /**
      * 支付监听器
      */
+    @Resource(name = "payListener")
     private PayListener payListener;
 
 
