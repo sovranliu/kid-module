@@ -12,7 +12,7 @@
         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
     <bean id="logicSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="jdbcDataSource" />
-        <property name="configLocation" value="classpath:config/mybatis/mybatis-config.xml"></property>
+        <property name="configLocation" value="classpath:config/mybatis/mybatis-config-finance.xml"></property>
     </bean>
     <!-- DAO -->
     <bean id="orderDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
