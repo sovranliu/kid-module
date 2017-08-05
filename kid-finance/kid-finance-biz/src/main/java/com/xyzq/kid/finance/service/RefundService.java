@@ -4,9 +4,13 @@ import com.xyzq.kid.common.wechat.pay.WechatPayHelper;
 import com.xyzq.kid.common.wechat.pay.protocol.*;
 import com.xyzq.kid.finance.dao.OrderDAO;
 import com.xyzq.kid.finance.dao.RefundDAO;
+import com.xyzq.kid.finance.dao.po.OrderInfoPO;
 import com.xyzq.kid.finance.dao.po.OrderPO;
+import com.xyzq.kid.finance.dao.po.RefundInfoPO;
 import com.xyzq.kid.finance.dao.po.RefundPO;
+import com.xyzq.kid.finance.service.entity.OrderInfoEntity;
 import com.xyzq.kid.finance.service.entity.RefundEntity;
+import com.xyzq.kid.finance.service.entity.RefundInfoEntity;
 import com.xyzq.kid.finance.service.exception.OrderExistException;
 import com.xyzq.kid.finance.service.exception.WechatResponseException;
 import com.xyzq.simpson.base.etc.Serial;
@@ -144,6 +148,56 @@ public class RefundService {
             }
         }
         return null;
+    }
+
+    /**
+     * 查询订单
+     *
+     * @param orderNo 订单号
+     * @param openId 微信用户开放ID
+     * @param status 状态，1：退款中，2：已退款，3：退款失败
+     * @param beginTime 开始时间
+     * @param endTime 结束时间
+     * @param begin 开始索引
+     * @param size 查询个数
+     * @return 订单列表
+     */
+    public com.xyzq.simpson.base.type.List<RefundInfoEntity> find(String orderNo, String openId, int status, DateTime beginTime, DateTime endTime, int begin, int size) {
+        java.sql.Timestamp beginTimestamp = null;
+        if(null != beginTime) {
+            beginTimestamp = new java.sql.Timestamp(beginTime.toLong());
+        }
+        java.sql.Timestamp endTimestamp = null;
+        if(null != endTime) {
+            endTimestamp = new java.sql.Timestamp(endTime.toLong());
+        }
+        java.util.List<RefundInfoPO> refundInfoPOList = refundDAO.select(orderNo, openId, status, beginTimestamp, endTimestamp, begin, size);
+        com.xyzq.simpson.base.type.List<RefundInfoEntity> result = new com.xyzq.simpson.base.type.List<RefundInfoEntity>();
+        for(RefundInfoPO refundInfoPO : refundInfoPOList) {
+            RefundInfoEntity refundInfoEntity = new RefundInfoEntity();
+            refundInfoEntity.orderNo = refundInfoPO.getOrderNo();
+            refundInfoEntity.openId = refundInfoPO.getOpenId();
+            refundInfoEntity.mobileNo = refundInfoPO.getMobileNo();
+            refundInfoEntity.refundNo = refundInfoPO.getRefundNo();
+            refundInfoEntity.fee = refundInfoPO.getFee();
+            refundInfoEntity.refundFee = refundInfoPO.getRefundFee();
+            switch(refundInfoPO.getState()) {
+                case 0:
+                case 1:
+                    refundInfoEntity.status = RefundInfoEntity.STATUS_REFUNDING;
+                    break;
+                case 2:
+                    refundInfoEntity.status = RefundInfoEntity.STATUS_REFUND_SUCCESS;
+                    break;
+                case 3:
+                    refundInfoEntity.status = RefundInfoEntity.STATUS_REFUND_FAIL;
+                    break;
+            }
+            refundInfoEntity.time = DateTime.parse(refundInfoPO.getCreateTime().getTime());
+            // 添加
+            result.add(refundInfoEntity);
+        }
+        return result;
     }
 
     /**

@@ -62,6 +62,7 @@ public interface OrderDAO {
      * @param endTime 结束时间
      * @param begin 开始索引
      * @param size 查询个数
+     * @return 支付订单信息列表
      */
     public List<OrderInfoPO> select(@Param("orderNo") String orderNo, @Param("openId") String openId, @Param("status") int status, @Param("beginTime") Timestamp beginTime, @Param("endTime") Timestamp endTime, @Param("begin") int begin, @Param("size") int size);
 }

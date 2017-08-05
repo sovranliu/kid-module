@@ -6,6 +6,7 @@
         <typeAlias alias="OrderInfoPO" type="com.xyzq.kid.finance.dao.po.OrderInfoPO" />
         <typeAlias alias="ReceiptPO" type="com.xyzq.kid.finance.dao.po.ReceiptPO" />
         <typeAlias alias="RefundPO" type="com.xyzq.kid.finance.dao.po.RefundPO" />
+        <typeAlias alias="RefundInfoPO" type="com.xyzq.kid.finance.dao.po.RefundInfoPO" />
     </typeAliases>
     <mappers>
         <mapper resource="config/mybatis/mapper/Order.xml" />

@@ -28,4 +28,43 @@ UPDATE FIN_Refund
 SET State = #{state}, RefundTime = #{refundTime}, UpdateTime = NOW()
 WHERE RefundNo = #{refundNo} AND State = 1 AND Deleted = 0
     </update>
+    <select id="select" resultType="OrderInfoPO">
+SELECT R.*, O.Fee, U.MobileNo FROM
+(
+SELECT *
+FROM FIN_Refund
+WHERE Deleted = 0
+<if test="orderNo != null and orderNo != ''">
+    AND OrderNo = #{orderNo}
+</if>
+<if test="openId != null and openId != ''">
+    AND OpenID = #{openId}
+</if>
+<if test="status != null and status == 1">
+    AND (State = 0 OR State = 1)
+</if>
+<if test="status != null and status == 2">
+    AND State = 2
+</if>
+<if test="status != null and status == 3">
+    AND State = 3
+</if>
+<if test="beginTime != null">
+    <![CDATA[
+AND CreateTime >= beginTime
+    ]]>
+</if>
+<if test="endTime != null">
+    <![CDATA[
+AND CreateTime <= endTime
+    ]]>
+</if>
+) R
+LEFT JOIN FIN_Order O
+ON R.OrderNo = O.OrderNo AND R.Deleted = 0 AND O.Deleted = 0
+LEFT JOIN LGC_User U
+ON O.OpenID = U.OpenID AND U.Deleted = 0
+ORDER BY ID DESC
+LIMIT #{begin}, #{size}
+    </select>
 </mapper>
