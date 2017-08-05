@@ -3,11 +3,13 @@ package com.xyzq.kid.finance.service;
 import com.xyzq.kid.common.wechat.pay.protocol.*;
 import com.xyzq.kid.finance.dao.OrderDAO;
 import com.xyzq.kid.finance.dao.ReceiptDAO;
+import com.xyzq.kid.finance.dao.po.OrderInfoPO;
 import com.xyzq.kid.finance.dao.po.OrderPO;
 import com.xyzq.kid.finance.dao.po.ReceiptPO;
 import com.xyzq.kid.finance.service.api.PayListener;
 import com.xyzq.kid.finance.service.entity.NewOrderEntity;
 import com.xyzq.kid.finance.service.entity.OrderEntity;
+import com.xyzq.kid.finance.service.entity.OrderInfoEntity;
 import com.xyzq.kid.finance.service.entity.PaidOrderEntity;
 import com.xyzq.kid.finance.service.exception.OrderExistException;
 import com.xyzq.kid.finance.service.exception.WechatResponseException;
@@ -15,6 +17,7 @@ import com.xyzq.simpson.base.etc.Serial;
 import com.xyzq.simpson.base.text.Text;
 import com.xyzq.simpson.base.time.DateTime;
 import com.xyzq.kid.common.wechat.pay.WechatPayHelper;
+import com.xyzq.simpson.base.type.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -185,6 +188,57 @@ public class OrderService {
             }
         }
         return true;
+    }
+
+    /**
+     * 查询订单
+     *
+     * @param orderNo 订单号
+     * @param openId 微信用户开放ID
+     * @param status 状态，1：未支付，2：已支付，3：已退款
+     * @param beginTime 开始时间
+     * @param endTime 结束时间
+     * @param begin 开始索引
+     * @param size 查询个数
+     * @return 订单列表
+     */
+    public List<OrderInfoEntity> find(String orderNo, String openId, int status, DateTime beginTime, DateTime endTime, int begin, int size) {
+        java.sql.Timestamp beginTimestamp = null;
+        if(null != beginTime) {
+            beginTimestamp = new java.sql.Timestamp(beginTime.toLong());
+        }
+        java.sql.Timestamp endTimestamp = null;
+        if(null != endTime) {
+            endTimestamp = new java.sql.Timestamp(endTime.toLong());
+        }
+        java.util.List<OrderInfoPO> orderPOList = orderDAO.select(orderNo, openId, status, beginTimestamp, endTimestamp, begin, size);
+        List<OrderInfoEntity> result = new List<OrderInfoEntity>();
+        for(OrderInfoPO orderInfoPO : orderPOList) {
+            OrderInfoEntity orderInfoEntity = new OrderInfoEntity();
+            orderInfoEntity.orderNo = orderInfoPO.getOrderNo();
+            orderInfoEntity.openId = orderInfoPO.getOpenId();
+            orderInfoEntity.mobileNo = orderInfoPO.getMobileNo();
+            orderInfoEntity.fee = orderInfoPO.getFee();
+            orderInfoEntity.goodsType = orderInfoPO.getGoodsType();
+            switch(orderInfoPO.getState()) {
+                case 0:
+                case 1:
+                case 5:
+                    orderInfoEntity.status = OrderInfoEntity.STATUS_NOPAY;
+                    break;
+                case 2:
+                    orderInfoEntity.status = OrderInfoEntity.STATUS_PAID;
+                    break;
+                case 3:
+                case 4:
+                    orderInfoEntity.status = OrderInfoEntity.STATUS_REFUND;
+                    break;
+            }
+            orderInfoEntity.time = DateTime.parse(orderInfoPO.getCreateTime().getTime());
+            // 添加
+            result.add(orderInfoEntity);
+        }
+        return result;
     }
 
     /**

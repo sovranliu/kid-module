@@ -1,8 +1,10 @@
 package com.xyzq.kid.finance.dao;
 
+import com.xyzq.kid.finance.dao.po.OrderInfoPO;
 import com.xyzq.kid.finance.dao.po.OrderPO;
 import org.apache.ibatis.annotations.Param;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -52,6 +54,14 @@ public interface OrderDAO {
 
     /**
      * 分页查询
+     *
+     * @param orderNo 订单号
+     * @param openId 微信用户开放ID
+     * @param status 状态，1：未支付，2：已支付，3：已退款
+     * @param beginTime 开始时间
+     * @param endTime 结束时间
+     * @param begin 开始索引
+     * @param size 查询个数
      */
-    // public List<OrderPO> select(@Param("orderNo") String orderNo);
+    public List<OrderInfoPO> select(@Param("orderNo") String orderNo, @Param("openId") String openId, @Param("status") int status, @Param("beginTime") Timestamp beginTime, @Param("endTime") Timestamp endTime, @Param("begin") int begin, @Param("size") int size);
 }

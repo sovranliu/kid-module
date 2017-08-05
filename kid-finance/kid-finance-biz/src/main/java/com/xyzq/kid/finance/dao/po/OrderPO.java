@@ -31,7 +31,7 @@ public class OrderPO {
      */
     private String PrepayId;
     /**
-     * 状态，0：待支付，1：已支付，2：已退款，3：已关闭
+     * 状态，状态，0：初始，1：待支付，2：已支付，3：待退款，4：已退
      */
     private int state;
     /**
