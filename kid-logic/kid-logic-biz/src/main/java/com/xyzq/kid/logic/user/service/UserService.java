@@ -49,6 +49,9 @@ public class UserService {
      */
     public void saveSession(SessionEntity entity) {
         String mobileNoOpenId = entity.mobileNo + "," + entity.openId;
+        if(null == entity.sId) {
+            return;
+        }
         cache.set("sid-" + entity.sId, mobileNoOpenId, 1000 * 60 * 24 * 30);
     }
 
