@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,6 +58,7 @@ public class UserService {
         if(null == entity.sId) {
             return;
         }
+        logger.info("save session " + entity.sId + " = " + mobileNoOpenId);
         cache.set("sid-" + entity.sId, mobileNoOpenId, 1000 * 60 * 24 * 30);
     }
 

@@ -55,7 +55,7 @@ public class SessionEntity {
     /**
      * 自动生成会话ID
      */
-    public void makeSId() {
-        this.sId = Serial.makeLocalID();
+    public synchronized void makeSId() {
+        this.sId = Serial.makeLocalID() + Serial.makeRandomString(8);
     }
 }
