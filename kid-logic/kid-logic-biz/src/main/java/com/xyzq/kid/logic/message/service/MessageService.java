@@ -93,11 +93,12 @@ public class MessageService {
 			if(msgList!=null&&msgList.size()>0){
 				msg=msgList.get(0);
 			}
-		}catch(Exception e){
+		}
+		catch(Exception e) {
 			System.out.println("query answered message by userid fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
-m		return msg;
+		return msg;
 	}
 	
 	/**
