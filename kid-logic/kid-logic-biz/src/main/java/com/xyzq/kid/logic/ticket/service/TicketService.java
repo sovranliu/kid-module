@@ -82,7 +82,7 @@ public class TicketService implements PayListener {
             return;
         }
         TicketEntity ticketEntity = new TicketEntity();
-        ticketEntity.telephone = userEntity.mobileno;
+        ticketEntity.telephone = userEntity.telephone;
         ticketEntity.payNumber = orderNo;
         ticketEntity.payeropenid = openId;
         ticketEntity.price = new BigDecimal(goodsTypeService.calculateFee(goodsType));
@@ -323,7 +323,7 @@ public class TicketService implements PayListener {
             //如果用户在user表中不存在，且已超过24小时，赠送失效
             TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketHistoryEntityList.get(i).ticketid);
             UserEntity userEntity = userService.selectByMolieNo(ticketEntity.telephone);
-            if(null != userEntity && userEntity.mobileno.length() >0 ) {
+            if(null != userEntity && userEntity.telephone.length() >0 ) {
                 handselEffectiveTicketHistory(ticketHistoryEntityList.get(i).id);
             } else {
                 Date handseldate = CommonTool.stringToDataYMDHMS(ticketHistoryEntityList.get(i).createtime);

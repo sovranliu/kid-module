@@ -15,7 +15,7 @@ public class UserEntity {
     /**
      * 手机号
      */
-    public String mobileno;
+    public String telephone;
     /**
      * 微信号
      */
@@ -23,7 +23,7 @@ public class UserEntity {
     /**
      * 真实姓名
      */
-    public String realname;
+    public String userName;
     /**
      * 真实姓名
      */
@@ -31,7 +31,7 @@ public class UserEntity {
     /**
      * 性别，0位置，1男，2女
      */
-    public int gender = 0;
+    public int sex = 0;
     /**
      * 关注时间，null表示未关注
      */
@@ -53,11 +53,11 @@ public class UserEntity {
     public String toString() {
         return "UserEntity{" +
                 "id=" + id +
-                ", mobileno='" + mobileno + '\'' +
+                ", telephone='" + telephone + '\'' +
                 ", openid='" + openid + '\'' +
-                ", realname='" + realname + '\'' +
+                ", userName='" + userName + '\'' +
                 ", address='" + address + '\'' +
-                ", gender=" + gender +
+                ", sex=" + sex +
                 ", subscribetime='" + subscribetime + '\'' +
                 ", deleted=" + deleted +
                 ", createtime='" + createtime + '\'' +

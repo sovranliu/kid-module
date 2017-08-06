@@ -81,9 +81,7 @@ public class UserService {
         }
         paramMap.put("begin", (begin - 1) * limit);
         paramMap.put("limit", limit);
-        // TODO:梅叶俊
-        // return userBean.queryUserByCond(paramMap);
-        return null;
+        return userBean.queryUserByCond(paramMap);
     }
 
     /**
