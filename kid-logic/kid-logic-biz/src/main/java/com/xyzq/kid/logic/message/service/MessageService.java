@@ -82,18 +82,22 @@ public class MessageService {
 	 * @param userId
 	 * @return
 	 */
-	public List<Message> queryAllMessageByUserId(Integer userId){
+	public Message queryLatestAnswer(Integer userId){
+		Message msg=null;
 		List<Message> msgList=null;
 		try{
-			Message message=new Message();
-			message.setUserid(userId);
-			message.setDeleteflag("0");
-			msgList=messageMapper.selectBySelectiveKey(message);
+			Map<String,Object> map=new HashMap<>();
+			map.put("userId", userId);
+			map.put("reply", "true");
+			msgList=messageMapper.queryByCond(map);
+			if(msgList!=null&&msgList.size()>0){
+				msg=msgList.get(0);
+			}
 		}catch(Exception e){
-			System.out.println("query message by userid fail,caused by "+e.getMessage());
+			System.out.println("query answered message by userid fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
-		return msgList;
+m		return msg;
 	}
 	
 	/**

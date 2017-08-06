@@ -145,6 +145,9 @@
   	<if test="userId != null">
   		and userId = #{userId}
   	</if>
+  	<if test="reply != null">
+  		and answer is not null
+  	</if>
   	<if test="fromDate != null">
   		<![CDATA[
   		and CreateTime >= #{fromDate,jdbcType=TIMESTAMP}
