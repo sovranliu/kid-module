@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,9 @@ import com.xyzq.kid.logic.message.dao.po.Message;
  */
 @Service("messageService")
 public class MessageService {
+	
+	static Logger logger = LoggerFactory.getLogger(MessageService.class);
+	
 	@Autowired
 	MessageMapper messageMapper;
 	
@@ -45,7 +50,7 @@ public class MessageService {
 			messageMapper.insertSelective(message);
 			flag=true;
 		}catch(Exception e){
-			System.out.println("create a message fail ,caused by "+e.getMessage());
+			logger.error("create a message fail ,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return flag;
@@ -69,7 +74,7 @@ public class MessageService {
 				flag=true;
 			}
 		}catch(Exception e){
-			System.out.println("modified message fail ,caused by "+e.getMessage());
+			logger.error("modified message fail ,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return flag;
@@ -92,7 +97,7 @@ public class MessageService {
 				msg=msgList.get(0);
 			}
 		}catch(Exception e){
-			System.out.println("query answer by userid fail,caused by "+e.getMessage());
+			logger.error("query answer by userid fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return msg;
@@ -128,7 +133,7 @@ public class MessageService {
 			params.put("noanswer", "Y");
 			msgList=messageMapper.queryByCond(params);
 		}catch(Exception e){
-			System.out.println("query no answer message by time "+sortType+" fail ,caused by "+e.getMessage());
+			logger.error("query no answer message by time "+sortType+" fail ,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return msgList;
@@ -155,7 +160,7 @@ public class MessageService {
 			}
 			msgList=messageMapper.queryByCond(map);
 		}catch(Exception e){
-			System.out.println("query message list by conditions limit fail,caused by "+e.getMessage());
+			logger.error("query message list by conditions limit fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return msgList;
@@ -180,7 +185,7 @@ public class MessageService {
 			msgList=messageMapper.queryByCond(map);
 			count=msgList.size();
 		}catch(Exception e){
-			System.out.println("query count by conditions fail,caused by "+e.getMessage());
+			logger.error("query count by conditions fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return count;
@@ -207,7 +212,7 @@ public class MessageService {
 			}
 			msgList=messageMapper.queryByCond(params);
 		}catch(Exception e){
-			System.out.println("query message by time "+sortType+" fail ,caused by "+e.getMessage());
+			logger.error("query message by time "+sortType+" fail ,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return msgList;
@@ -250,7 +255,7 @@ public class MessageService {
 				flag=true;
 			}
 		}catch(Exception e){
-			System.out.println("admin answer user's message fail,caused by "+e.getMessage());
+			logger.error("admin answer user's message fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return flag;
@@ -275,7 +280,7 @@ public class MessageService {
 				flag=true;
 			}
 		}catch(Exception e){
-			System.out.println("admin modified answer fail,caused by "+e.getMessage());
+			logger.error("admin modified answer fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return flag;

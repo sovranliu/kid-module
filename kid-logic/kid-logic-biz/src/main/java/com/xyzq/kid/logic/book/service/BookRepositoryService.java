@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,8 @@ import com.xyzq.kid.logic.dateUnviable.service.DateUnviableService;
  */
 @Service("bookRepositoryService")
 public class BookRepositoryService {
+	
+	static Logger logger = LoggerFactory.getLogger(BookRepositoryService.class);
 	
 	@Autowired
 	BookTimeRepositoryMapper bookTimeRepositoryMapper;
@@ -64,7 +68,7 @@ public class BookRepositoryService {
 				flag=true;
 			}
 		}catch(Exception e){
-			System.out.println("init repository by date fail ,caused by "+e.getMessage());
+			logger.error("init repository by date fail ,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return flag;
@@ -85,7 +89,7 @@ public class BookRepositoryService {
 			bookTimeRepositoryMapper.updateByPrimaryKey(repo);
 			flag=true;
 		}catch(Exception e){
-			System.out.println("update repository by id fail,caused by "+e.getMessage());
+			logger.error("update repository by id fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return flag;
@@ -106,7 +110,7 @@ public class BookRepositoryService {
 			bookTimeRepositoryMapper.updateByPrimaryKeySelective(repo);
 			flag=true;
 		}catch(Exception e){
-			System.out.println("update status by id fail ,caused by "+e.getMessage());
+			logger.error("update status by id fail ,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return flag;
@@ -125,7 +129,7 @@ public class BookRepositoryService {
 		try{
 			repoList=bookTimeRepositoryMapper.queryByCond(map);
 		}catch(Exception e){
-			System.out.println("query repository by date fail,caused by "+e.getMessage());
+			logger.error("query repository by date fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return repoList;
@@ -148,7 +152,7 @@ public class BookRepositoryService {
 				repository=bookTimeRepositoryMapper.queryByCond(map).get(0);
 			}
 		}catch(Exception e){
-			System.out.println("query repository by date and time span id fail,caused by "+e.getMessage());
+			logger.error("query repository by date and time span id fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return repository;
@@ -180,7 +184,7 @@ public class BookRepositoryService {
 				}
 			}
 		}catch(Exception e){
-			System.out.println("check book time repository amount fail,caused by "+e.getMessage());
+			logger.error("check book time repository amount fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return flag;
@@ -212,7 +216,7 @@ public class BookRepositoryService {
 			bookTimeRepositoryMapper.updateByPrimaryKeySelective(repo);
 			flag=true;
 		}catch(Exception e){
-			System.out.println("update amount for book fail ,caused by "+e.getMessage());
+			logger.error("update amount for book fail ,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return flag;

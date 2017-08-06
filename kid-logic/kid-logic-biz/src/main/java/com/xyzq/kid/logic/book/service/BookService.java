@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ import com.xyzq.kid.logic.book.dao.BookTimeSpanMapper;
 import com.xyzq.kid.logic.book.dao.po.Book;
 import com.xyzq.kid.logic.book.dao.po.BookTimeRepository;
 import com.xyzq.kid.logic.book.dao.po.BookTimeSpan;
+import com.xyzq.kid.logic.message.service.MessageService;
 import com.xyzq.kid.logic.ticket.dao.TicketDAO;
 import com.xyzq.kid.logic.ticket.dao.po.TicketPO;
 import com.xyzq.kid.logic.ticket.dao.po.TicketRefundPO;
@@ -34,6 +37,8 @@ import com.xyzq.kid.logic.user.service.UserService;
  */
 @Service("bookService")
 public class BookService {
+	
+	public static Logger logger = LoggerFactory.getLogger(BookService.class);
 	
 	@Autowired
 	BookMapper bookMapper;
@@ -99,7 +104,7 @@ public class BookService {
 				}
 			}
 		}catch(Exception e){
-			System.out.println("check book fail ,caused by "+e.getMessage());
+			logger.error("check book fail ,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return flag;
@@ -121,7 +126,7 @@ public class BookService {
 				bookRec=bookMapper.queryBookByCond(map).get(0);
 			}
 		}catch(Exception e){
-			System.out.println("query book record by ticket id fail,caused by "+e.getMessage());
+			logger.error("query book record by ticket id fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return bookRec;
@@ -134,7 +139,7 @@ public class BookService {
 			map.put("usdrId", userId);
 			bookList=bookMapper.queryBookByCond(map);
 		}catch(Exception e){
-			System.out.println("query book record by user id fail ,caused by "+e.getMessage());
+			logger.error("query book record by user id fail ,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return bookList;
@@ -172,7 +177,7 @@ public class BookService {
 				}
 			}
 		}catch(Exception e){
-			System.out.println("create book fail,caused by "+e.getMessage());
+			logger.error("create book fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return flag;
@@ -208,7 +213,7 @@ public class BookService {
 				flag=true;
 			}
 		}catch(Exception e){
-			System.out.println("create book fail,caused by "+e.getMessage());
+			logger.error("create book fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return flag;
@@ -241,7 +246,7 @@ public class BookService {
 				flag=true;
 			}
 		}catch(Exception e){
-			System.out.println("update book's status,complete or cancel,caused by "+e.getMessage());
+			logger.error("update book's status,complete or cancel,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return flag;
@@ -309,7 +314,7 @@ public class BookService {
 			}
 			bookList=bookMapper.queryBookByCond(map);
 		}catch(Exception e){
-			System.out.println("query by condition fail,caused by "+e.getMessage());
+			logger.error("query by condition fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return bookList;
@@ -363,7 +368,7 @@ public class BookService {
 				count=bookList.size();
 			}
 		}catch(Exception e){
-			System.out.println("query by condition fail,caused by "+e.getMessage());
+			logger.error("query by condition fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return count;

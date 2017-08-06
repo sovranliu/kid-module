@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import com.xyzq.kid.logic.book.dao.po.BookTimeSpan;
  */
 @Service("bookTimeSpanService")
 public class BookTimeSpanService {
+	
+	static Logger logger = LoggerFactory.getLogger(BookTimeSpanService.class);
 	
 	@Autowired
 	BookTimeSpanMapper bookTimeSpanMapper;
@@ -62,7 +66,7 @@ public class BookTimeSpanService {
 				flag=true;
 			}
 		}catch(Exception e){
-			System.out.println("book time span init fail ,caused by "+e.getMessage());
+			logger.error("book time span init fail ,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return flag;
@@ -77,7 +81,7 @@ public class BookTimeSpanService {
 		try{
 			spanList=queryValidTimeSpans();
 		}catch(Exception e){
-			System.out.println("query all time span fail ,caused by "+e.getMessage());
+			logger.error("query all time span fail ,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return spanList;
@@ -94,7 +98,7 @@ public class BookTimeSpanService {
 		try{
 			spanList=bookTimeSpanMapper.queryByCond(map);
 		}catch(Exception e){
-			System.out.println("query valid time spans fail ,caused by "+e.getMessage());
+			logger.error("query valid time spans fail ,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return spanList;
@@ -117,10 +121,10 @@ public class BookTimeSpanService {
 				bookTimeSpanMapper.updateByPrimaryKeySelective(timeSpan);
 				flag=true;
 			}else{
-				System.out.println("could not find the book time span record");
+				logger.error("could not find the book time span record");
 			}
 		}catch(Exception e){
-			System.out.println("update book time span status fail,caused by "+e.getMessage() );
+			logger.error("update book time span status fail,caused by "+e.getMessage() );
 			e.printStackTrace();
 		}
 		return flag;

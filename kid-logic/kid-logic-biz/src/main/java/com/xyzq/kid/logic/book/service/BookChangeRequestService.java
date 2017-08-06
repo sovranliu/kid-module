@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,8 @@ import com.xyzq.kid.logic.ticket.service.TicketService;
  */
 @Service("bookChangeRequestService")
 public class BookChangeRequestService {
+	
+	static Logger logger = LoggerFactory.getLogger(BookChangeRequestService.class);
 	
 	@Autowired
 	BookChangeRequestMapper bookChangeRequestMapper;
@@ -125,7 +129,7 @@ public class BookChangeRequestService {
 				}
 			}
 		}catch(Exception e){
-			System.out.println("create book change request fail,caused by "+e.getMessage());
+			logger.error("create book change request fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return flag;
@@ -196,7 +200,7 @@ public class BookChangeRequestService {
 				}
 			}
 		}catch(Exception e){
-			System.out.println("approve request fail ,caused by "+e.getMessage());
+			logger.error("approve request fail ,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return flag;
@@ -237,7 +241,7 @@ public class BookChangeRequestService {
 		try{
 			reqList=bookChangeRequestMapper.queryRequestByCond(map);
 		}catch(Exception e){
-			System.out.println("query Request by condition fail ,caused by "+e.getMessage());
+			logger.error("query Request by condition fail ,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return reqList;
@@ -276,7 +280,7 @@ public class BookChangeRequestService {
 			reqList=bookChangeRequestMapper.queryRequestByCond(map);
 			count=reqList.size();
 		}catch(Exception e){
-			System.out.println("get count by condition fail ,caused by "+e.getMessage());
+			logger.error("get count by condition fail ,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return count;
