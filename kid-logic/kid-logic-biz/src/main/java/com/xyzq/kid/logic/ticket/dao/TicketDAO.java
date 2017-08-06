@@ -34,6 +34,8 @@ public interface TicketDAO {
 
     int updateHandselByPrimaryKey(TicketPO record);
 
+    int updateHandselByPrimaryKeyLock(Map paramMap);
+
     int updateUseByPrimaryKey(Integer id);
 
     int updateRecoverByPrimaryKey(Integer id);

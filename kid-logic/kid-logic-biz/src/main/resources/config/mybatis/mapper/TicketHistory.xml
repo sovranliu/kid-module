@@ -149,4 +149,12 @@
     where ID = #{id,jdbcType=INTEGER}
   </update>
 
+  <select id="queryTickethandselCount" resultType="java.lang.Integer">
+    select count(1)
+    from LGC_TicketHistory
+    where Deleted = 0
+    and (Action = 2 or Action = 6)
+    and TicketID = #{ticketid,jdbcType=INTEGER}
+  </select>
+
 </mapper>

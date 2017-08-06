@@ -139,8 +139,8 @@ public class TicketService implements PayListener {
      * @param mobileNo 被赠送人手机号
      * @return 成功返回-success
      */
-    public String handselTickets(int ticketId, String mobileNo){
-        logger.info("TicketService.handselTickets[in]-ticketId:" + ticketId + ",mobileNo:" + mobileNo);
+    public String handselTickets(int ticketId, String mobileNo, String preMobile){
+        logger.info("TicketService.handselTickets[in]-ticketId:" + ticketId + ",mobileNo:" + mobileNo + ", preMobile:" + preMobile);
         TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
         if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
             return "ticket has been deleted!";
@@ -158,10 +158,22 @@ public class TicketService implements PayListener {
             return "can not handsel to self!";
         }
 
+        int count = ticketHistoryBean.queryTickethandselCount(ticketId);
+        if(count > 0) {
+            return "ticket has been handseled or handseling!";
+        }
+
         handselTicketHistory(ticketId, ticketEntity.telephone);
 
-        ticketEntity.telephone = mobileNo;
-        ticketBean.updateHandselByPrimaryKey(ticketEntity);
+        Map paramMap = new HashMap<>();
+        paramMap.put("id", ticketId);
+        paramMap.put("ownermobileno", mobileNo);
+        paramMap.put("premobileno", preMobile);
+        int result = ticketBean.updateHandselByPrimaryKeyLock(paramMap);
+
+        if(0 == result) {
+            return "fail";
+        }
 
         return "success";
     }

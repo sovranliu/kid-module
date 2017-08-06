@@ -109,6 +109,15 @@ public class TicketHistoryBean {
     }
 
     /**
+     * 查看此票是否赠送中，或者赠送成功
+     * @param ticketId
+     * @return
+     */
+    public int queryTickethandselCount(Integer ticketId) {
+        return ticketHistoryDAO.queryTickethandselCount(ticketId);
+    }
+
+    /**
      * 根据主键选择性更新飞行票信息
      * @param entity
      * @return

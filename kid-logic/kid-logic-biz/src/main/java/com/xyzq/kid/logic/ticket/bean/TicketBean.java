@@ -176,6 +176,15 @@ public class TicketBean {
     }
 
     /**
+     * 使用
+     * @param paramMap
+     * @return
+     */
+    public int updateHandselByPrimaryKeyLock(Map paramMap){
+        return ticketDAO.updateHandselByPrimaryKeyLock(paramMap);
+    }
+
+    /**
      * 恢复
      * @param id
      * @return
