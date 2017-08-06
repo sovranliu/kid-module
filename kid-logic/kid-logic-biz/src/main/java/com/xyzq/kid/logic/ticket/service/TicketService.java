@@ -158,7 +158,7 @@ public class TicketService implements PayListener {
             return "can not handsel to self!";
         }
 
-        int count = ticketHistoryBean.queryTickethandselCount(ticketId);
+        int count = queryTickethandselCount(ticketId);
         if(count > 0) {
             return "ticket has been handseled or handseling!";
         }
@@ -176,6 +176,10 @@ public class TicketService implements PayListener {
         }
 
         return "success";
+    }
+
+    public int queryTickethandselCount(Integer ticketId) {
+        return ticketHistoryBean.queryTickethandselCount(ticketId);
     }
 
     /**
@@ -271,6 +275,10 @@ public class TicketService implements PayListener {
         }
         if(CommonTool.checkExpire(ticketEntity.expire)) {
             return "ticket expire!";
+        }
+        TicketRefundEntity ticketRefundEntityChect = ticketRefundBean.selectByTicketId(ticketId);
+        if(null != ticketRefundEntityChect && ticketRefundEntityChect.ticketid > 0) {
+            return "success";
         }
 
         refundingTicketHistory(ticketId);
