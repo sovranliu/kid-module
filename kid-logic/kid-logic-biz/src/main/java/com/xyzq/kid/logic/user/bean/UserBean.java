@@ -150,9 +150,7 @@ public class UserBean {
         if(null != entity.address) {
             po.setAddress( entity.address);
         }
-        if(null != entity.gender) {
-            po.setGender(entity.gender);
-        }
+        po.setGender(entity.gender);
         if(null != entity.subscribetime) {
             po.setSubscribetime(CommonTool.stringToDataYMDHMS(entity.subscribetime));
         }

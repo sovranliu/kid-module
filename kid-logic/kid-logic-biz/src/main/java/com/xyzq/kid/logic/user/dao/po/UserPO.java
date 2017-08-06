@@ -13,7 +13,7 @@ public class UserPO {
 
     private String address;
 
-    private Integer gender;
+    private int gender;
 
     private Date subscribetime;
 

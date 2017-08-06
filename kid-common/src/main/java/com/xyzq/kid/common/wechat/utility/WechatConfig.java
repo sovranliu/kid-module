@@ -7,11 +7,11 @@ public class WechatConfig {
     /**
      * APPID
      */
-    public static String appId = "wx0da5d06336e96520";
+    public static String appId = "wx4fcaa111127eaa57";
     /**
-     * APPID
+     * APP Secret
      */
-    public static String appSecret = "acbb2cee0681eeb129f6b349a327a6c8";
+    public static String appSecret = "a09500e4435962eff7d2dfe495c18048";
     /**
      * 商户号
      */
@@ -27,9 +27,9 @@ public class WechatConfig {
     /**
      * 通知URL
      */
-    public static String notiyUrl = "http://www.angeldinner.com/mp/tencent/pay";
+    public static String notiyUrl = "http://solution.slfuture.cn/kid/wechat/tencent/payNotify";
     /**
      * 微信认证
      */
-    public static String token = "Angel";
+    public static String token = "kid";
 }
