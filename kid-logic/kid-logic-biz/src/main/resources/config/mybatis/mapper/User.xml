@@ -201,7 +201,9 @@
     select
     <include refid="Base_Column_List" />
     from LGC_User
-    where OpenID = #{openId,jdbcType=VARCHAR}
+    where OpenID = #{openId,jdbcType=VARCHAR} AND Deleted = 0
+    ORDER BY ID DESC
+    LIMIT 1
   </select>
 
 
