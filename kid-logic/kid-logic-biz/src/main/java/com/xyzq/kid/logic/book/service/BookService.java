@@ -117,7 +117,7 @@ public class BookService {
 			if(ticketId!=null){
 				map.put("ticketId", ticketId);
 			}
-			if(bookMapper.queryBookByCond(map)!=null){
+			if(bookMapper.queryBookByCond(map)!=null&&bookMapper.queryBookByCond(map).size()>0){
 				bookRec=bookMapper.queryBookByCond(map).get(0);
 			}
 		}catch(Exception e){
