@@ -102,11 +102,11 @@ public class RecordService implements PayListener {
 	 * 根据飞行票ID和购买状态字段查询record
 	 *
 	 * @return RecordEntity
-	 * @Param ticketIdList
+	 * @Param usedTIcketSerialNoList
 	 * @Param purchased
 	 */
-	public List<RecordEntity> findBy(List<Integer> ticketIdList, String purchased) {
-		return recordBean.findBy(ticketIdList, purchased);
+	public List<RecordEntity> findBy(List<String> usedTIcketSerialNoList, String purchased) {
+		return recordBean.findBy(usedTIcketSerialNoList, purchased);
 	}
 
 	/**

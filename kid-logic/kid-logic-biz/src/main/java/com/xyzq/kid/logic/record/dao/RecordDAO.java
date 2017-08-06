@@ -20,7 +20,7 @@ public interface RecordDAO {
      * @Param purchased
      * @return RecordEntity
      */
-    List<RecordPO> findBy(@Param("ticketIdList")List<Integer> ticketIdList, @Param("purchased")String purchased);
+    List<RecordPO> findBy(@Param("usedTIcketSerialNoList")List<String> usedTIcketSerialNoList, @Param("purchased")String purchased);
     /**
      * 根据飞行票ID和购买状态字段查询record飞行日志
      * @Param ticketID

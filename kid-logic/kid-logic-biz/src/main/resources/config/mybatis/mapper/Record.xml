@@ -12,9 +12,9 @@
     SELECT *
     FROM LGC_Record
     WHERE Deleted = 0
-        <if test="ticketIdList!= null and ticketIdList.size()!= 0">
+        <if test="usedTIcketSerialNoList!= null and usedTIcketSerialNoList.size()!= 0">
             AND SerialNo in
-            <foreach collection="ticketIdList" item="listItem" open="(" close=")" separator="," >
+            <foreach collection="usedTIcketSerialNoList" item="listItem" open="(" close=")" separator="," >
                 #{listItem}
             </foreach>
         </if>
