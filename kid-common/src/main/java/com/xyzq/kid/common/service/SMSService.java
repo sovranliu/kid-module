@@ -1,9 +1,15 @@
 package com.xyzq.kid.common.service;
 
+import com.xyzq.simpson.bart.client.BartClient;
 import com.xyzq.simpson.base.etc.Serial;
+import com.xyzq.simpson.base.io.net.http.HttpHelper;
 import com.xyzq.simpson.base.type.Table;
+import com.xyzq.simpson.base.type.core.ILink;
 import com.xyzq.simpson.base.type.core.ITable;
 import com.xyzq.simpson.utility.cache.core.ITimeLimitedCache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -13,6 +19,25 @@ import javax.annotation.Resource;
  */
 @Service("smsService")
 public class SMSService {
+    /**
+     * 日志对象
+     */
+    protected static Logger logger = LoggerFactory.getLogger(SMSService.class);
+    /**
+     * 短信平台接口地址
+     */
+    @Value("${kid.sms.url}")
+    protected String kid_sms_url;
+    /**
+     * 短信平台帐号
+     */
+    @Value("${kid.sms.username}")
+    protected String kid_sms_username;
+    /**
+     * 短信平台密码
+     */
+    @Value("${kid.sms.password}")
+    protected String kid_sms_password;
     /**
      * 缓存访问对象
      *
@@ -31,8 +56,40 @@ public class SMSService {
      * @return 短信内容
      */
     public String sendSMS(String mobileNo, String templateName, ITable<String, String> data) {
-        // TODO:短信投递代码
-        return "";
+        Table<String, Object> table = new Table<String, Object>();
+        table.put("USERNAME", kid_sms_username);
+        table.put("PASSWORD", kid_sms_password);
+        table.put("DESTADDR", mobileNo);
+        String template = BartClient.instance().fetch("kid.sms.template." + templateName);
+        if(null == template) {
+            logger.error("invalid template : " + templateName);
+            return null;
+        }
+        String content = template;
+        for(ILink<String, String> link : data) {
+            content = content.replace("[" + link.origin() + "]", link.destination());
+        }
+        while(true) {
+            int i = content.indexOf("[");
+            if(-1 == i) {
+                break;
+            }
+            int j = content.indexOf("]", i);
+            if(-1 == j) {
+                break;
+            }
+            content = content.replace(content.substring(i, j + 1), "");
+        }
+        table.put("CONTENT", content);
+        String response = null;
+        try {
+            response = HttpHelper.invoke(kid_sms_url, table);
+        }
+        catch (Exception e) {
+            logger.error("call sms platform failed : \nurl = " + kid_sms_url + "\ntemplate = " + templateName + "\nresponse = " + response, e);
+            return null;
+        }
+        return content;
     }
 
     /**
