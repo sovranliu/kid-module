@@ -1,6 +1,5 @@
 package com.xyzq.kid.logic.message.service;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.mysql.jdbc.StringUtils;
 import com.xyzq.kid.logic.Page;
-import com.xyzq.kid.logic.book.dao.po.Book;
 import com.xyzq.kid.logic.message.dao.MessageMapper;
 import com.xyzq.kid.logic.message.dao.po.Message;
 
@@ -94,10 +92,10 @@ public class MessageService {
 				msg=msgList.get(0);
 			}
 		}catch(Exception e){
-			System.out.println("query answered message by userid fail,caused by "+e.getMessage());
+			System.out.println("query answer by userid fail,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
-m		return msg;
+		return msg;
 	}
 	
 	/**
