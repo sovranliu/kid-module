@@ -203,4 +203,31 @@
     from LGC_User
     where OpenID = #{openId,jdbcType=VARCHAR}
   </select>
+
+
+  <select id="queryUserByCond" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_User
+    where Deleted = 0
+    <if test="realname != null">
+      and RealName = #{realname,jdbcType=VARCHAR}
+    </if>
+    <if test="mobileno != null">
+      and MobileNo = #{mobileno,jdbcType=VARCHAR}
+    </if>
+    limit #{begin, jdbcType=INTEGER}, #{limit,jdbcType=INTEGER}
+  </select>
+
+  <select id="queryUserByCondCount" resultType="java.lang.Integer">
+  select count(1)
+  from LGC_User
+  where Deleted = 0
+    <if test="realname != null">
+      and RealName = #{realname,jdbcType=VARCHAR}
+    </if>
+    <if test="mobileno != null">
+      and MobileNo = #{mobileno,jdbcType=VARCHAR}
+    </if>
+  </select>
 </mapper>

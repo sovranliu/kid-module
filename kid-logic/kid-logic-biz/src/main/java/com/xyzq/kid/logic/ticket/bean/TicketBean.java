@@ -238,7 +238,7 @@ public class TicketBean {
             entity.insurance = po.getInsurance();
         }
         if(null != po.getOrderno()) {
-            entity.orderno = po.getOrderno();
+            entity.payNumber = po.getOrderno();
         }
         if(null != po.getStatus()) {
             entity.status = po.getStatus();
@@ -286,8 +286,8 @@ public class TicketBean {
         if(null != entity.insurance) {
             po.setInsurance(entity.insurance);
         }
-        if(null != entity.orderno) {
-         po.setOrderno(entity.orderno);
+        if(null != entity.payNumber) {
+         po.setOrderno(entity.payNumber);
         }
         if(null != entity.status) {
          po.setStatus(entity.status);

@@ -1,19 +1,26 @@
 package com.xyzq.kid.logic.user.service;
 
+import com.xyzq.kid.logic.Page;
 import com.xyzq.kid.logic.user.bean.UserBean;
 import com.xyzq.kid.logic.user.entity.SessionEntity;
 import com.xyzq.kid.logic.user.entity.UserEntity;
 import com.xyzq.simpson.utility.cache.core.ITimeLimitedCache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户服务
  */
 @Service("userService")
 public class UserService {
+    public static Logger logger = LoggerFactory.getLogger(UserService.class);
     /**
      * 缓存访问对象
      *
@@ -56,11 +63,35 @@ public class UserService {
     }
 
     /**
+     * 用户信息分页查询
+     * @param userName 用户姓名
+     * @param telephone 手机号
+     * @param begin 起始页
+     * @param limit 条数
+     * @return 符合要求的条数
+     */
+    public Page<UserEntity> getUserList(String userName, String telephone, int begin, int limit) {
+        logger.info("UserService.getUserList[in]-userName:" + userName + ",telephone:"+ telephone + ",begin:" + begin + ",limit:" + limit);
+        Map paramMap = new HashMap<>();
+        if(null != userName && userName.length() > 0) {
+            paramMap.put("realname", userName);
+        }
+        if(null != telephone && telephone.length() > 0) {
+            paramMap.put("mobileno", telephone);
+        }
+        paramMap.put("begin", (begin - 1) * limit);
+        paramMap.put("limit", limit);
+
+        return userBean.queryUserByCond(paramMap);
+    }
+
+    /**
      * 方法描述
      *
      * @return 返回值
      */
     public UserEntity getUserById(int id) {
+        logger.info("UserService.getUserById[in]-id:" + id);
         return userBean.selectByPrimaryKey(id);
     }
 
@@ -70,6 +101,7 @@ public class UserService {
      * @return
      */
     public UserEntity selectByMolieNo(String mobileNo) {
+        logger.info("UserService.getUserById[in]-mobileNo:" + mobileNo);
         return userBean.selectByMolieNo(mobileNo);
     }
 
@@ -79,6 +111,7 @@ public class UserService {
      * @return
      */
     public int insertSelective(UserEntity entity) {
+        logger.info("UserService.getUserById[in]-:" + entity.toString());
         return userBean.insertSelective(entity);
     }
 
@@ -88,6 +121,7 @@ public class UserService {
      * @return
      */
     public int updateByMobileNo(UserEntity entity) {
+        logger.info("UserService.updateByMobileNo[in]-:" + entity.toString());
         return userBean.updateByMobileNo(entity);
     }
 
@@ -97,6 +131,7 @@ public class UserService {
      * @return UserEntity
      */
     public UserEntity selectByOpenId(String openId) {
+        logger.info("UserService.selectByOpenId[in]-openId:" + openId);
         return userBean.selectByOpenId(openId);
     }
 }

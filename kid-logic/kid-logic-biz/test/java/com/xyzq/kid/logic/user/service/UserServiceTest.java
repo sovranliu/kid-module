@@ -1,5 +1,6 @@
 package com.xyzq.kid.logic.user.service;
 
+import com.xyzq.kid.logic.Page;
 import com.xyzq.kid.logic.user.entity.UserEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,28 +33,40 @@ public class UserServiceTest {
 
     @Test
     public void insertSelective() throws Exception {
-        UserEntity userEntity = new UserEntity();
-        userEntity.mobileno = "123";
-        userEntity.openid = "myj_test";
-        userEntity.realname = "myj_test";
-        userEntity.address = "abcdefghijklmn";
-        userEntity.gender = UserEntity.USER_MALE;
-        userEntity.subscribetime= "2017-07-31 11:00:00";
-        int id = userService.insertSelective(userEntity);
-        System.out.println(id);
+        for (int i = 100; i < 200; i++) {
+            UserEntity userEntity = new UserEntity();
+            userEntity.telephone = "15121018" + i;
+            userEntity.openid = "myj_test" + i;
+            userEntity.userName = "myj_test";
+            userEntity.address = "abcdefghijklmn" + i;
+            userEntity.sex = UserEntity.USER_MALE;
+            userEntity.subscribetime= "2017-08-06 05:58:00";
+            int id = userService.insertSelective(userEntity);
+            System.out.println(id);
+
+        }
+
     }
 
     @Test
     public void updateUserInfo() throws Exception {
         UserEntity userEntity = new UserEntity();
-        userEntity.mobileno = "123";
+        userEntity.telephone = "123";
         userEntity.openid = "myj_test_new";
-        userEntity.realname = "myj_test_new";
+        userEntity.userName = "myj_test_new";
         userEntity.address = "abcdefghijklmn_new";
-        userEntity.gender = UserEntity.USER_FEMALE;
+        userEntity.sex = UserEntity.USER_FEMALE;
         userEntity.subscribetime= "2017-08-31 11:00:00";
         int id = userService.updateByMobileNo(userEntity);
         System.out.println(id);
+    }
+
+    @Test
+    public void getUserList() throws Exception {
+        Page<UserEntity> userEntityPage1 = userService.getUserList(null, null, 1, 20);
+        Page<UserEntity> userEntityPage2 = userService.getUserList("myj_test", null, 1, 20);
+        Page<UserEntity> userEntityPage3 = userService.getUserList(null, "15121018150", 1, 20);
+        System.out.println();
     }
 
 }

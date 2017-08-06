@@ -3,6 +3,9 @@ package com.xyzq.kid.logic.user.dao;
 import com.xyzq.kid.logic.user.dao.po.UserPO;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+import java.util.Map;
+
 public interface UserDAO {
     int deleteByPrimaryKey(Integer id);
 
@@ -21,4 +24,8 @@ public interface UserDAO {
     int updateByPrimaryKey(UserPO record);
 
     UserPO selectByOpenId(@Param("openId")String openId);
+
+    List<UserPO> queryUserByCond(Map paramMap);
+
+    int queryUserByCondCount(Map paramMap);
 }

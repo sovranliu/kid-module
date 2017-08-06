@@ -53,7 +53,7 @@ public class TicketEntity {
     /**
      * 支付订单号
      */
-    public String orderno;
+    public String payNumber;
     /**
      * 状态，0：未使用，1：已使用，2：过期，3：退票
      */
@@ -82,7 +82,7 @@ public class TicketEntity {
                 ", price=" + price +
                 ", expire='" + expire + '\'' +
                 ", insurance=" + insurance +
-                ", orderno='" + orderno + '\'' +
+                ", payNumber='" + payNumber + '\'' +
                 ", status=" + status +
                 ", deleted=" + deleted +
                 ", createtime='" + createtime + '\'' +
