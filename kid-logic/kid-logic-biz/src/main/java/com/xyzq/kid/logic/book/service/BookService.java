@@ -152,7 +152,7 @@ public class BookService {
 		try{
 			BookTimeRepository repo=bookTimeRepositoryMapper.selectByPrimaryKey(bookTimeId);
 			TicketEntity ticket=ticketService.getTicketsInfoBySerialno(serialNum);
-			if(checkBook(ticket.id, bookTimeId)){
+			if(ticket!=null&&checkBook(ticket.id, bookTimeId)){
 				Book book=new Book();
 				book.setTicketid(ticket.id);
 				book.setUserid(userId);
