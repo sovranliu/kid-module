@@ -53,12 +53,12 @@ public class RecordBean {
     }
     /**
      * 根据飞行票ID和购买状态字段查询record
-     * @Param ticketID
+     * @Param usedTIcketSerialNoList
      * @Param purchased
      * @return RecordEntity
      */
-    public List<RecordEntity> findBy(List<Integer> ticketIdList, String purchased){
-        List<RecordPO> recordPOList = recordDAO.findBy(ticketIdList,purchased);
+    public List<RecordEntity> findBy(List<String> usedTIcketSerialNoList, String purchased){
+        List<RecordPO> recordPOList = recordDAO.findBy(usedTIcketSerialNoList,purchased);
         List<RecordEntity> recordEntityList= new ArrayList<>();
         for (RecordPO recordPO :recordPOList ) {
             RecordEntity entity = new RecordEntity(recordPO);
