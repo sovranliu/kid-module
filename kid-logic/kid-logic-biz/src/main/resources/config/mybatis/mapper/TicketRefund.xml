@@ -14,10 +14,17 @@
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from LGC_TicketRefund
     where ID = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByTicketId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_TicketRefund
+    where TicketID = #{ticketId,jdbcType=INTEGER}
   </select>
 
   <select id="selectRefunding" parameterType="java.lang.Integer" resultMap="BaseResultMap">

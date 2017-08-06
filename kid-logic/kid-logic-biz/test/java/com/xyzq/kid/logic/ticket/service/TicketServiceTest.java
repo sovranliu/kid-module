@@ -111,4 +111,10 @@ public class TicketServiceTest {
         System.out.println();
     }
 
+    @Test
+    public void loadRefundByTicketId() throws  Exception {
+        TicketRefundEntity ticketRefundEntity = ticketService.loadRefundByTicketId(1);
+        System.out.println();
+    }
+
 }

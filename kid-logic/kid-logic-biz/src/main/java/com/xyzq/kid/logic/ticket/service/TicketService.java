@@ -422,6 +422,10 @@ public class TicketService implements PayListener {
         return ticketRefundBean.selectRefunded(begin, limit);
     }
 
+    public TicketRefundEntity loadRefundByTicketId(Integer ticketId) {
+        return ticketRefundBean.selectByTicketId(ticketId);
+    }
+
     /**
      * 根据条件查询飞行记录
      * @param serialno 流水号

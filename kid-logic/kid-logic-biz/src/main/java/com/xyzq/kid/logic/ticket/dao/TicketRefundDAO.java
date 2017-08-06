@@ -14,6 +14,8 @@ public interface TicketRefundDAO {
 
     TicketRefundPO selectByPrimaryKey(Integer id);
 
+    TicketRefundPO selectByTicketId(Integer ticketId);
+
     List<TicketRefundPO> selectRefunding(Map paramMap);
     int selectRefundingCount();
 

@@ -50,6 +50,10 @@ public class TicketRefundBean {
         return result;
     }
 
+    public TicketRefundEntity selectByTicketId(Integer ticketId) {
+        return TicketRefundPOToEntity(ticketRefundDAO.selectByTicketId(ticketId));
+    }
+
     public Page<TicketRefundEntity> selectRefunded(Integer begin, Integer limit) {
         List<TicketRefundEntity> ticketRefundEntityList = new ArrayList<>();
         Map paramMap = new HashMap<>();
