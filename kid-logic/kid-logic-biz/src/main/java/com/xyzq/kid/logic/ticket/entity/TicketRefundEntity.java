@@ -32,4 +32,16 @@ public class TicketRefundEntity {
      * 记录变更时间
      */
     public String updatetime;
+
+    @Override
+    public String toString() {
+        return "TicketRefundEntity{" +
+                "id=" + id +
+                ", ticketid=" + ticketid +
+                ", status=" + status +
+                ", deleted=" + deleted +
+                ", createtime='" + createtime + '\'' +
+                ", updatetime='" + updatetime + '\'' +
+                '}';
+    }
 }

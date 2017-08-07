@@ -143,24 +143,30 @@ public class TicketService implements PayListener {
         logger.info("TicketService.handselTickets[in]-ticketId:" + ticketId + ",mobileNo:" + mobileNo + ", preMobile:" + preMobile);
         TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
         if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
-            return "ticket has been deleted!";
+            logger.error("ticket has been deleted![" + ticketEntity.deleted + "]");
+            return "票被删除!";
         }
         if(ticketEntity.type == TicketEntity.TICKET_TYPE_SINGLE) {
-            return "single ticket can not handsel!";
+            logger.error("single ticket can not handsel![" + ticketEntity.type + "]");
+            return "个人票不可赠送!";
         }
         if(ticketEntity.status != TicketEntity.TICKET_STATUS_NEW) {
-            return "ticket status error!";
+            logger.error("ticket status error![" + ticketEntity.status + "]");
+            return "票状态不支持当前操作!";
         }
         if(null == mobileNo) {
-            return "mobileno is null!";
+            logger.error("mobileno is null!");
+            return "未能正确获取手机号!";
         }
         if(mobileNo.equals(ticketEntity.telephone)) {
-            return "can not handsel to self!";
+            logger.error("can not handsel to self![" + ticketEntity.telephone + "]");
+            return "不可赠送给自己!";
         }
 
         int count = queryTickethandselCount(ticketId);
         if(count > 0) {
-            return "ticket has been handseled or handseling!";
+            logger.info("ticket has been handseled or handseling!");
+            return "票已赠送!";
         }
 
         handselTicketHistory(ticketId, ticketEntity.telephone);
@@ -172,12 +178,17 @@ public class TicketService implements PayListener {
         int result = ticketBean.updateHandselByPrimaryKeyLock(paramMap);
 
         if(0 == result) {
-            return "fail";
+            return "赠送失败!";
         }
 
         return "success";
     }
 
+    /**
+     * 查询票是否有赠送中，或者赠送成功历史记录
+     * @param ticketId 票号
+     * @return 个数
+     */
     public int queryTickethandselCount(Integer ticketId) {
         return ticketHistoryBean.queryTickethandselCount(ticketId);
     }
@@ -191,12 +202,15 @@ public class TicketService implements PayListener {
         logger.info("TicketService.useTickets[in]-ticketId:" + ticketId);
         TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
         if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
+            logger.error("ticket has been deleted![" + ticketEntity.deleted + "]");
             return "ticket has been deleted!";
         }
         if(ticketEntity.status != TicketEntity.TICKET_STATUS_NEW) {
+            logger.error("ticket status error![" + ticketEntity.status + "]");
             return "ticket status error!";
         }
         if(CommonTool.checkExpire(ticketEntity.expire)) {
+            logger.error("ticket expire![" + ticketEntity.expire + "]");
             return "ticket expire!";
         }
         useTicketHistory(ticketId);
@@ -215,12 +229,15 @@ public class TicketService implements PayListener {
         logger.info("TicketService.recoverTickets[in]-ticketId:" + ticketId);
         TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
         if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
+            logger.error("ticket has been deleted![" + ticketEntity.deleted + "]");
             return "ticket has been deleted!";
         }
         if(ticketEntity.status != TicketEntity.TICKET_STATUS_USED) {
+            logger.error("ticket status error![" + ticketEntity.status + "]");
             return "ticket status error!";
         }
         if(CommonTool.checkExpire(ticketEntity.expire)) {
+            logger.error("ticket expire![" + ticketEntity.expire + "]");
             return "ticket expire!";
         }
         recoverTicketHistory(ticketId);
@@ -240,15 +257,19 @@ public class TicketService implements PayListener {
         logger.info("TicketService.extendTickets[in]-ticketId:" + ticketId + ",extendDate:" + extendDate);
         TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
         if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
+            logger.error("ticket has been deleted![" + ticketEntity.deleted + "]");
             return "ticket has been deleted!";
         }
         if(ticketEntity.status != TicketEntity.TICKET_STATUS_NEW) {
+            logger.error("ticket status error![" + ticketEntity.status + "]");
             return "ticket status error!";
         }
         if(CommonTool.checkExpire(ticketEntity.expire)) {
+            logger.error("ticket expire![" + ticketEntity.expire + "]");
             return "ticket expire!";
         }
         if(CommonTool.checkExpire(extendDate)) {
+            logger.error("wrong extendDate![" + extendDate + "]");
             return "wrong extendDate!";
         }
         extendTicketHistory(ticketId,ticketEntity.expire);
@@ -268,16 +289,20 @@ public class TicketService implements PayListener {
         logger.info("TicketService.backingTickets[in]-ticketId:" + ticketId);
         TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
         if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
-            return "ticket has been deleted!";
+            logger.error("ticket has been deleted![" + ticketEntity.deleted + "]");
+            return "票被删除!";
         }
         if(ticketEntity.status != TicketEntity.TICKET_STATUS_NEW) {
-            return "ticket status error!";
+            logger.error("ticket status error![" + ticketEntity.status + "]");
+            return "票状态不支持此操作!";
         }
         if(CommonTool.checkExpire(ticketEntity.expire)) {
-            return "ticket expire!";
+            logger.error("ticket expire![" + ticketEntity.expire + "]");
+            return "票已过期!";
         }
         TicketRefundEntity ticketRefundEntityChect = ticketRefundBean.selectByTicketId(ticketId);
         if(null != ticketRefundEntityChect && ticketRefundEntityChect.ticketid > 0) {
+            logger.info("already had refund info![" + ticketRefundEntityChect.toString() + "]");
             return "success";
         }
 
@@ -303,9 +328,11 @@ public class TicketService implements PayListener {
         logger.info("TicketService.backingTickets[in]-ticketId:" + ticketId);
         TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
         if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
+            logger.error("ticket has been deleted![" + ticketEntity.deleted + "]");
             return "ticket has been deleted!";
         }
         if(ticketEntity.status != TicketEntity.TICKET_STATUS_BACKING) {
+            logger.error("ticket status error![" + ticketEntity.status + "]");
             return "ticket status error!";
         }
 
@@ -459,6 +486,9 @@ public class TicketService implements PayListener {
      */
     public Page<TicketEntity> queryTicketByCond(String serialno, String ownermobileno, String beginDate, String endDate, Integer status, Integer begin, Integer limit) {
         Map paramMap = new HashMap<>();
+        logger.info("TicketService.queryTicketByCond[in]-serialno:" + serialno +
+                ", ownermobileno:" + ownermobileno + ", beginDate:" + beginDate +
+                ", endDate:" + endDate + ", status:" + status +", begin:" + begin + ", limit:" + limit);
         if(null != serialno && serialno.length() > 0) {
             paramMap.put("serialno", serialno);
         }
@@ -628,7 +658,6 @@ public class TicketService implements PayListener {
             logger.info("TicketService.refund[in]-ticketId:" + ticketId + " fail for " + e.toString());
             return false;
         }
-
 
         refundTickets(ticketId, result);
 
