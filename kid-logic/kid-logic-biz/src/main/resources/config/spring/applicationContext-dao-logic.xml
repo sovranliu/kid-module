@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+    <!-- DataSource -->
+    <bean id="logicJDBCDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${kid.jdbc.driver}"></property>
+        <property name="jdbcUrl" value="${kid.jdbc.url}"></property>
+        <property name="user" value="${kid.jdbc.user}"></property>
+        <property name="password" value="${kid.jdbc.password}"></property>
+        <property name="testConnectionOnCheckout" value="false"></property>
+        <property name="testConnectionOnCheckin" value="true"></property>
+        <property name="idleConnectionTestPeriod" value="3600"></property>
+    </bean>
+    <bean id="logicSQLSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="logicJDBCDataSource" />
+        <property name="configLocation" value="classpath:config/mybatis/mybatis-config-logic.xml"></property>
+    </bean>
+    <bean id="demoDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.user.dao.DemoDAO"></property>
+        <property name="sqlSessionFactory" ref="logicSQLSessionFactory"></property>
+    </bean> 
+    <bean id="ticketDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.ticket.dao.TicketDAO"></property>
+        <property name="sqlSessionFactory" ref="logicSQLSessionFactory"></property>
+    </bean>
+    <bean id="ticketHistoryDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.ticket.dao.TicketHistoryDAO"></property>
+        <property name="sqlSessionFactory" ref="logicSQLSessionFactory"></property>
+    </bean>
+    <bean id="userDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.user.dao.UserDAO"></property>
+        <property name="sqlSessionFactory" ref="logicSQLSessionFactory"></property>
+    </bean>
+
+    <bean id="recordDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.record.dao.RecordDAO"></property>
+        <property name="sqlSessionFactory" ref="logicSQLSessionFactory"></property>
+    </bean>
+    <bean id="adminDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.admin.dao.AdminDAO"></property>
+        <property name="sqlSessionFactory" ref="logicSQLSessionFactory"></property>
+    </bean>
+    <bean id="configDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.config.dao.ConfigDAO"></property>
+        <property name="sqlSessionFactory" ref="logicSQLSessionFactory"></property>
+    </bean>
+    <bean id="dateUnviableDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.dateUnviable.dao.DateUnviableDAO"></property>
+        <property name="sqlSessionFactory" ref="logicSQLSessionFactory"></property>
+    </bean>
+    <bean id="ticketRefundDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.ticket.dao.TicketRefundDAO"></property>
+        <property name="sqlSessionFactory" ref="logicSQLSessionFactory"></property>
+    </bean>
+    <!-- 预定相关 -->
+    <bean id="bookChangeRequestMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.book.dao.BookChangeRequestMapper"></property>
+        <property name="sqlSessionFactory" ref="logicSQLSessionFactory"></property>
+    </bean>
+    <bean id="bookHistoryMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.book.dao.BookHistoryMapper"></property>
+        <property name="sqlSessionFactory" ref="logicSQLSessionFactory"></property>
+    </bean>
+    <bean id="bookMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.book.dao.BookMapper"></property>
+        <property name="sqlSessionFactory" ref="logicSQLSessionFactory"></property>
+    </bean>
+    <bean id="bookTimeRepositoryMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.book.dao.BookTimeRepositoryMapper"></property>
+        <property name="sqlSessionFactory" ref="logicSQLSessionFactory"></property>
+    </bean>
+    <bean id="bookTimeSpanMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.book.dao.BookTimeSpanMapper"></property>
+        <property name="sqlSessionFactory" ref="logicSQLSessionFactory"></property>
+    </bean>
+</beans>
