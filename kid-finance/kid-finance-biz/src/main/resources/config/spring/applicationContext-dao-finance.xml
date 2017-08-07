@@ -10,21 +10,32 @@
         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
-    <bean id="logicSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="jdbcDataSource" />
+
+    <!-- DataSource -->
+    <bean id="financeJDBCDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${kid.jdbc.driver}"></property>
+        <property name="jdbcUrl" value="${kid.jdbc.url}"></property>
+        <property name="user" value="${kid.jdbc.user}"></property>
+        <property name="password" value="${kid.jdbc.password}"></property>
+        <property name="testConnectionOnCheckout" value="false"></property>
+        <property name="testConnectionOnCheckin" value="true"></property>
+        <property name="idleConnectionTestPeriod" value="3600"></property>
+    </bean>
+    <bean id="financeSQLSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="financeJDBCDataSource" />
         <property name="configLocation" value="classpath:config/mybatis/mybatis-config-finance.xml"></property>
     </bean>
     <!-- DAO -->
     <bean id="orderDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.xyzq.kid.finance.dao.OrderDAO"></property>
-        <property name="sqlSessionFactory" ref="logicSqlSessionFactory"></property>
+        <property name="sqlSessionFactory" ref="financeSQLSessionFactory"></property>
     </bean> 
     <bean id="receiptDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.xyzq.kid.finance.dao.ReceiptDAO"></property>
-        <property name="sqlSessionFactory" ref="logicSqlSessionFactory"></property>
+        <property name="sqlSessionFactory" ref="financeSQLSessionFactory"></property>
     </bean>
     <bean id="refundDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.xyzq.kid.finance.dao.RefundDAO"></property>
-        <property name="sqlSessionFactory" ref="logicSqlSessionFactory"></property>
+        <property name="sqlSessionFactory" ref="financeSQLSessionFactory"></property>
     </bean>
 </beans>
