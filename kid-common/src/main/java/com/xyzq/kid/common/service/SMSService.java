@@ -2,7 +2,11 @@ package com.xyzq.kid.common.service;
 
 import com.xyzq.simpson.bart.client.BartClient;
 import com.xyzq.simpson.base.etc.Serial;
-import com.xyzq.simpson.base.io.net.http.HttpHelper;
+import com.xyzq.simpson.base.io.net.http.HttpClient;
+import com.xyzq.simpson.base.io.net.http.HttpRequest;
+import com.xyzq.simpson.base.io.net.http.HttpResponse;
+import com.xyzq.simpson.base.io.net.http.body.HttpURLEncodedBody;
+import com.xyzq.simpson.base.io.net.http.filter.HttpTextFilter;
 import com.xyzq.simpson.base.type.Table;
 import com.xyzq.simpson.base.type.core.ILink;
 import com.xyzq.simpson.base.type.core.ITable;
@@ -13,8 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 /**
  * 短信发送服务
@@ -58,10 +60,6 @@ public class SMSService {
      * @return 短信内容
      */
     public String sendSMS(String mobileNo, String templateName, ITable<String, String> data) {
-        Table<String, Object> table = new Table<String, Object>();
-        table.put("USERNAME", kid_sms_username);
-        table.put("PASSWORD", kid_sms_password);
-        table.put("DESTADDR", mobileNo);
         String template = BartClient.instance().fetch("kid.sms.template." + templateName);
         if(null == template) {
             logger.error("invalid template : " + templateName);
@@ -82,19 +80,24 @@ public class SMSService {
             }
             content = content.replace(content.substring(i, j + 1), "");
         }
+        HttpRequest request = new HttpRequest("POST");
+        HttpURLEncodedBody body = new HttpURLEncodedBody();
+        body.put("username", kid_sms_username);
+        body.put("password", kid_sms_password);
+        body.put("destAddr", mobileNo);
+        body.put("content", content);
+        body.put("reqReport", false);
+        request.body = body;
+        String responseText = null;
+        HttpClient client = new HttpClient();
         try {
-            content = URLEncoder.encode(content, "utf-8");
-        }
-        catch (UnsupportedEncodingException e) { }
-        table.put("CONTENT", content);
-        String response = null;
-        try {
-            response = HttpHelper.invoke(kid_sms_url, table);
-            logger.info("sms = " + kid_sms_url  + "\nparameters = " + table + " \nresponse = " + response);
+            HttpResponse response = client.invoke(kid_sms_url, request);
+            HttpTextFilter filter = new HttpTextFilter();
+            responseText = filter.filter(response);
+            logger.info("sms = " + kid_sms_url  + "\ndestAddr = " + mobileNo + " \nresponse = " + responseText);
         }
         catch (Exception e) {
-            logger.error("call sms platform failed : \nurl = " + kid_sms_url + "\ntemplate = " + templateName + "\nresponse = " + response, e);
-            return null;
+            logger.error("call sms platform failed : \nurl = " + kid_sms_url + "\ntemplate = " + templateName + "\nresponse = " + responseText, e);
         }
         return content;
     }
