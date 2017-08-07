@@ -324,7 +324,7 @@ public class TicketService implements PayListener {
      * @param ticketId
      * @return
      */
-    public String refundTickets(int ticketId, boolean result) {
+    public String refundTickets(int ticketId) {
         logger.info("TicketService.backingTickets[in]-ticketId:" + ticketId);
         TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
         if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
@@ -659,7 +659,7 @@ public class TicketService implements PayListener {
             return false;
         }
 
-        refundTickets(ticketId, result);
+        refundTickets(ticketId);
 
         return result;
     }

@@ -32,7 +32,7 @@ public class TicketServiceTest {
 
     @Test
     public void buySingleTickets() throws Exception {
-        ticketService.onPay("12345678", "myj_test_new", 20005, 80000, "myj_test_new");
+        ticketService.onPay("12345679", "ovQHwwN2CNTBl4O5b3jHTO2uGHSo", 11000, 80000, "ovQHwwN2CNTBl4O5b3jHTO2uGHSo");
     }
 
 

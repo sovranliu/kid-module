@@ -41,6 +41,7 @@
     <include refid="Base_Column_List" />
     from LGC_Ticket
     where OwnerMobileNo = #{ownermobileno,jdbcType=VARCHAR} and Deleted = 0
+    order by status
   </select>
 
   <select id="getTicketsInfoByPayerOpenID" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -292,6 +293,7 @@
     <if test="status != null">
       and Status = #{status,jdbcType=INTEGER}
     </if>
+    order by status
     limit #{begin, jdbcType=INTEGER}, #{limit,jdbcType=INTEGER}
   </select>
 
