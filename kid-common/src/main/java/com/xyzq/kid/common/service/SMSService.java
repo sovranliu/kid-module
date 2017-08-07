@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 /**
  * 短信发送服务
@@ -80,10 +82,15 @@ public class SMSService {
             }
             content = content.replace(content.substring(i, j + 1), "");
         }
+        try {
+            content = URLEncoder.encode(content, "utf-8");
+        }
+        catch (UnsupportedEncodingException e) { }
         table.put("CONTENT", content);
         String response = null;
         try {
             response = HttpHelper.invoke(kid_sms_url, table);
+            logger.info("sms = " + kid_sms_url  + "\nparameters = " + table + " \nresponse = " + response);
         }
         catch (Exception e) {
             logger.error("call sms platform failed : \nurl = " + kid_sms_url + "\ntemplate = " + templateName + "\nresponse = " + response, e);
