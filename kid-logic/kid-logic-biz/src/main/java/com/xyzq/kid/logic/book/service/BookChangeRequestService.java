@@ -121,6 +121,7 @@ public class BookChangeRequestService {
 			}else if(requestType.equals("2")){
 				if(requestBy.equals("2")){//管理员撤销，则直接回通库存
 					if(bookRepositoryService.updateAmount(book.getBooktimeid(), "2")){
+						ticketService.recoverTickets(book.getTicketid());
 						flag=true;
 					}
 				}else{
