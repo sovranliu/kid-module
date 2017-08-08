@@ -176,7 +176,7 @@ public class TicketService implements PayListener {
             if(null != ticketHistoryEntityList && ticketHistoryEntityList.size() > 0) {
                 for (int i = 0; i < ticketHistoryEntityList.size(); i++) {
                     if(ticketHistoryEntityList.get(i).premobile.equals(mobileNo)) {
-                        return "您的票已经被" + mobileNo + "领取！";
+                        return "票已经被" + mobileNo + "领取！";
                     }
                 }
             }
