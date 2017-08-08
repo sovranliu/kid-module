@@ -1,6 +1,7 @@
 package com.xyzq.kid.logic.ticket.service;
 
 import com.xyzq.kid.CommonTool;
+import com.xyzq.kid.common.service.SMSService;
 import com.xyzq.kid.finance.service.RefundService;
 import com.xyzq.kid.finance.service.api.PayListener;
 import com.xyzq.kid.logic.Page;
@@ -16,6 +17,8 @@ import com.xyzq.kid.logic.ticket.entity.TicketHistoryEntity;
 import com.xyzq.kid.logic.ticket.entity.TicketRefundEntity;
 import com.xyzq.kid.logic.user.entity.UserEntity;
 import com.xyzq.kid.logic.user.service.UserService;
+import com.xyzq.simpson.base.type.Table;
+import com.xyzq.simpson.base.type.core.ITable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +75,16 @@ public class TicketService implements PayListener {
     @Autowired
     private ConfigService configService;
 
-
+    @Autowired
+    private SMSService smsService;
+    /**
+     * 买票回调接口
+     * @param orderNo 订单号
+     * @param openId 微信用户开放ID
+     * @param goodsType 商品类型
+     * @param fee 支付金额
+     * @param tag 附属数据
+     */
     @Override
     public void onPay(String orderNo, String openId, int goodsType, int fee, String tag) {
         logger.info("TicketService.buySingleTickets[in]-orderNo:" + orderNo + ",openId:"+ openId + ",goodsType:" + goodsType + ",fee:" + fee);
@@ -180,6 +192,12 @@ public class TicketService implements PayListener {
         if(0 == result) {
             return "赠送失败!";
         }
+
+        ITable<String, String> data = new Table<String, String>();
+        UserEntity userEntity = userService.selectByOpenId(ticketEntity.payeropenid);
+        data.put("userName", userEntity.userName);
+        data.put("serialNumber", ticketEntity.serialNumber);
+        smsService.sendSMS(mobileNo, "redundticket", data);
 
         return "success";
     }

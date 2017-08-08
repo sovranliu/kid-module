@@ -32,7 +32,10 @@ public class TicketServiceTest {
 
     @Test
     public void buySingleTickets() throws Exception {
-        ticketService.onPay("12345679", "ovQHwwN2CNTBl4O5b3jHTO2uGHSo", 11000, 80000, "ovQHwwN2CNTBl4O5b3jHTO2uGHSo");
+        for (int i = 0; i < 1; i++) {
+            ticketService.onPay("123456789" + i, "ovQHwwEWahEJWswlxsHlB70smIGc", 20005, 80000, "ovQHwwEWahEJWswlxsHlB70smIGc");
+        }
+
     }
 
 
