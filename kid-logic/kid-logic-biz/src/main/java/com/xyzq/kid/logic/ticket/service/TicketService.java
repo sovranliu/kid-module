@@ -151,7 +151,7 @@ public class TicketService implements PayListener {
      * @param mobileNo 被赠送人手机号
      * @return 成功返回-success
      */
-    public String handselTickets(int ticketId, String mobileNo, String preMobile){
+    public String handselTickets(int ticketId, String mobileNo, String preMobile, String type){
         logger.info("TicketService.handselTickets[in]-ticketId:" + ticketId + ",mobileNo:" + mobileNo + ", preMobile:" + preMobile);
         TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
         if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
@@ -176,7 +176,7 @@ public class TicketService implements PayListener {
             if(null != ticketHistoryEntityList && ticketHistoryEntityList.size() > 0) {
                 for (int i = 0; i < ticketHistoryEntityList.size(); i++) {
                     if(ticketHistoryEntityList.get(i).premobile.equals(mobileNo)) {
-                        return "票已经被" + mobileNo + "领取！";
+                        return "票已经被" + ticketEntity.telephone + "领取！";
                     }
                 }
             }
@@ -195,7 +195,11 @@ public class TicketService implements PayListener {
             return "不可赠送给自己!";
         }
 
-        handselTicketHistory(ticketId, ticketEntity.telephone);
+        if(type == CommonTool.HANDLE_RECEIVE) {
+            handselReceiveSuccessTicketHistory(ticketId, ticketEntity.telephone);
+        } else {
+            handselTicketHistory(ticketId, ticketEntity.telephone);
+        }
 
         Map paramMap = new HashMap<>();
         paramMap.put("id", ticketId);
@@ -583,6 +587,10 @@ public class TicketService implements PayListener {
         doInsertTicketHistory(ticketId, TicketHistoryEntity.TICKET_ACTION_HANDSEL, null, preMobileNo);
     }
 
+    private void handselReceiveSuccessTicketHistory(int ticketId, String preMobileNo) {
+        doInsertTicketHistory(ticketId, TicketHistoryEntity.TICKET_ACTION_HANDSEL_EFFECTIVE, null, preMobileNo);
+    }
+
     /**
      * 飞行票赠送过期
      * @param id
@@ -657,7 +665,7 @@ public class TicketService implements PayListener {
         TicketHistoryEntity ticketHistoryEntity = new TicketHistoryEntity();
         ticketHistoryEntity.ticketid = ticketId;
         ticketHistoryEntity.action = action;
-        if(action == TicketHistoryEntity.TICKET_ACTION_HANDSEL) {
+        if(action == TicketHistoryEntity.TICKET_ACTION_HANDSEL || action == TicketHistoryEntity.TICKET_ACTION_HANDSEL_EFFECTIVE) {
             ticketHistoryEntity.premobile = preMobile;
         }
         if(action == TicketHistoryEntity.TICKET_ACTION_EXTEND) {
