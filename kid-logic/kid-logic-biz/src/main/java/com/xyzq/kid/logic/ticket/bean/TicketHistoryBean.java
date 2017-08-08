@@ -117,6 +117,19 @@ public class TicketHistoryBean {
         return ticketHistoryDAO.queryTickethandselCount(ticketId);
     }
 
+    public List<TicketHistoryEntity> selectHandselByTicketId(Integer ticketId) {
+        List<TicketHistoryEntity> ticketHistoryEntities = new ArrayList<>();
+        List<TicketHistoryPO> ticketHistoryPOList = ticketHistoryDAO.selectHandselByTicketId(ticketId);
+        if(null != ticketHistoryPOList) {
+            for (int i = 0; i < ticketHistoryPOList.size(); i++) {
+                if(ticketHistoryPOList.get(i).getDeleted() == CommonTool.STATUS_NORMAL) {
+                    ticketHistoryEntities.add(TicketHistoryPOToEntity(ticketHistoryPOList.get(i)));
+                }
+            }
+        }
+        return ticketHistoryEntities;
+    }
+
     /**
      * 根据主键选择性更新飞行票信息
      * @param entity

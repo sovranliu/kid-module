@@ -170,15 +170,29 @@ public class TicketService implements PayListener {
             logger.error("mobileno is null!");
             return "未能正确获取手机号!";
         }
+        int count = queryTickethandselCount(ticketId);
+        if(count > 0) {
+            List<TicketHistoryEntity> ticketHistoryEntityList = ticketHistoryBean.selectHandselByTicketId(ticketId);
+            if(null != ticketHistoryEntityList && ticketHistoryEntityList.size() > 0) {
+                for (int i = 0; i < ticketHistoryEntityList.size(); i++) {
+                    if(ticketHistoryEntityList.get(i).premobile.equals(mobileNo)) {
+                        return "您的票已经被" + mobileNo + "领取！";
+                    }
+                }
+            }
+
+            if(mobileNo.equals(ticketEntity.telephone)) {
+                logger.error("can not handsel to self![" + ticketEntity.telephone + "]");
+                return "您已获取票【" + ticketEntity.serialNumber + "】!";
+            }
+
+            logger.info("ticket has been handseled or handseling!");
+            return "票已被抢!";
+        }
+
         if(mobileNo.equals(ticketEntity.telephone)) {
             logger.error("can not handsel to self![" + ticketEntity.telephone + "]");
             return "不可赠送给自己!";
-        }
-
-        int count = queryTickethandselCount(ticketId);
-        if(count > 0) {
-            logger.info("ticket has been handseled or handseling!");
-            return "票已赠送!";
         }
 
         handselTicketHistory(ticketId, ticketEntity.telephone);

@@ -22,4 +22,6 @@ public interface TicketHistoryDAO {
     int updateByPrimaryKey(TicketHistoryPO record);
 
     int queryTickethandselCount(Integer ticketid);
+
+    List<TicketHistoryPO> selectHandselByTicketId(Integer ticketid);
 }
