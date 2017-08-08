@@ -17,6 +17,9 @@ public class CommonTool {
 
     public final static int STATUS_NORMAL = 0;//记录正常
     public final static int STATUS_DELETE = 1;//记录删除
+    public final static String HANDLE_GIVE = "give";//记录删除
+    public final static String HANDLE_RECEIVE = "receive";//记录删除
+
 
     /**
      * 隐藏构造函数

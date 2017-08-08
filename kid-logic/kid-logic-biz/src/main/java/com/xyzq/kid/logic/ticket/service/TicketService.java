@@ -1,6 +1,7 @@
 package com.xyzq.kid.logic.ticket.service;
 
 import com.xyzq.kid.CommonTool;
+import com.xyzq.kid.common.service.SMSService;
 import com.xyzq.kid.finance.service.RefundService;
 import com.xyzq.kid.finance.service.api.PayListener;
 import com.xyzq.kid.logic.Page;
@@ -16,6 +17,8 @@ import com.xyzq.kid.logic.ticket.entity.TicketHistoryEntity;
 import com.xyzq.kid.logic.ticket.entity.TicketRefundEntity;
 import com.xyzq.kid.logic.user.entity.UserEntity;
 import com.xyzq.kid.logic.user.service.UserService;
+import com.xyzq.simpson.base.type.Table;
+import com.xyzq.simpson.base.type.core.ITable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +75,16 @@ public class TicketService implements PayListener {
     @Autowired
     private ConfigService configService;
 
-
+    @Autowired
+    private SMSService smsService;
+    /**
+     * 买票回调接口
+     * @param orderNo 订单号
+     * @param openId 微信用户开放ID
+     * @param goodsType 商品类型
+     * @param fee 支付金额
+     * @param tag 附属数据
+     */
     @Override
     public void onPay(String orderNo, String openId, int goodsType, int fee, String tag) {
         logger.info("TicketService.buySingleTickets[in]-orderNo:" + orderNo + ",openId:"+ openId + ",goodsType:" + goodsType + ",fee:" + fee);
@@ -139,7 +151,7 @@ public class TicketService implements PayListener {
      * @param mobileNo 被赠送人手机号
      * @return 成功返回-success
      */
-    public String handselTickets(int ticketId, String mobileNo, String preMobile){
+    public String handselTickets(int ticketId, String mobileNo, String preMobile, String type){
         logger.info("TicketService.handselTickets[in]-ticketId:" + ticketId + ",mobileNo:" + mobileNo + ", preMobile:" + preMobile);
         TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
         if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
@@ -158,18 +170,36 @@ public class TicketService implements PayListener {
             logger.error("mobileno is null!");
             return "未能正确获取手机号!";
         }
+        int count = queryTickethandselCount(ticketId);
+        if(count > 0) {
+            List<TicketHistoryEntity> ticketHistoryEntityList = ticketHistoryBean.selectHandselByTicketId(ticketId);
+            if(null != ticketHistoryEntityList && ticketHistoryEntityList.size() > 0) {
+                for (int i = 0; i < ticketHistoryEntityList.size(); i++) {
+                    if(ticketHistoryEntityList.get(i).premobile.equals(mobileNo)) {
+                        return "票已经被" + ticketEntity.telephone + "领取！";
+                    }
+                }
+            }
+
+            if(mobileNo.equals(ticketEntity.telephone)) {
+                logger.error("can not handsel to self![" + ticketEntity.telephone + "]");
+                return "您已获取票【" + ticketEntity.serialNumber + "】!";
+            }
+
+            logger.info("ticket has been handseled or handseling!");
+            return "票已被抢!";
+        }
+
         if(mobileNo.equals(ticketEntity.telephone)) {
             logger.error("can not handsel to self![" + ticketEntity.telephone + "]");
             return "不可赠送给自己!";
         }
 
-        int count = queryTickethandselCount(ticketId);
-        if(count > 0) {
-            logger.info("ticket has been handseled or handseling!");
-            return "票已赠送!";
+        if(type == CommonTool.HANDLE_RECEIVE) {
+            handselReceiveSuccessTicketHistory(ticketId, ticketEntity.telephone);
+        } else {
+            handselTicketHistory(ticketId, ticketEntity.telephone);
         }
-
-        handselTicketHistory(ticketId, ticketEntity.telephone);
 
         Map paramMap = new HashMap<>();
         paramMap.put("id", ticketId);
@@ -180,6 +210,12 @@ public class TicketService implements PayListener {
         if(0 == result) {
             return "赠送失败!";
         }
+
+        ITable<String, String> data = new Table<String, String>();
+        UserEntity userEntity = userService.selectByOpenId(ticketEntity.payeropenid);
+        data.put("userName", userEntity.userName);
+        data.put("serialNumber", ticketEntity.serialNumber);
+        smsService.sendSMS(mobileNo, "redundticket", data);
 
         return "success";
     }
@@ -551,6 +587,10 @@ public class TicketService implements PayListener {
         doInsertTicketHistory(ticketId, TicketHistoryEntity.TICKET_ACTION_HANDSEL, null, preMobileNo);
     }
 
+    private void handselReceiveSuccessTicketHistory(int ticketId, String preMobileNo) {
+        doInsertTicketHistory(ticketId, TicketHistoryEntity.TICKET_ACTION_HANDSEL_EFFECTIVE, null, preMobileNo);
+    }
+
     /**
      * 飞行票赠送过期
      * @param id
@@ -625,7 +665,7 @@ public class TicketService implements PayListener {
         TicketHistoryEntity ticketHistoryEntity = new TicketHistoryEntity();
         ticketHistoryEntity.ticketid = ticketId;
         ticketHistoryEntity.action = action;
-        if(action == TicketHistoryEntity.TICKET_ACTION_HANDSEL) {
+        if(action == TicketHistoryEntity.TICKET_ACTION_HANDSEL || action == TicketHistoryEntity.TICKET_ACTION_HANDSEL_EFFECTIVE) {
             ticketHistoryEntity.premobile = preMobile;
         }
         if(action == TicketHistoryEntity.TICKET_ACTION_EXTEND) {

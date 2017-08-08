@@ -66,19 +66,21 @@ public class SMSService {
             return null;
         }
         String content = template;
-        for(ILink<String, String> link : data) {
-            content = content.replace("[" + link.origin() + "]", link.destination());
-        }
-        while(true) {
-            int i = content.indexOf("[");
-            if(-1 == i) {
-                break;
+        if(null != data) {
+            for (ILink<String, String> link : data) {
+                content = content.replace("[" + link.origin() + "]", link.destination());
             }
-            int j = content.indexOf("]", i);
-            if(-1 == j) {
-                break;
+            while (true) {
+                int i = content.indexOf("[");
+                if (-1 == i) {
+                    break;
+                }
+                int j = content.indexOf("]", i);
+                if (-1 == j) {
+                    break;
+                }
+                content = content.replace(content.substring(i, j + 1), "");
             }
-            content = content.replace(content.substring(i, j + 1), "");
         }
         HttpRequest request = new HttpRequest("POST");
         HttpURLEncodedBody body = new HttpURLEncodedBody();

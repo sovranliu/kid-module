@@ -104,6 +104,7 @@
     <bean id="refundService" class="com.xyzq.kid.finance.service.RefundService"></bean>
     <bean id="goodsTypeService" class="com.xyzq.kid.logic.config.service.GoodsTypeService"></bean>
     <bean id="configService" class="com.xyzq.kid.logic.config.service.ConfigService"></bean>
+    <bean id="smsService" class="com.xyzq.kid.common.service.SMSService"></bean>
     <bean name="cache" class="com.xyzq.simpson.utility.cache.local.TimeLimitedBatchCache">
     </bean>
 </beans>

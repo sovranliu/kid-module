@@ -32,13 +32,16 @@ public class TicketServiceTest {
 
     @Test
     public void buySingleTickets() throws Exception {
-        ticketService.onPay("12345679", "ovQHwwN2CNTBl4O5b3jHTO2uGHSo", 11000, 80000, "ovQHwwN2CNTBl4O5b3jHTO2uGHSo");
+        for (int i = 0; i < 1; i++) {
+            ticketService.onPay("123456780" + i, "ovQHwwEWahEJWswlxsHlB70smIGc", 20005, 38000, "ovQHwwEWahEJWswlxsHlB70smIGc");
+        }
+
     }
 
 
     @Test
     public void handselTickets() throws Exception {
-        String res =  ticketService.handselTickets(61, "13666666666", "1388888888");
+        String res =  ticketService.handselTickets(61, "13666666666", "1388888888", CommonTool.HANDLE_GIVE);
         System.out.println();
     }
 
