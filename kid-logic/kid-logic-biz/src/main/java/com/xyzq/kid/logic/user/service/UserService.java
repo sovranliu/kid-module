@@ -1,5 +1,6 @@
 package com.xyzq.kid.logic.user.service;
 
+import com.xyzq.kid.common.wechat.mp.UserInfoHelper;
 import com.xyzq.kid.logic.Page;
 import com.xyzq.kid.logic.user.bean.UserBean;
 import com.xyzq.kid.logic.user.entity.SessionEntity;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +21,10 @@ import java.util.Map;
  */
 @Service("userService")
 public class UserService {
-    public static Logger logger = LoggerFactory.getLogger(UserService.class);
+    /**
+     * 日志对象
+     */
+    protected static Logger logger = LoggerFactory.getLogger(UserService.class);
     /**
      * 缓存访问对象
      *
@@ -105,13 +110,30 @@ public class UserService {
     }
 
     /**
-     * 用户注册
-     * @param entity
-     * @return
+     * 注册帐号
+     *
+     * @param openId 微信用户开放ID
+     * @param mobileNo 用户手机号码
+     * @param name 用户姓名
+     * @return 执行结果
      */
-    public int insertSelective(UserEntity entity) {
-        logger.info("UserService.getUserById[in]-:" + entity.toString());
-        return userBean.insertSelective(entity);
+    public boolean register(String openId, String mobileNo, String name) {
+        logger.info("user register, openId = " + openId + ", mobileNo = " + mobileNo + ", name = " + name);
+        UserEntity entity = new UserEntity();
+        entity.telephone = mobileNo;
+        entity.userName = name;
+        entity.openid = openId;
+        try {
+            UserInfoHelper.GuestInfo guestInfo = UserInfoHelper.fetchUserInfo(openId);
+            if(guestInfo instanceof UserInfoHelper.MemberInfo) {
+                entity.avatarUrl = ((UserInfoHelper.MemberInfo) guestInfo).headImgUrl;
+            }
+        }
+        catch (Exception e) {
+            logger.error("load avatar failed", e);
+        }
+        userBean.insertSelective(entity);
+        return true;
     }
 
     /**

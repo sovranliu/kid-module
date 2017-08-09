@@ -37,6 +37,10 @@ public class UserEntity {
      */
     public String subscribetime;
     /**
+     * 用户头像
+     */
+    public String avatarUrl;
+    /**
      * 记录是否被软删
      */
     public Byte deleted;
@@ -59,6 +63,7 @@ public class UserEntity {
                 ", address='" + address + '\'' +
                 ", sex=" + sex +
                 ", subscribetime='" + subscribetime + '\'' +
+                "，avatarUrl=" + avatarUrl +
                 ", deleted=" + deleted +
                 ", createtime='" + createtime + '\'' +
                 ", updatetime='" + updatetime + '\'' +
