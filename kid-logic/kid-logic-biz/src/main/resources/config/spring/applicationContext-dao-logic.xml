@@ -82,4 +82,8 @@
         <property name="mapperInterface" value="com.xyzq.kid.logic.book.dao.BookTimeSpanMapper"></property>
         <property name="sqlSessionFactory" ref="logicSQLSessionFactory"></property>
     </bean>
+    <bean id="messageMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.message.dao.MessageMapper"></property>
+        <property name="sqlSessionFactory" ref="logicSQLSessionFactory"></property>
+    </bean>
 </beans>
