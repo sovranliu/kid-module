@@ -386,13 +386,7 @@ public class BookService {
 	 * @return
 	 */
 	public Page<Book> queryByCondPage(String mobileNo,String ticketSerialNo,String startDate,String endDate,String status,Integer begin,Integer limit){
-		List<Book> bookList = new ArrayList<>();
         List<Book> resultList=queryByCondLimt(mobileNo, ticketSerialNo, status, startDate, endDate, begin, limit);
-        if(null != resultList) {
-            for (int i = 0; i < resultList.size(); i++) {
-            	bookList.add(resultList.get(i));
-            }
-        }
         int sum = getCountByCond(mobileNo, ticketSerialNo, status, startDate, endDate);
         Page<Book> result = new Page<>();
         result.setCurrentPage(begin);
@@ -400,5 +394,18 @@ public class BookService {
         result.setRows(sum);
         result.setResultList(resultList);
         return result;
+	}
+	
+	public Book getBookByPk(Integer bookId){
+		Book book=null;
+		try{
+			if(bookId!=null){
+				book=bookMapper.selectByPrimaryKey(bookId);
+			}	
+		}catch(Exception e){
+			logger.info("get book by id fail,caused by "+e.getMessage());
+			e.printStackTrace();
+		}
+		return book;
 	}
 }

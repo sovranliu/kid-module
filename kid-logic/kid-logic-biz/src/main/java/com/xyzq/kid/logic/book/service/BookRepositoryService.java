@@ -221,5 +221,26 @@ public class BookRepositoryService {
 		}
 		return flag;
 	}
+	
+	public String getBookTimeByBookTimeId(Integer bookTimeId){
+		String bookTime=null;
+		try{
+			BookTimeRepository repo=queryByPrimaryKey(bookTimeId);
+			if(repo!=null){
+				String bookDate=repo.getBookdate();
+				Integer bookTimeSpanId=repo.getBooktimespanid();
+				BookTimeSpan span=bookTimeSpanService.queryByPrimaryKey(bookTimeSpanId);
+				if(span!=null){
+					String spanTime=span.getTimespan();
+					bookTime=bookDate+" "+spanTime;
+				}
+			}
+		}catch(Exception e){
+			logger.info("get book time by book id fail,caused by "+e.getMessage());
+			e.printStackTrace();
+		}
+		return bookTime;
+	}
+	
 
 }
