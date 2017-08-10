@@ -33,9 +33,25 @@ public class RefundInfoEntity {
      */
     public String mobileNo;
     /**
+     * 用户姓名
+     */
+    public String userName;
+    /**
      * 退款号
      */
     public String refundNo;
+    /**
+     * 票流水号
+     */
+    public String serialNo;
+    /**
+     * 附属信息
+     */
+    public String tag;
+    /**
+     * 商品类型
+     */
+    public int goodsType;
     /**
      * 支付金额（分）
      */

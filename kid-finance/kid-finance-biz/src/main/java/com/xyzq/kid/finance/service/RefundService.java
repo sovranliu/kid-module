@@ -4,16 +4,15 @@ import com.xyzq.kid.common.wechat.pay.WechatPayHelper;
 import com.xyzq.kid.common.wechat.pay.protocol.*;
 import com.xyzq.kid.finance.dao.OrderDAO;
 import com.xyzq.kid.finance.dao.RefundDAO;
-import com.xyzq.kid.finance.dao.po.OrderInfoPO;
 import com.xyzq.kid.finance.dao.po.OrderPO;
 import com.xyzq.kid.finance.dao.po.RefundInfoPO;
 import com.xyzq.kid.finance.dao.po.RefundPO;
-import com.xyzq.kid.finance.service.entity.OrderInfoEntity;
 import com.xyzq.kid.finance.service.entity.RefundEntity;
 import com.xyzq.kid.finance.service.entity.RefundInfoEntity;
 import com.xyzq.kid.finance.service.exception.OrderExistException;
 import com.xyzq.kid.finance.service.exception.WechatResponseException;
 import com.xyzq.simpson.base.etc.Serial;
+import com.xyzq.simpson.base.model.Page;
 import com.xyzq.simpson.base.text.Text;
 import com.xyzq.simpson.base.time.DateTime;
 import org.slf4j.Logger;
@@ -162,7 +161,7 @@ public class RefundService {
      * @param size 查询个数
      * @return 订单列表
      */
-    public com.xyzq.simpson.base.type.List<RefundInfoEntity> find(String orderNo, String openId, int status, DateTime beginTime, DateTime endTime, int begin, int size) {
+    public Page<RefundInfoEntity> find(String orderNo, String openId, int status, DateTime beginTime, DateTime endTime, int begin, int size) {
         java.sql.Timestamp beginTimestamp = null;
         if(null != beginTime) {
             beginTimestamp = new java.sql.Timestamp(beginTime.toLong());
@@ -178,7 +177,11 @@ public class RefundService {
             refundInfoEntity.orderNo = refundInfoPO.getOrderNo();
             refundInfoEntity.openId = refundInfoPO.getOpenId();
             refundInfoEntity.mobileNo = refundInfoPO.getMobileNo();
+            refundInfoEntity.userName = refundInfoPO.getUserName();
+            refundInfoEntity.serialNo = refundInfoPO.getSerialNo();
+            refundInfoEntity.goodsType = refundInfoPO.getGoodsType();
             refundInfoEntity.refundNo = refundInfoPO.getRefundNo();
+            refundInfoEntity.tag = refundInfoPO.getTag();
             refundInfoEntity.fee = refundInfoPO.getFee();
             refundInfoEntity.refundFee = refundInfoPO.getRefundFee();
             switch(refundInfoPO.getState()) {
@@ -197,7 +200,10 @@ public class RefundService {
             // 添加
             result.add(refundInfoEntity);
         }
-        return result;
+        Page<RefundInfoEntity> page = new Page<RefundInfoEntity>();
+        page.list = result;
+        page.total = refundDAO.count(orderNo, openId, status, beginTimestamp, endTimestamp);
+        return page;
     }
 
     /**
