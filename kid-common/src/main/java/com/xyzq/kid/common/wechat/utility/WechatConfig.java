@@ -15,15 +15,15 @@ public class WechatConfig {
     /**
      * 商户号
      */
-    public static String merchantId = "1264771201";
+    public static String merchantId = "1487150022";
     /**
      * API KEY
      */
-    public static String apiKey = "19860119198601191986011919860119";
+    public static String apiKey = "yahaifeixing12345678912345678912";
     /**
      * API Password
      */
-    public static String apiPassword = "1264771201";
+    public static String apiPassword = "1487150022";
     /**
      * 通知URL
      */
