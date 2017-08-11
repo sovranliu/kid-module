@@ -11,7 +11,7 @@ public class WechatConfig {
     /**
      * APP Secret
      */
-    public static String appSecret = "a09500e4435962eff7d2dfe495c18048";
+    public static String appSecret = "";
     /**
      * 商户号
      */
@@ -19,15 +19,15 @@ public class WechatConfig {
     /**
      * API KEY
      */
-    public static String apiKey = "yahaifeixing12345678912345678912";
+    public static String apiKey = "";
     /**
      * API Password
      */
-    public static String apiPassword = "1487150022";
+    public static String apiPassword = "";
     /**
      * 通知URL
      */
-    public static String notiyUrl = "http://solution.slfuture.cn/kid/wechat/tencent/payNotify";
+    public static String notiyUrl = "";
     /**
      * 微信认证
      */
