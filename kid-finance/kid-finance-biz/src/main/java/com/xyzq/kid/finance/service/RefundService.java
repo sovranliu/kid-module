@@ -121,7 +121,9 @@ public class RefundService {
             }
             else {
                 // 远程查询退款信息
-                QueryRefundRequest queryRefundRequest = QueryRefundRequest.build(refundPO.getOrderNo(), null, refundPO.getRefundNo(), refundPO.getRefundId());
+                // 此处参数过多会造成异常
+                // QueryRefundRequest queryRefundRequest = QueryRefundRequest.build(refundPO.getOrderNo(), null, refundPO.getRefundNo(), refundPO.getRefundId());
+                QueryRefundRequest queryRefundRequest = QueryRefundRequest.build(null, null, refundPO.getRefundNo(), null);
                 QueryRefundResponse queryRefundResponse = WechatPayHelper.queryRefund(queryRefundRequest);
                 if(!queryRefundResponse.isSuccessful()) {
                     throw new WechatResponseException("queryOrder", queryRefundRequest.toString(), queryRefundResponse.toString());
@@ -140,6 +142,9 @@ public class RefundService {
                         else if("REFUNDCLOSE".equalsIgnoreCase(refundInfo.refundStatus) || "CHANGE".equalsIgnoreCase(refundInfo.refundStatus)) {
                             refundDAO.updateRefundState(refundInfo.refundTradeNo, 3, null);
                             result.state = 3;
+                        }
+                        else if("PROCESSING".equalsIgnoreCase(refundInfo.refundStatus)) {
+                            logger.info("order " + orderNo + " refund state is processing");
                         }
                     }
                 }

@@ -27,6 +27,10 @@ public class WechatPayHelper {
      * 退款
      */
     public final static String URL_REFUND = "https://api.mch.weixin.qq.com/secapi/pay/refund";
+    /**
+     * 查询退款
+     */
+    public final static String URL_REFUNDQUERY = "https://api.mch.weixin.qq.com/pay/refundquery";
 
 
     /**
@@ -129,7 +133,7 @@ public class WechatPayHelper {
      * @return 退款查询结果
      */
     public static QueryRefundResponse queryRefund(QueryRefundRequest request) throws IOException {
-        String response = XMLHttpsUtil.post(URL_ORDERQUERY, request.toString());
+        String response = XMLHttpsUtil.post(URL_REFUNDQUERY, request.toString());
         if(Text.isBlank(response)) {
             throw new IOException("receive empty data in queryRefund");
         }
