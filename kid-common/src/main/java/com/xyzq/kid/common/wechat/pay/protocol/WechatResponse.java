@@ -86,6 +86,9 @@ public class WechatResponse extends WechatRequest {
                         field.set(this, Integer.valueOf(son.getValue()));
                     }
                 }
+                else if(field.getType().equals(Boolean.class) || field.getType().equals(boolean.class)) {
+                    field.set(this, son.getValue());
+                }
             }
             catch (IllegalAccessException e) {
                 throw new RuntimeException("response set field failed, field = " + field.getName(), e);

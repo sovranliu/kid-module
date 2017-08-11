@@ -40,7 +40,7 @@ public class PayNotify extends WechatNotify {
      * 是否关注公众账号
      */
     @ProtocolField("is_subscribe")
-    public boolean isSubscribe = false;
+    public String isSubscribe;
     /**
      * 交易类型
      */
@@ -55,7 +55,7 @@ public class PayNotify extends WechatNotify {
      * 订单金额
      */
     @ProtocolField("total_fee")
-    public int totalFee;
+    public Integer totalFee;
     /**
      * 货币种类
      */
@@ -65,7 +65,7 @@ public class PayNotify extends WechatNotify {
      * 现金支付金额
      */
     @ProtocolField("cash_fee")
-    public int cashFee;
+    public Integer cashFee;
     /**
      * 现金支付货币类型
      */
@@ -75,12 +75,12 @@ public class PayNotify extends WechatNotify {
      * 总代金券金额
      */
     @ProtocolField("coupon_fee")
-    public int couponFee;
+    public Integer couponFee;
     /**
      * 代金券使用数量
      */
     @ProtocolField("coupon_count")
-    public int couponCount;
+    public Integer couponCount;
     /**
      * 微信支付订单号
      */

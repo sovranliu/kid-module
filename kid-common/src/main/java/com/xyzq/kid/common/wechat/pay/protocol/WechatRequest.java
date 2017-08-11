@@ -38,7 +38,7 @@ public class WechatRequest {
             try {
                 field.setAccessible(true);
                 Object value = field.get(this);
-                if(field.getType().equals(String.class) && Text.isBlank((String) value)) {
+                if(null == value) {
                     continue;
                 }
                 XMLNode item = new XMLNode();
