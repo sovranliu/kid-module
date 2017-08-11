@@ -9,13 +9,13 @@
     <result column="Address" jdbcType="VARCHAR" property="address" />
     <result column="Gender" jdbcType="BIT" property="gender" />
     <result column="SubscribeTime" jdbcType="TIMESTAMP" property="subscribetime" />
+    <result column="AvatarUrl" jdbcType="VARCHAR" property="avatarUrl" />
     <result column="Deleted" jdbcType="TINYINT" property="deleted" />
     <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, MobileNo, OpenID, RealName, Address, Gender, SubscribeTime, Deleted, CreateTime, 
-    UpdateTime
+    ID, MobileNo, OpenID, RealName, Address, Gender, SubscribeTime, AvatarUrl, Deleted, CreateTime, UpdateTime
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -42,11 +42,11 @@
   <insert id="insert" parameterType="com.xyzq.kid.logic.user.dao.po.UserPO" useGeneratedKeys="true" keyProperty="id">
     insert into LGC_User (ID, MobileNo, OpenID, 
       RealName, Address, Gender, 
-      SubscribeTime, Deleted, CreateTime, 
+      SubscribeTime, AvatarUrl, Deleted, CreateTime,
       UpdateTime)
     values (#{id,jdbcType=INTEGER}, #{mobileno,jdbcType=VARCHAR}, #{openid,jdbcType=VARCHAR}, 
       #{realname,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{gender,jdbcType=BIT}, 
-      #{subscribetime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=TINYINT}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{subscribetime,jdbcType=TIMESTAMP}, #{avatarUrl,jdbcType=VARCHAR}, #{deleted,jdbcType=TINYINT}, #{createtime,jdbcType=TIMESTAMP},
       #{updatetime,jdbcType=TIMESTAMP})
   </insert>
 
@@ -73,6 +73,9 @@
       </if>
       <if test="subscribetime != null">
         SubscribeTime,
+      </if>
+      <if test="avatarUrl != null">
+        AvatarUrl,
       </if>
       <if test="deleted != null">
         Deleted,
@@ -105,6 +108,9 @@
       </if>
       <if test="subscribetime != null">
         #{subscribetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="avatarUrl != null">
+        #{avatarUrl,jdbcType=VARCHAR},
       </if>
       <if test="deleted != null">
         #{deleted,jdbcType=TINYINT},

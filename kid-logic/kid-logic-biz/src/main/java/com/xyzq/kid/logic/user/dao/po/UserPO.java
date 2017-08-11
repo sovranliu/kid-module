@@ -17,6 +17,8 @@ public class UserPO {
 
     private Date subscribetime;
 
+    private String avatarUrl;
+
     private Byte deleted;
 
     private Date createtime;
@@ -63,6 +65,10 @@ public class UserPO {
         this.address = address == null ? null : address.trim();
     }
 
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
     public Integer getGender() {
         return gender;
     }
@@ -77,6 +83,14 @@ public class UserPO {
 
     public void setSubscribetime(Date subscribetime) {
         this.subscribetime = subscribetime;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public Byte getDeleted() {

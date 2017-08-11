@@ -28,7 +28,7 @@ SET State = 2, UpdateTime = NOW()
 WHERE OrderNo = #{orderNo} AND State = 1 AND Deleted = 0
     </update>
     <select id="select" resultType="OrderInfoPO">
-SELECT O.*, U.MobileNo FROM
+SELECT O.*, U.MobileNo, U.RealName AS userName, T.SerialNo FROM
 (
 SELECT *
 FROM FIN_Order
@@ -50,18 +50,57 @@ WHERE Deleted = 0
 </if>
 <if test="beginTime != null">
     <![CDATA[
-    AND CreateTime >= beginTime
+    AND CreateTime >= #{beginTime}
     ]]>
 </if>
 <if test="endTime != null">
     <![CDATA[
-    AND CreateTime <= endTime
+    AND CreateTime <= #{endTime}
     ]]>
 </if>
 ) O
 LEFT JOIN LGC_User U
 ON O.OpenID = U.OpenID AND U.Deleted = 0
+LEFT JOIN LGC_Ticket T
+ON O.OrderNo = T.OrderNo AND T.Deleted = 0
 ORDER BY ID DESC
 LIMIT #{begin}, #{size}
+    </select>
+    <select id="count" resultType="Integer">
+SELECT COUNT(1) FROM
+(
+SELECT *
+FROM FIN_Order
+WHERE Deleted = 0
+<if test="orderNo != null and orderNo != ''">
+    AND OrderNo = #{orderNo}
+</if>
+<if test="openId != null and openId != ''">
+    AND OpenID = #{openId}
+</if>
+<if test="status != null and status == 1">
+    AND (State = 0 OR State = 1 OR State = 5)
+</if>
+<if test="status != null and status == 2">
+    AND State = 2
+</if>
+<if test="status != null and status == 3">
+    AND (State = 3 OR State = 4)
+</if>
+<if test="beginTime != null">
+<![CDATA[
+    AND CreateTime >= #{beginTime}
+]]>
+</if>
+<if test="endTime != null">
+<![CDATA[
+    AND CreateTime <= #{endTime}
+]]>
+</if>
+) O
+LEFT JOIN LGC_User U
+ON O.OpenID = U.OpenID AND U.Deleted = 0
+LEFT JOIN LGC_Ticket T
+ON O.OrderNo = T.OrderNo AND T.Deleted = 0
     </select>
 </mapper>

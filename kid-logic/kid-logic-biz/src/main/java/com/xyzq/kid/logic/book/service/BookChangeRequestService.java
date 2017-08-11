@@ -2,6 +2,7 @@ package com.xyzq.kid.logic.book.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mysql.jdbc.StringUtils;
+import com.xyzq.kid.logic.Page;
 import com.xyzq.kid.logic.book.dao.BookChangeRequestMapper;
 import com.xyzq.kid.logic.book.dao.BookMapper;
 import com.xyzq.kid.logic.book.dao.BookTimeRepositoryMapper;
@@ -214,9 +216,13 @@ public class BookChangeRequestService {
 	 * @return
 	 * @throws ParseException 
 	 */
-	public List<BookChangeRequest> queryRequesting(String startDate,String endDate,String status,String requestType,Integer currentPage,Integer limit) throws ParseException{
+	public List<BookChangeRequest> queryByCondLimt(Integer bookId ,String startDate,String endDate,String status,String requestType,Integer begin,Integer limit) throws ParseException{
 		List<BookChangeRequest> reqList=null;
 		Map<String,Object> map=new HashMap<>();
+		
+		if(bookId!=null){
+			map.put("bookId", bookId);
+		}
 		
 		if(!StringUtils.isNullOrEmpty(startDate)){
 			Date start=sdf.parse(startDate);
@@ -228,15 +234,15 @@ public class BookChangeRequestService {
 			map.put("endDate", end);
 		}
 		
-		if(StringUtils.isNullOrEmpty(status)){
+		if(!StringUtils.isNullOrEmpty(requestType)){
 			map.put("requestType",requestType );
 		}
-		if(StringUtils.isNullOrEmpty(status)){
+		if(!StringUtils.isNullOrEmpty(status)){
 			map.put("status", status);
 		}
-		if(currentPage!=null&&currentPage>0){
-			Integer pageStart=(currentPage-1)*limit;
-			map.put("pageStart", pageStart);
+		if(begin!=null&&begin>0){
+			Integer pageStart=(begin-1)*limit;
+			map.put("begin", pageStart);
 			map.put("limit", limit);
 		}
 		try{
@@ -255,11 +261,14 @@ public class BookChangeRequestService {
 	 * @return
 	 * @throws ParseException 
 	 */
-	public Integer getConuntByCond(String startDate,String endDate,String status,String requestType) throws ParseException{
-		
-		Integer count=0;
+	public Integer getCountByCond(Integer bookId ,String startDate,String endDate,String status,String requestType,Integer begin,Integer limit) throws ParseException{
+		Integer count=0; 
 		List<BookChangeRequest> reqList=null;
 		Map<String,Object> map=new HashMap<>();
+		
+		if(bookId!=null){
+			map.put("bookId", bookId);
+		}
 		
 		if(!StringUtils.isNullOrEmpty(startDate)){
 			Date start=sdf.parse(startDate);
@@ -271,21 +280,49 @@ public class BookChangeRequestService {
 			map.put("endDate", end);
 		}
 		
-		if(StringUtils.isNullOrEmpty(status)){
+		if(!StringUtils.isNullOrEmpty(requestType)){
 			map.put("requestType",requestType );
 		}
-		if(StringUtils.isNullOrEmpty(status)){
+		if(!StringUtils.isNullOrEmpty(status)){
 			map.put("status", status);
+		}
+		if(begin!=null&&begin>0){
+			Integer pageStart=(begin-1)*limit;
+			map.put("begin", pageStart);
+			map.put("limit", limit);
 		}
 		try{
 			reqList=bookChangeRequestMapper.queryRequestByCond(map);
-			count=reqList.size();
+			if(reqList!=null&&reqList.size()>0){
+				count=reqList.size();
+			}
 		}catch(Exception e){
-			logger.error("get count by condition fail ,caused by "+e.getMessage());
+			logger.error("query Request by condition fail ,caused by "+e.getMessage());
 			e.printStackTrace();
 		}
 		return count;
 	}
 	
-	
+	/**
+	 * 按条件分页查询
+	 * @param mobileNo
+	 * @param ticketSerialNo
+	 * @param startDate
+	 * @param endDate
+	 * @param status
+	 * @param begin
+	 * @param limit
+	 * @return
+	 * @throws ParseException 
+	 */
+	public Page<BookChangeRequest> queryByCondPage(Integer bookId ,String startDate,String endDate,String status,String requestType,Integer begin,Integer limit) throws ParseException{
+        List<BookChangeRequest> resultList=queryByCondLimt( bookId , startDate, endDate, status, requestType, begin, limit);
+        int sum = getCountByCond( bookId , startDate, endDate, status, requestType, begin, limit);
+        Page<BookChangeRequest> result = new Page<>();
+        result.setCurrentPage(begin);
+        result.setPageSize(limit);
+        result.setRows(sum);
+        result.setResultList(resultList);
+        return result;
+	}
 }

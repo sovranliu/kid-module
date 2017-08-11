@@ -68,4 +68,16 @@ public interface RefundDAO {
      * @return 退款信息列表
      */
     public List<RefundInfoPO> select(@Param("orderNo") String orderNo, @Param("openId") String openId, @Param("status") int status, @Param("beginTime") Timestamp beginTime, @Param("endTime") Timestamp endTime, @Param("begin") int begin, @Param("size") int size);
+
+    /**
+     * 结果总数
+     *
+     * @param orderNo 订单号
+     * @param openId 微信用户开放ID
+     * @param status 状态，1：退款中，2：退款成功，3：退款失败
+     * @param beginTime 开始时间
+     * @param endTime 结束时间
+     * @return 结果总数
+     */
+    public int count(@Param("orderNo") String orderNo, @Param("openId") String openId, @Param("status") int status, @Param("beginTime") Timestamp beginTime, @Param("endTime") Timestamp endTime);
 }

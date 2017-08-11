@@ -139,6 +139,9 @@ public class UserBean {
         if(null != po.getSubscribetime()) {
             entity.subscribetime = CommonTool.dataToStringYMDHMS(po.getSubscribetime());
         }
+        if(null != po.getAvatarUrl()) {
+            entity.avatarUrl = po.getAvatarUrl();
+        }
         if(null != po.getDeleted()) {
             entity.deleted = po.getDeleted();
         }
@@ -176,6 +179,9 @@ public class UserBean {
         po.setGender(entity.sex);
         if(null != entity.subscribetime) {
             po.setSubscribetime(CommonTool.stringToDataYMDHMS(entity.subscribetime));
+        }
+        if(null != entity.avatarUrl) {
+            po.setAvatarUrl( entity.avatarUrl);
         }
         if(null != entity.deleted) {
             po.setDeleted(entity.deleted);

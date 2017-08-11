@@ -188,16 +188,33 @@
   <select id="queryRequestByCond" parameterType="Map" resultType="com.xyzq.kid.logic.book.dao.po.BookChangeRequest">
   	select * from LGC_Book_ChangeRequest
   	where 1=1
+  	<if test="bookId != null">
+  		and BookId = #{bookId}
+  	</if>
   	<if test="requestType != null">
-  		and RequestType = #{requestType}
+  		and ReqestType = #{requestType}
   	</if>
   	<if test="status != null ">
   		and Status = #{status}
   	</if>
-  	<if test="pageStart != null ">
-  		 limit #{pageStart},#{limit} 
+  	<if test=" startDate !=null">
+<![CDATA[
+  		and CreateTime >= #{startDate,jdbcType=TIMESTAMP}
+]]>
   	</if>
+  	<if test=" endDate !=null ">
+<![CDATA[
+  		and CreateTime <= #{endDate,jdbcType=TIMESTAMP}
+]]>
+  	</if>
+  	
+  	
   	 and DeleteFlag = '0'
-  	 order by LstUpdateTime desc
+  	 
+  	 order by CreateTime desc
+  	 
+  	 <if test=" begin != null ">
+  		 limit #{begin},#{limit} 
+  	</if>
   </select>
 </mapper>

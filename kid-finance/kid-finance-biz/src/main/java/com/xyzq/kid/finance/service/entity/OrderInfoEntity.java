@@ -35,6 +35,18 @@ public class OrderInfoEntity {
      */
     public String mobileNo;
     /**
+     * 用户姓名
+     */
+    public String userName;
+    /**
+     * 票流水号
+     */
+    public String serialNo;
+    /**
+     * 附属信息
+     */
+    public String tag;
+    /**
      * 商品类型
      */
     public int goodsType;

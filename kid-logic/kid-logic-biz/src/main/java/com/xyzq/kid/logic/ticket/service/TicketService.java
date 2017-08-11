@@ -707,4 +707,9 @@ public class TicketService implements PayListener {
 
         return result;
     }
+    
+    public TicketEntity getTicketByPk(Integer ticketId){
+    	return ticketBean.selectByPrimaryKey(ticketId);
+
+    }
 }

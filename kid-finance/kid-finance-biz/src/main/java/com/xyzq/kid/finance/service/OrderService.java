@@ -14,6 +14,7 @@ import com.xyzq.kid.finance.service.entity.PaidOrderEntity;
 import com.xyzq.kid.finance.service.exception.OrderExistException;
 import com.xyzq.kid.finance.service.exception.WechatResponseException;
 import com.xyzq.simpson.base.etc.Serial;
+import com.xyzq.simpson.base.model.Page;
 import com.xyzq.simpson.base.text.Text;
 import com.xyzq.simpson.base.time.DateTime;
 import com.xyzq.kid.common.wechat.pay.WechatPayHelper;
@@ -204,7 +205,7 @@ public class OrderService {
      * @param size 查询个数
      * @return 订单列表
      */
-    public List<OrderInfoEntity> find(String orderNo, String openId, int status, DateTime beginTime, DateTime endTime, int begin, int size) {
+    public Page<OrderInfoEntity> find(String orderNo, String openId, int status, DateTime beginTime, DateTime endTime, int begin, int size) {
         java.sql.Timestamp beginTimestamp = null;
         if(null != beginTime) {
             beginTimestamp = new java.sql.Timestamp(beginTime.toLong());
@@ -220,6 +221,9 @@ public class OrderService {
             orderInfoEntity.orderNo = orderInfoPO.getOrderNo();
             orderInfoEntity.openId = orderInfoPO.getOpenId();
             orderInfoEntity.mobileNo = orderInfoPO.getMobileNo();
+            orderInfoEntity.userName = orderInfoPO.getUserName();
+            orderInfoEntity.serialNo = orderInfoPO.getSerialNo();
+            orderInfoEntity.tag = orderInfoPO.getTag();
             orderInfoEntity.fee = orderInfoPO.getFee();
             orderInfoEntity.goodsType = orderInfoPO.getGoodsType();
             switch(orderInfoPO.getState()) {
@@ -240,7 +244,10 @@ public class OrderService {
             // 添加
             result.add(orderInfoEntity);
         }
-        return result;
+        Page<OrderInfoEntity> page = new Page<OrderInfoEntity>();
+        page.total = orderDAO.count(orderNo, openId, status, beginTimestamp, endTimestamp);
+        page.list = result;
+        return page;
     }
 
     /**
