@@ -178,6 +178,11 @@ public class OrderService {
             return false;
         }
         ReceiptPO receiptPO = new ReceiptPO();
+        receiptPO.setOrderNo(payNotify.tradeNo);
+        receiptPO.setOpenId(payNotify.openId);
+        receiptPO.setAmount(payNotify.totalFee);
+        receiptPO.setTransactionId(payNotify.transactionId);
+        receiptPO.setMode("notify");
         receiptDAO.insertReceipt(receiptPO);
         OrderPO orderPO = orderDAO.loadByOrderNo(payNotify.tradeNo);
         if(null != orderPO && 1 == orderDAO.updateOrderPaid(payNotify.tradeNo)) {
