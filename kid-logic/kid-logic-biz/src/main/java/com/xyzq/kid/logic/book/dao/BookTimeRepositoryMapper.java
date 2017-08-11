@@ -19,4 +19,6 @@ public interface BookTimeRepositoryMapper {
     int updateByPrimaryKey(BookTimeRepository record);
     
     List<BookTimeRepository> queryByCond(Map<String,Object> map);
+    
+    List<BookTimeRepository> queryAllByBookDate(Map<String,Object> map);
 }

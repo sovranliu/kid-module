@@ -135,6 +135,21 @@ public class BookRepositoryService {
 		return repoList;
 	}
 	
+	public List<BookTimeRepository> queryAllByBookDate(String bookDate){
+		List<BookTimeRepository> repoList=null;
+		Map<String,Object> map=new HashMap<>();
+		try{
+			if(!StringUtils.isNullOrEmpty(bookDate)){
+				map.put("bookDate", bookDate);
+			}
+			repoList=bookTimeRepositoryMapper.queryAllByBookDate(map);
+		}catch(Exception e){
+			logger.error("query all repository by date fail,caused by "+e.getMessage());
+			e.printStackTrace();
+		}
+		return repoList;
+	}
+	
 	/**
 	 * 根据预约日期、时间段ID，查询库存情况
 	 * @param bookDate

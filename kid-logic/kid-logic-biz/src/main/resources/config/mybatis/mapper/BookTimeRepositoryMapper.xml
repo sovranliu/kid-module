@@ -152,4 +152,12 @@
   	 and DeleteFlag = '0'
   	 order by BookTimeSpanId asc, LastUpdateTime desc
   </select>
+  
+  <select id="queryAllByBookDate" parameterType="Map" resultType="com.xyzq.kid.logic.book.dao.po.BookTimeRepository">
+  select * from LGC_Book_Time_Repository where 1=1 
+  <if test="bookDate != null">
+  	and BookDate = #{bookDate}
+  </if>
+  order by BookTimeSpanId asc
+  </select>
 </mapper>
