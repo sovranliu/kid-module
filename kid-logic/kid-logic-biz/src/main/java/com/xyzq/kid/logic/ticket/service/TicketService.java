@@ -472,7 +472,7 @@ public class TicketService implements PayListener {
      * @param ticketId 票号
      * @return 退款成功or失败
      */
-    public boolean accessByPrimaryKey(Integer ticketId) {
+    public boolean accessRefund(Integer ticketId) {
         ticketRefundBean.accessByPrimaryKey(ticketId);
         return refund(ticketId);
 
@@ -483,7 +483,7 @@ public class TicketService implements PayListener {
      * @param id
      * @return
      */
-    public int refuseByPrimaryKey(Integer id) {
+    public int refuseRefund(Integer id) {
         return ticketRefundBean.refuseByPrimaryKey(id);
     }
 
@@ -494,6 +494,10 @@ public class TicketService implements PayListener {
      */
     public Page<TicketRefundEntity> getTicketRefunding(Integer begin, int limit) {
         return ticketRefundBean.selectRefunding(begin, limit);
+    }
+
+    public List<TicketRefundEntity> selectAllRefunding() {
+        return ticketRefundBean.selectAllRefunding();
     }
 
     /**

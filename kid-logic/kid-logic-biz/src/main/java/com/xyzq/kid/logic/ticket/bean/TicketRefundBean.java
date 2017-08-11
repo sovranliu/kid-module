@@ -50,6 +50,24 @@ public class TicketRefundBean {
         return result;
     }
 
+    /**
+     * 获取退票信息
+     * @return
+     */
+    public List<TicketRefundEntity> selectAllRefunding() {
+        List<TicketRefundEntity> ticketRefundEntityList = new ArrayList<>();
+        Map paramMap = new HashMap<>();
+        paramMap.put("begin", 0);
+        paramMap.put("limit", 100);
+        List<TicketRefundPO> ticketRefundPOList = ticketRefundDAO.selectRefunding(paramMap);
+        if(null != ticketRefundPOList) {
+            for (int i = 0; i < ticketRefundPOList.size(); i++) {
+                ticketRefundEntityList.add(TicketRefundPOToEntity(ticketRefundPOList.get(i)));
+            }
+        }
+        return ticketRefundEntityList;
+    }
+
     public TicketRefundEntity selectByTicketId(Integer ticketId) {
         return TicketRefundPOToEntity(ticketRefundDAO.selectByTicketId(ticketId));
     }
