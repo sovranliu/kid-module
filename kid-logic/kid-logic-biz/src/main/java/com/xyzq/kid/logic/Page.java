@@ -83,4 +83,9 @@ public class Page<E> {
     public void setResultList(List<E> resultList) {
         this.resultList = resultList;
     }
+
+    @Override
+    public String toString() {
+        return "\"total\":" + rows + ", \"list\":" + resultList.toString();
+    }
 }

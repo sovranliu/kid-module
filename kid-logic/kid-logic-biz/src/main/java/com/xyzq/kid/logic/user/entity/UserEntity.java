@@ -6,7 +6,7 @@ package com.xyzq.kid.logic.user.entity;
  */
 public class UserEntity {
     public final static int USER_MALE = 1;//男
-    public final static int USER_FEMALE = 1;//女
+    public final static int USER_FEMALE = 2;//女
 
     /**
      * 用户主键

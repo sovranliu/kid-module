@@ -155,4 +155,8 @@ public class UserService {
         logger.info("UserService.selectByOpenId[in]-openId:" + openId);
         return userBean.selectByOpenId(openId);
     }
+
+    public int insertSelective(UserEntity entity) {
+        return userBean.insertSelective(entity);
+    }
 }

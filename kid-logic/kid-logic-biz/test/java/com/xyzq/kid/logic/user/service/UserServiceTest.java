@@ -41,8 +41,8 @@ public class UserServiceTest {
             userEntity.address = "abcdefghijklmn" + i;
             userEntity.sex = UserEntity.USER_MALE;
             userEntity.subscribetime= "2017-08-06 05:58:00";
-            int id = userService.insertSelective(userEntity);
-            System.out.println(id);
+//            int id = userService.(userEntity);
+//            System.out.println(id);
 
         }
 
