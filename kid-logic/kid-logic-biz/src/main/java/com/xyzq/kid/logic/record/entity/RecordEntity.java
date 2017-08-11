@@ -11,6 +11,8 @@ public class RecordEntity {
 
 	public final static String PURCHASED = "1";//已购买
 	public final static String UNPURCHASED = "0";//未购买
+	public final static String STATUS_NORMAL = "0";//记录正常
+	public final static String STATUS_DELETE = "1";//记录删除
 	/**
 	 * 主键ID，自增长的流水号
 	 */

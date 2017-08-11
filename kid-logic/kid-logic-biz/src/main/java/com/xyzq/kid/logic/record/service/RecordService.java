@@ -135,7 +135,13 @@ public class RecordService implements PayListener {
 	 * @return int
 	 * @Param RecordPO
 	 */
-	public int addRecord(RecordPO recordPO) {
+	public int addRecord(String serialNo, String path) {
+		RecordPO recordPO = new RecordPO();
+		recordPO.setSerialNumber(serialNo);
+		recordPO.setPath(path);
+		recordPO.setDeleted(RecordEntity.STATUS_NORMAL);
+		recordPO.setPurchased(RecordEntity.UNPURCHASED);
+
 		return recordBean.addRecord(recordPO);
 	}
 
@@ -153,33 +159,21 @@ public class RecordService implements PayListener {
 	 * 方法描述
 	 * /apps/data/record/2017-07/201707271830459527.mp4。
 	 *
-	 * @return 返回值
+	 * @return fileName
 	 */
-	public Map<String, String> uploadFile(MultipartFile uplodaFile) {
-		Map<String, String> resMap = new HashMap<String, String>();
-		try {
-			InputStream inputStream = uplodaFile.getInputStream();
-			byte[] b = new byte[1048576];
-			Integer length = inputStream.read(b);
-			// 文件流写到服务器端
-			String suffixStr = uplodaFile.getOriginalFilename().substring(uplodaFile.getOriginalFilename().indexOf("."));
-			String filePath = genFileName(suffixStr);
-			FileOutputStream outputStream = new FileOutputStream(filePath);
-			outputStream.write(b, 0, length);
-			inputStream.close();
-			outputStream.close();
+	public String uploadFile(MultipartFile uplodaFile) throws Exception {
+		InputStream inputStream = uplodaFile.getInputStream();
+		byte[] b = new byte[1048576];
+		Integer length = inputStream.read(b);
+		// 文件流写到服务器端
+		String suffixStr = uplodaFile.getOriginalFilename().substring(uplodaFile.getOriginalFilename().indexOf("."));
+		String filePath = genFileName(suffixStr);
+		FileOutputStream outputStream = new FileOutputStream(filePath);
+		outputStream.write(b, 0, length);
+		inputStream.close();
+		outputStream.close();
 
-			resMap.put("code", "0");
-			resMap.put("msg", "文件上传成功!");
-			resMap.put("data", "fileName:\"" + filePath + "\"");
-		} catch (Exception e) {
-//            log.error("上传文件失败", e);
-			resMap.put("code", "2");
-			resMap.put("msg", e.getMessage());
-			resMap.put("data", null);
-		}
-
-		return resMap;
+		return filePath;
 
 	}
 
