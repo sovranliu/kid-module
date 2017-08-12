@@ -28,4 +28,6 @@ public interface UserDAO {
     List<UserPO> queryUserByCond(Map paramMap);
 
     int queryUserByCondCount(Map paramMap);
+
+    int readPostBenefit(String mobileno);
 }

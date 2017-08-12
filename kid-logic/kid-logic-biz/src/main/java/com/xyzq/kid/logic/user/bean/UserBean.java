@@ -42,6 +42,10 @@ public class UserBean {
         return result;
     }
 
+    public int readPostBenefit(String mobileno) {
+        return userDAO.readPostBenefit(mobileno);
+    }
+
     /**
      * 根据主键查询用户信息
      * @param id 主键

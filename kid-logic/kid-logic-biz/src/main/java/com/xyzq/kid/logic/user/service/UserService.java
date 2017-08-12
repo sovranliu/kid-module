@@ -99,6 +99,11 @@ public class UserService {
         return userBean.selectByPrimaryKey(id);
     }
 
+    public int readPostBenefit(String mobileno) {
+        logger.info("UserService.readPostBenefit[in]-mobileno:" + mobileno);
+        return userBean.readPostBenefit(mobileno);
+    }
+
     /**
      * 根据手机号获取用户信息
      * @param mobileNo

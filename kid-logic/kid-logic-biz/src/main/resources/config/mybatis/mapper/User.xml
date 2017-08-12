@@ -238,4 +238,11 @@
       and MobileNo = #{mobileno,jdbcType=VARCHAR}
     </if>
   </select>
+
+  <update id="readPostBenefit" parameterType="java.lang.String">
+    update LGC_User
+    set Benefit = 1
+    where mobileno = #{mobileno,jdbcType=VARCHAR}
+  </update>
+
 </mapper>
