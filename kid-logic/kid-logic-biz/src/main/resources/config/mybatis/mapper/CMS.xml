@@ -151,7 +151,7 @@
     limit #{begin, jdbcType=INTEGER}, #{limit,jdbcType=INTEGER}
   </select>
 
-  <select id="queryCMSByCondCount" resultMap="BaseResultMap">
+  <select id="queryCMSByCondCount" resultType="java.lang.Integer">
     select COUNT(1)
     from LGC_CMS
     where Deleted = 0
