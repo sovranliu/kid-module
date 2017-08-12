@@ -50,6 +50,8 @@ public class AdminPO {
      */
     private Timestamp updateTime;
 
+    public AdminPO() { }
+
     public AdminPO(AdminEntity entity){
         if (entity != null) {
             id = entity.id;
