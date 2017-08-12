@@ -71,6 +71,7 @@ public class RefundService implements IModule {
                 int begin = 0;
                 while(true) {
                     // 执行退款状态查询作业
+                    logger.info("refund state check task start...");
                     Timestamp beginTime = new Timestamp(DateTime.now().subtract(Duration.createDays(3)).toLong());
                     List<RefundInfoPO> list = refundDAO.select(null, null, 1, beginTime, null, begin, 10);
                     for(RefundInfoPO refundInfoPO : list) {
@@ -78,15 +79,22 @@ public class RefundService implements IModule {
                             return null;
                         }
                         try {
+                            logger.info("refund check : " + refundInfoPO.getOrderNo());
                             queryRefund(refundInfoPO.getOrderNo());
                         }
                         catch (Exception ex) {
                             logger.error("refund state check failed, orderNo = " + refundInfoPO.getOrderNo(), ex);
                         }
                     }
-                    begin += list.size();
+                    if(0 == list.size()) {
+                        begin = 0;
+                    }
+                    else {
+                        begin += list.size();
+                    }
                     try {
                         synchronized (needStop) {
+                            logger.info("refund state check task wait for one hour");
                             needStop.wait(Duration.createHours(1).millis());
                         }
                     }
