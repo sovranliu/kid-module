@@ -51,7 +51,7 @@
 
     <insert id="addRecord" parameterType="RecordPO" useGeneratedKeys="true" keyProperty="id">
         insert into LGC_Record (SerialNo, Path, Purchased, Deleted)
-        values (#{serialNo}, #{Path}, #{purchased}, #{Deleted})
+        values (#{serialNo}, #{path}, #{purchased}, #{deleted})
     </insert>
 
     <update id="deleteRecord" parameterType="java.lang.Integer" >
@@ -62,7 +62,7 @@
 
     <update id="saveRecords" >
         update LGC_Record
-        set SerialNo = #{SerialNo}
+        set SerialNo = #{serialNo}
          WHERE Deleted = 0
         <if test="ids!= null and ids.size()!= 0">
             AND ID in
