@@ -20,6 +20,10 @@ public class TokenHelper {
      */
     public final static long PERIOD_CACHE = 3600 * 1000;
     /**
+     * 缝隙时间
+     */
+    public final static long GRAP_CACHE = 10 * 1000;
+    /**
      * 日志对象
      */
     private static Logger logger = Logger.getLogger("pay");
@@ -60,7 +64,7 @@ public class TokenHelper {
      * @return 有效票据
      */
     public synchronized static String fetchToken() {
-        if(DateTime.now().toLong() < PERIOD_CACHE + tick) {
+        if(DateTime.now().toLong() < GRAP_CACHE + tick) {
             return token;
         }
         String url = URL_ACCESSTOKEN.replace("[APPID]", WechatConfig.appId).replace("[APPSECRET]", WechatConfig.appSecret);

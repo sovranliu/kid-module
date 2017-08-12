@@ -100,7 +100,14 @@ public class UserInfoHelper {
         String url = URL_USERINFO.replace("[ACCESS_TOKEN]", TokenHelper.getToken()).replace("[OPENID]", openId);
         String result = XMLHttpsUtil.get(url);
         logger.info("fetch user " + openId + " information :\n" + result);
-        return convert(new JSONVisitor(JSONObject.convert(result)));
+        JSONVisitor visitor = new JSONVisitor(JSONObject.convert(result));
+        if("40001".equals(visitor.getString("errcode"))) {
+            TokenHelper.fetchToken();
+            result = XMLHttpsUtil.get(url);
+            logger.info("refetch user " + openId + " information :\n" + result);
+            visitor = new JSONVisitor(JSONObject.convert(result));
+        }
+        return convert(visitor);
     }
 
     /**
