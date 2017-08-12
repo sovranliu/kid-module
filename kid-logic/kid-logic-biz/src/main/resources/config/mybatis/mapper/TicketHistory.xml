@@ -167,4 +167,10 @@
     and Deleted = 0
   </select>
 
+  <update id="updateMobileNo" parameterType="java.lang.String">
+    update LGC_TicketHistory
+    set PreMobile = #{mobileno,jdbcType=VARCHAR}
+    where PreMobile = #{mobilenoPre,jdbcType=VARCHAR}
+  </update>
+
 </mapper>

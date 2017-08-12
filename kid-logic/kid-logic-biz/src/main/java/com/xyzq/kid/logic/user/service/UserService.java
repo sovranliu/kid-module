@@ -164,4 +164,8 @@ public class UserService {
     public int insertSelective(UserEntity entity) {
         return userBean.insertSelective(entity);
     }
+
+    public int updateMobileNo(String mobile, String mobilePre) {
+        return userBean.updateMobileNo(mobile, mobilePre);
+    }
 }

@@ -313,4 +313,12 @@ public class TicketBean {
         return po;
     }
 
+    public int updateMobileNo(String mobile, String mobilePre) {
+        Map paramMap = new HashMap();
+        paramMap.put("mobileno", mobile);
+        paramMap.put("mobilenoPre", mobilePre);
+
+        return ticketDAO.updateMobileNo(paramMap);
+    }
+
 }

@@ -3,6 +3,7 @@ package com.xyzq.kid.logic.ticket.dao;
 import com.xyzq.kid.logic.ticket.dao.po.TicketHistoryPO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TicketHistoryDAO {
     int deleteByPrimaryKey(Integer id);
@@ -24,4 +25,6 @@ public interface TicketHistoryDAO {
     int queryTickethandselCount(Integer ticketid);
 
     List<TicketHistoryPO> selectHandselByTicketId(Integer ticketid);
+
+    int updateMobileNo(Map paramMap);
 }

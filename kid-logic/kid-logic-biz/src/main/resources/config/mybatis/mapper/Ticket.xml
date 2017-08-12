@@ -322,4 +322,10 @@
     </if>
   </select>
 
+  <update id="updateMobileNo" parameterType="java.lang.String">
+    update LGC_Ticket
+    set OwnerMobileNo = #{mobileno,jdbcType=VARCHAR}
+    where OwnerMobileNo = #{mobilenoPre,jdbcType=VARCHAR}
+  </update>
+
 </mapper>

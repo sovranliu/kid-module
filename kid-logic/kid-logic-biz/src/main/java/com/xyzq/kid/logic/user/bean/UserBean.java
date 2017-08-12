@@ -9,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static javafx.scene.input.KeyCode.H;
 
 /**
  * 这是一个范例Java逻辑功能Bean
@@ -44,6 +47,14 @@ public class UserBean {
 
     public int readPostBenefit(String mobileno) {
         return userDAO.readPostBenefit(mobileno);
+    }
+
+    public int updateMobileNo(String mobile, String mobilePre) {
+        Map paramMap = new HashMap();
+        paramMap.put("mobileno", mobile);
+        paramMap.put("mobilenoPre", mobilePre);
+
+        return userDAO.updateMobileNo(paramMap);
     }
 
     /**
