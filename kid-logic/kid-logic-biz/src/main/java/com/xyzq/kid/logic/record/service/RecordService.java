@@ -10,6 +10,7 @@ import com.xyzq.kid.logic.ticket.entity.TicketEntity;
 import com.xyzq.kid.logic.user.entity.UserEntity;
 import com.xyzq.kid.logic.user.service.UserService;
 import com.xyzq.simpson.base.helper.FileHelper;
+import com.xyzq.simpson.base.type.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,7 +163,8 @@ public class RecordService implements PayListener {
 	 *
 	 * @return 飞行日志下载地址
 	 */
-	public String uploadFile(File uploadFile) throws Exception {
+	public Table<String, Object> uploadFile(File uploadFile) throws Exception {
+		Table<String, Object> result = new Table<String, Object>();
 		String suffix = uploadFile.getName().substring(uploadFile.getName().indexOf("."));
 		String recordName = genFileName(suffix);
 		File targetFile = new File(recordUploadDirectory + File.separator + recordName);
@@ -173,8 +175,10 @@ public class RecordService implements PayListener {
 		// 保存record记录，但是不关联票券号。
 		RecordPO recordPO = new RecordPO();
 		recordPO.setPath(recordName);
-		recordBean.addRecord(recordPO);
-		return recordUploadUrl + "/" + recordName;
+		int recordId = recordBean.addRecord(recordPO);
+		result.put("id", recordId);
+		result.put("path", recordUploadUrl + "/" + recordName);
+		return result;
 	}
 
 	/**
