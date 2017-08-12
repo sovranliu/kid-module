@@ -1,10 +1,6 @@
 package com.xyzq.kid.logic.record.service;
 
-import com.xyzq.kid.CommonTool;
-import com.xyzq.kid.finance.service.RefundService;
 import com.xyzq.kid.finance.service.api.PayListener;
-import com.xyzq.kid.logic.config.common.ConfigCommon;
-import com.xyzq.kid.logic.config.entity.ConfigEntity;
 import com.xyzq.kid.logic.config.service.ConfigService;
 import com.xyzq.kid.logic.config.service.GoodsTypeService;
 import com.xyzq.kid.logic.record.bean.RecordBean;
@@ -13,27 +9,28 @@ import com.xyzq.kid.logic.record.entity.RecordEntity;
 import com.xyzq.kid.logic.ticket.entity.TicketEntity;
 import com.xyzq.kid.logic.user.entity.UserEntity;
 import com.xyzq.kid.logic.user.service.UserService;
+import com.xyzq.simpson.base.helper.FileHelper;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.*;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
- * Created by Brann on 17/7/27.
+ * 飞行日志服务
  */
 @Service("recordService")
 public class RecordService implements PayListener {
 	/**
 	 * 日志对象
 	 */
-	public static org.slf4j.Logger log = LoggerFactory.getLogger(RecordService.class);
+	public static Logger logger = LoggerFactory.getLogger(RecordService.class);
+	/**
+	 * 飞行日志组件
+	 */
 	@Autowired
 	private RecordBean recordBean;
 	/**
@@ -41,7 +38,6 @@ public class RecordService implements PayListener {
 	 */
 	@Autowired
 	private UserService userService;
-
 	/**
 	 * 票价服务
 	 */
@@ -52,29 +48,36 @@ public class RecordService implements PayListener {
 	 */
 	@Autowired
 	private ConfigService configService;
+	/**
+	 * 飞行日志上传目录
+	 */
+	@Value("${KID.UPLOAD.DIRECTORY.RECORD}")
+	private String recordUploadDirectory;
+	/**
+	 * 飞行日志上传后下载地址
+	 */
+	@Value("${KID.UPLOAD.URL.RECORD}")
+	private String recordUploadUrl;
 
-	@Value("${file_server_upload_url}")
-	private String file_server_upload_url;
 
 	/**
-	 * tag字段在购买飞行日志的时候是票流水号SerialNo，在购买飞行票的时候是拥有者的手机号码。
+	 * tag字段在购买飞行日志的时候是票流水号SerialNo，在购买飞行票的时候是拥有者的微信开放ID。
 	 */
 	@Override
 	public void onPay(String orderNo, String openId, int goodsType, int fee, String tag) {
 		if (goodsTypeService.isRecord(goodsType)) {
-			log.info("RecordService.onPay[in]-orderNo:" + orderNo + ",openId:" + openId + ",goodsType:" + goodsType + ",fee:" + fee);
+			logger.info("RecordService.onPay[in]-orderNo:" + orderNo + ",openId:" + openId + ",goodsType:" + goodsType + ",fee:" + fee);
 			UserEntity userEntity = userService.selectByOpenId(tag);
 			if (null == userEntity || null == userEntity.openid) {
-				log.error("No user by openId:" + openId);
+				logger.error("No user by openId:" + openId);
 				return;
 			}
 			TicketEntity ticketEntity = new TicketEntity();
 			//飞行日志
 
-			log.info("RecordService.onPay[in]-ticketEntity:" + ticketEntity.toString());
+			logger.info("RecordService.onPay[in]-ticketEntity:" + ticketEntity.toString());
 			recordBean.buyRecords(tag);
 		}
-
 	}
 
 	/**
@@ -155,49 +158,34 @@ public class RecordService implements PayListener {
 	}
 
 	/**
-	 * 方法描述
-	 * /apps/data/record/2017-07/201707271830459527.mp4。
+	 * 上传了飞行日志
 	 *
-	 * @return fileName
+	 * @return 飞行日志下载地址
 	 */
-	public Map<String, String> uploadFile(MultipartFile uploadFile) throws Exception {
-		Map<String, String> resMap = new HashMap<String, String>();
-		InputStream inputStream = uploadFile.getInputStream();
-		byte[] b = new byte[1048576];
-		Integer length = inputStream.read(b);
-		// 文件流写到服务器端
-		String suffixStr = uploadFile.getOriginalFilename().substring(uploadFile.getOriginalFilename().indexOf("."));
-		String filePath = genFileName(suffixStr);
-		FileOutputStream outputStream = new FileOutputStream(filePath);
-		outputStream.write(b, 0, length);
-		inputStream.close();
-		outputStream.close();
-		//保存record记录，但是不关联票券号。
+	public String uploadFile(File uploadFile) throws Exception {
+		String suffix = uploadFile.getName().substring(uploadFile.getName().indexOf("."));
+		String recordName = genFileName(suffix);
+		FileHelper.copy(uploadFile, new File(recordUploadDirectory + File.separator + recordName), true);
+		// 保存record记录，但是不关联票券号。
 		RecordPO recordPO = new RecordPO();
-		recordPO.setPath(filePath);
-		Integer id = recordBean.addRecord(recordPO);
-		resMap.put("id", String.valueOf(id));
-		return resMap;
-
+		recordPO.setPath(recordName);
+		recordBean.addRecord(recordPO);
+		return recordUploadUrl + "/" + recordName;
 	}
 
 	/**
 	 * 方法描述
-	 * /apps/data/record/2017-07/201707271830459527.mp4。
+	 * 2017-07/201707271830459527.mp4。
 	 *
 	 * @return 返回值
 	 */
 	private String genFileName(String suffixStr) {
-
 		SimpleDateFormat headFormatter = new SimpleDateFormat("yyyy-MM");
 		String headStr = headFormatter.format(new Date());
-
 		SimpleDateFormat midFormatter = new SimpleDateFormat("yyyyMMddHHmmssSS");
 		String midStr = midFormatter.format(new Date());
-
 		String tailStr = getRandomStr(4);
-
-		return file_server_upload_url + "/" + headStr + "/" + midStr + tailStr + suffixStr;
+		return headStr + "/" + midStr + tailStr + suffixStr;
 	}
 
 	public static String getRandomStr(Integer codeCount) {

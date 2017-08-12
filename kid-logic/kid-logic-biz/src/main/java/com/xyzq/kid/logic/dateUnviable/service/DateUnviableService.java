@@ -20,7 +20,7 @@ public class DateUnviableService {
     private DateUnviableBean dateUnviableBean;
 
 
-    @Value("${file_server_upload_url}")
+    @Value("${KID.UPLOAD.DIRECTORY.RECORD}")
     private String file_server_upload_url;
 
     private static Logger log = Logger.getLogger(DateUnviableService.class.getName());
