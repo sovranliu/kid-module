@@ -9,8 +9,8 @@ ORDER BY ID DESC
 LIMIT 1
     </select>
     <insert id="insertOrder" parameterType="OrderPO">
-INSERT INTO FIN_Order (OrderNo, OpenID, Fee, GoodsType, PrepayID, State, Deleted, CreateTime, UpdateTime)
-VALUES (#{orderNo}, #{openId}, #{fee}, #{goodsType}, NULL, 0, 0, NOW(), NOW())
+INSERT INTO FIN_Order (OrderNo, OpenID, Fee, GoodsType, PrepayID, State, Tag, Deleted, CreateTime, UpdateTime)
+VALUES (#{orderNo}, #{openId}, #{fee}, #{goodsType}, NULL, 0, #{tag}, 0, NOW(), NOW())
     </insert>
     <update id="updateOrderSuccess">
 UPDATE FIN_Order
