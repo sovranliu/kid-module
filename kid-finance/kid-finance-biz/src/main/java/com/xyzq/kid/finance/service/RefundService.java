@@ -172,7 +172,7 @@ public class RefundService {
      * @param size 查询个数
      * @return 订单列表
      */
-    public Page<RefundInfoEntity> find(String orderNo, String openId, int status, DateTime beginTime, DateTime endTime, int begin, int size) {
+    public Page<RefundInfoEntity> find(String orderNo, String openId, Integer status, DateTime beginTime, DateTime endTime, int begin, int size) {
         java.sql.Timestamp beginTimestamp = null;
         if(null != beginTime) {
             beginTimestamp = new java.sql.Timestamp(beginTime.toLong());

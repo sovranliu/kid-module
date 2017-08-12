@@ -88,7 +88,7 @@ public interface OrderDAO {
      * @param size 查询个数
      * @return 支付订单信息列表
      */
-    public List<OrderInfoPO> select(@Param("orderNo") String orderNo, @Param("openId") String openId, @Param("status") int status, @Param("beginTime") Timestamp beginTime, @Param("endTime") Timestamp endTime, @Param("begin") int begin, @Param("size") int size);
+    public List<OrderInfoPO> select(@Param("orderNo") String orderNo, @Param("openId") String openId, @Param("status") Integer status, @Param("beginTime") Timestamp beginTime, @Param("endTime") Timestamp endTime, @Param("begin") int begin, @Param("size") int size);
 
     /**
      * 记录条数
@@ -100,5 +100,5 @@ public interface OrderDAO {
      * @param endTime 结束时间
      * @return 记录条数
      */
-    public int count(@Param("orderNo") String orderNo, @Param("openId") String openId, @Param("status") int status, @Param("beginTime") Timestamp beginTime, @Param("endTime") Timestamp endTime);
+    public int count(@Param("orderNo") String orderNo, @Param("openId") String openId, @Param("status") Integer status, @Param("beginTime") Timestamp beginTime, @Param("endTime") Timestamp endTime);
 }

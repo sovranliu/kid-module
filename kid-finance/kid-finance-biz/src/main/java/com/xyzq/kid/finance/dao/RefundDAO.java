@@ -74,7 +74,7 @@ public interface RefundDAO {
      * @param size 查询个数
      * @return 退款信息列表
      */
-    public List<RefundInfoPO> select(@Param("orderNo") String orderNo, @Param("openId") String openId, @Param("status") int status, @Param("beginTime") Timestamp beginTime, @Param("endTime") Timestamp endTime, @Param("begin") int begin, @Param("size") int size);
+    public List<RefundInfoPO> select(@Param("orderNo") String orderNo, @Param("openId") String openId, @Param("status") Integer status, @Param("beginTime") Timestamp beginTime, @Param("endTime") Timestamp endTime, @Param("begin") int begin, @Param("size") int size);
 
     /**
      * 结果总数
@@ -86,5 +86,5 @@ public interface RefundDAO {
      * @param endTime 结束时间
      * @return 结果总数
      */
-    public int count(@Param("orderNo") String orderNo, @Param("openId") String openId, @Param("status") int status, @Param("beginTime") Timestamp beginTime, @Param("endTime") Timestamp endTime);
+    public int count(@Param("orderNo") String orderNo, @Param("openId") String openId, @Param("status") Integer status, @Param("beginTime") Timestamp beginTime, @Param("endTime") Timestamp endTime);
 }
