@@ -94,6 +94,7 @@ public class AdminService {
 	 */
 	public void updateAdmin(AdminEntity adminEntity) {
 		AdminPO adminPO = new AdminPO(adminEntity);
+		adminPO.setId(adminEntity.id);
 		adminBean.updateAdmin(adminPO);
 	}
 

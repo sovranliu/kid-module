@@ -41,7 +41,7 @@ public class RecordBean {
      * @return RecordEntity
      */
     public List<RecordEntity> findBy(String serialNo, String purchased){
-        List<RecordPO> recordPOList = recordDAO.findBy(serialNo, purchased);
+        List<RecordPO> recordPOList = recordDAO.findByPara(serialNo, purchased);
         List<RecordEntity> recordEntityList= new ArrayList<>();
         for (RecordPO recordPO :recordPOList) {
             RecordEntity entity = new RecordEntity(recordPO);

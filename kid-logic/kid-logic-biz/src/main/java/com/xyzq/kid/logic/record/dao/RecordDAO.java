@@ -27,7 +27,7 @@ public interface RecordDAO {
      * @Param purchased
      * @return RecordEntity
      */
-    List<RecordPO> findBy(@Param("serialNo")String serialNo, @Param("purchased")String purchased);
+    List<RecordPO> findByPara(@Param("serialNo")String serialNo, @Param("purchased")String purchased);
 
     /**
      * 购买飞行日志

@@ -18,24 +18,22 @@
     <update id="updateAdmin" parameterType="AdminPO">
         update  CNS_Admin
         set
-        <if test="UserName != null">
+        <if test="userName != null">
             UserName = #{userName},
         </if>
-        <if test="Password != null">
+        <if test="password != null">
             Password = #{password},
         </if>
-        <if test="Mobile != null">
+        <if test="mobile != null">
             Mobile = #{mobile},
         </if>
-        <if test="Email != null">
+        <if test="email != null">
             Email = #{email},
         </if>
-        <if test="Deleted != null">
+        <if test="deleted != null">
             Deleted = #{deleted},
         </if>
-        <if test="UpdateTime != null">
-            UpdateTime = #{updatetime},
-        </if>
+        UpdateTime = CURRENT_TIMESTAMP
         where ID = #{id}
     </update>
     <insert id="addAdmin" parameterType="AdminPO">
