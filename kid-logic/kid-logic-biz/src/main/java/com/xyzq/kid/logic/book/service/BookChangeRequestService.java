@@ -54,6 +54,9 @@ public class BookChangeRequestService {
 	@Autowired
 	TicketService ticketService;
 	
+	@Autowired
+	BookTimeSpanService bookTimeSpanService;
+	
 	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 
 	/**
@@ -94,6 +97,11 @@ public class BookChangeRequestService {
 			if(requestType.equals("1")){
 				if(requestBy.equals("2")){
 					book.setBookstatus("3");//改期通过
+					book.setBooktimeid(bookTimeId);
+					BookTimeRepository repo=bookRepositoryService.queryByPrimaryKey(bookTimeId);
+					BookTimeSpan span=bookTimeSpanService.queryByPrimaryKey(repo.getBooktimespanid());
+					book.setBookdate(repo.getBookdate());
+					book.setBooktime(span.getTimespan());
 				}else{
 					book.setBookstatus("2");//改期申请中
 				}
