@@ -58,7 +58,7 @@ public class BookRepositoryService {
 						repo.setBookdate(bookDate);
 						repo.setBooktimespanid(span.getId());
 						repo.setBooktotal(total);
-						repo.setBookamount(total);
+						repo.setBookamount(0);
 						repo.setCreatetime(new Date());
 						repo.setLastupdatetime(new Date());
 						repo.setDeleteflag("0");
