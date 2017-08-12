@@ -165,7 +165,11 @@ public class RecordService implements PayListener {
 	public String uploadFile(File uploadFile) throws Exception {
 		String suffix = uploadFile.getName().substring(uploadFile.getName().indexOf("."));
 		String recordName = genFileName(suffix);
-		FileHelper.copy(uploadFile, new File(recordUploadDirectory + File.separator + recordName), true);
+		File targetFile = new File(recordUploadDirectory + File.separator + recordName);
+		if(!targetFile.getParentFile().exists()) {
+			targetFile.getParentFile().mkdirs();
+		}
+		FileHelper.copy(uploadFile, targetFile, true);
 		// 保存record记录，但是不关联票券号。
 		RecordPO recordPO = new RecordPO();
 		recordPO.setPath(recordName);
