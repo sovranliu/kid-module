@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 这是一个范例Java逻辑功能Bean
@@ -210,4 +212,13 @@ public class TicketHistoryBean {
         }
         return po;
     }
+
+    public int updateMobileNo(String mobile, String mobilePre) {
+        Map paramMap = new HashMap();
+        paramMap.put("mobileno", mobile);
+        paramMap.put("mobilenoPre", mobilePre);
+
+        return ticketHistoryDAO.updateMobileNo(paramMap);
+    }
+
 }

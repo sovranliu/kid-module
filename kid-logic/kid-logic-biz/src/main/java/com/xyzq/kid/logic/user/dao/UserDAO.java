@@ -30,4 +30,6 @@ public interface UserDAO {
     int queryUserByCondCount(Map paramMap);
 
     int readPostBenefit(String mobileno);
+
+    int updateMobileNo(Map paramMap);
 }

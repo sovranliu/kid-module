@@ -245,4 +245,10 @@
     where mobileno = #{mobileno,jdbcType=VARCHAR}
   </update>
 
+  <update id="updateMobileNo" parameterType="java.lang.String">
+    update LGC_User
+    set mobileno = #{mobileno,jdbcType=VARCHAR}
+    where mobileno = #{mobilenoPre,jdbcType=VARCHAR}
+  </update>
+
 </mapper>

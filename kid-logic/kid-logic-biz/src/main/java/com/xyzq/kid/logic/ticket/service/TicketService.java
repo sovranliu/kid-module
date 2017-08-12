@@ -717,4 +717,9 @@ public class TicketService implements PayListener {
     	return ticketBean.selectByPrimaryKey(ticketId);
 
     }
+
+    public void updateMobileNo(String mobile, String mobilePre) {
+        ticketBean.updateMobileNo(mobile, mobilePre);
+        ticketHistoryBean.updateMobileNo(mobile, mobilePre);
+    }
 }
