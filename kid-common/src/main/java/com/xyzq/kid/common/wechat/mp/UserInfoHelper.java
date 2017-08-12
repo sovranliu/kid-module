@@ -81,9 +81,11 @@ public class UserInfoHelper {
      */
     public static boolean isFans(String openId) throws IOException {
         if(fetchUserInfo(openId) instanceof MemberInfo) {
+            logger.info(openId + " is fans");
             return true;
         }
         else {
+            logger.info(openId + " is not fans");
             return false;
         }
     }
@@ -97,6 +99,7 @@ public class UserInfoHelper {
     public static GuestInfo fetchUserInfo(String openId) throws IOException {
         String url = URL_USERINFO.replace("[ACCESS_TOKEN]", TokenHelper.getToken()).replace("[OPENID]", openId);
         String result = XMLHttpsUtil.get(url);
+        logger.info("fetch user " + openId + " information :\n" + result);
         return convert(new JSONVisitor(JSONObject.convert(result)));
     }
 
