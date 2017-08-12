@@ -47,4 +47,16 @@
         set Deleted = '1'
         WHERE ID = #{id} AND  Deleted = 0
     </update>
+
+    <update id="saveRecords" >
+        update LGC_Record
+        set SerialNo = #{SerialNo}
+         WHERE Deleted = 0
+        <if test="ids!= null and ids.size()!= 0">
+            AND ID in
+            <foreach collection="ids" item="listItem" open="(" close=")" separator="," >
+                #{listItem}
+            </foreach>
+        </if>
+    </update>
 </mapper>
