@@ -217,7 +217,7 @@ public class MessageService {
 		}
 		return msgList;
 	}
-	
+
 	public Page<Message> queryByCondPage(Integer userId,String beginTime,String endTime,Integer begin,Integer limit){
 		List<Message> msgList = new ArrayList<>();
         List<Message> resultList=queryByCondLimit(userId,beginTime,endTime,begin,limit);
