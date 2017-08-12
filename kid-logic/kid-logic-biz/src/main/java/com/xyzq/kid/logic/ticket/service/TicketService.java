@@ -549,7 +549,7 @@ public class TicketService implements PayListener {
         if(null != status) {
             paramMap.put("status", status);
         }
-        paramMap.put("begin", (begin - 1) * limit);
+        paramMap.put("begin", begin);
         paramMap.put("limit", limit);
         return ticketBean.queryTicketByCond(paramMap);
     }

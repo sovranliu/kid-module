@@ -24,15 +24,15 @@ public class WechatInitService {
      * 微信初始化
      */
     public void init() throws Exception {
-        String confText = Text.loadFile(new File("/apps/data/kid-secret/wechat.json"), Encoding.ENCODING_UTF8);
-        JSONVisitor visitor = new JSONVisitor(JSONObject.convertFromString(confText));
-        WechatConfig.appId = visitor.getString("appId");
-        WechatConfig.appSecret = visitor.getString("appSecret");
-        WechatConfig.merchantId = visitor.getString("merchantId");
-        WechatConfig.apiKey = visitor.getString("apiKey");
-        WechatConfig.apiPassword = visitor.getString("apiPassword");
-        WechatConfig.notiyUrl = visitor.getString("notiyUrl");
-        WechatConfig.token = visitor.getString("token");
+//        String confText = Text.loadFile(new File("/apps/data/kid-secret/wechat.json"), Encoding.ENCODING_UTF8);
+//        JSONVisitor visitor = new JSONVisitor(JSONObject.convertFromString(confText));
+//        WechatConfig.appId = visitor.getString("appId");
+//        WechatConfig.appSecret = visitor.getString("appSecret");
+//        WechatConfig.merchantId = visitor.getString("merchantId");
+//        WechatConfig.apiKey = visitor.getString("apiKey");
+//        WechatConfig.apiPassword = visitor.getString("apiPassword");
+//        WechatConfig.notiyUrl = visitor.getString("notiyUrl");
+//        WechatConfig.token = visitor.getString("token");
         logger.info("WechatInitService.init() finished");
     }
 }

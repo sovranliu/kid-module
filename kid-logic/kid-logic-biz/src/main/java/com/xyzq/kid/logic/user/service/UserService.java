@@ -84,7 +84,7 @@ public class UserService {
         if(null != telephone && telephone.length() > 0) {
             paramMap.put("mobileno", telephone);
         }
-        paramMap.put("begin", (begin - 1) * limit);
+        paramMap.put("begin", begin);
         paramMap.put("limit", limit);
         return userBean.queryUserByCond(paramMap);
     }

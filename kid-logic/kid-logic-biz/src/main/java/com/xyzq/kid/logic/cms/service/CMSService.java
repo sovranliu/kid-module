@@ -41,7 +41,7 @@ public class CMSService {
         return cmsBean.loadCMSById(cmsId);
     }
 
-    public Page<CMSEntity> getCMSCond(Integer categoryid, String title) {
+    public Page<CMSEntity> getCMSCond(Integer categoryid, String title, Integer begin, Integer limit) {
         logger.info("CMSService.cmsEntity[in]-getCMSCond:categoryid[" + categoryid + "],title[" + title + "]");
         Map paramMap = new HashMap<>();
         if(null != categoryid) {
@@ -50,6 +50,8 @@ public class CMSService {
         if(null != title && title.length() > 0) {
             paramMap.put("title", title);
         }
+        paramMap.put("begin", begin);
+        paramMap.put("limit", limit);
         return cmsBean.getCMSCond(paramMap);
     }
 
