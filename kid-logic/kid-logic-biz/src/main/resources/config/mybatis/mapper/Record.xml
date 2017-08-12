@@ -24,6 +24,18 @@
         </if>
     </select>
 
+    <select id="findByPara" resultType="RecordPO">
+        SELECT *
+        FROM LGC_Record
+        WHERE Deleted = 0
+        <if test="serialNo!= null ">
+            AND SerialNo =#{serialNo}
+        </if>
+        <if test="purchased != null" >
+            AND purchased = #{purchased}
+        </if>
+    </select>
+
     <update id="buyRecord" parameterType="java.lang.Integer" >
         update LGC_Record
         set Purchased = '1'

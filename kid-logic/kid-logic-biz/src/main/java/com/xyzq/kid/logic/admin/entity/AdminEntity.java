@@ -46,6 +46,7 @@ public class AdminEntity {
 	public Timestamp updateTime;
 
 	public AdminEntity(Integer id,String userName, String password, String email, String mobile) {
+		this.id = id;
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
