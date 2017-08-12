@@ -62,7 +62,7 @@
 
     <update id="saveRecords" >
         update LGC_Record
-        set SerialNo = #{SerialNo}
+        set SerialNo = #{serialNo}
          WHERE Deleted = 0
         <if test="ids!= null and ids.size()!= 0">
             AND ID in
