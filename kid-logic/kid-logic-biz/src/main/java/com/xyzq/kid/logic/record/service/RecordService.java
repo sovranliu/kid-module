@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.attribute.PosixFilePermission;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -173,6 +175,10 @@ public class RecordService implements PayListener {
 		}
 		FileHelper.copy(uploadFile, targetFile, true);
 		targetFile.setReadable(true, false);
+		Set perms = new HashSet();
+		perms.add(PosixFilePermission.GROUP_READ);
+		perms.add(PosixFilePermission.OTHERS_READ);
+		Files.setPosixFilePermissions(targetFile.toPath(), perms);
 		// 保存record记录，但是不关联票券号。
 		RecordPO recordPO = new RecordPO();
 		recordPO.setPath(File.separator + recordName);
