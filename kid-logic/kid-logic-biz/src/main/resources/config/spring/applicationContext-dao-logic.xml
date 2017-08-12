@@ -86,4 +86,8 @@
         <property name="mapperInterface" value="com.xyzq.kid.logic.message.dao.MessageMapper"></property>
         <property name="sqlSessionFactory" ref="logicSQLSessionFactory"></property>
     </bean>
+    <bean id="cmsDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xyzq.kid.logic.cms.dao.CMSDAO"></property>
+        <property name="sqlSessionFactory" ref="logicSQLSessionFactory"></property>
+    </bean>
 </beans>

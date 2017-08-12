@@ -11,6 +11,7 @@
         <typeAlias alias="AdminPO" type="com.xyzq.kid.logic.admin.dao.po.AdminPO" />
         <typeAlias alias="ConfigPO" type="com.xyzq.kid.logic.config.dao.po.ConfigPO" />
         <typeAlias alias="DateUnviablePO" type="com.xyzq.kid.logic.dateUnviable.dao.po.DateUnviablePO" />
+        <typeAlias alias="CMSPO" type="com.xyzq.kid.logic.cms.dao.po.CMSPO" />
     </typeAliases>
     <mappers>
         <mapper resource="config/mybatis/mapper/Demo.xml" />
@@ -28,5 +29,6 @@
         <mapper resource="config/mybatis/mapper/Admin.xml" />
         <mapper resource="config/mybatis/mapper/Config.xml" />
         <mapper resource="config/mybatis/mapper/DateUnviable.xml" />
+        <mapper resource="config/mybatis/mapper/CMS.xml" />
     </mappers>
 </configuration>

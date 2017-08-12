@@ -90,7 +90,7 @@ public class TicketService implements PayListener {
         logger.info("TicketService.buySingleTickets[in]-orderNo:" + orderNo + ",openId:"+ openId + ",goodsType:" + goodsType + ",fee:" + fee);
         UserEntity userEntity = userService.selectByOpenId(tag);
         if(null == userEntity || null == userEntity.openid) {
-            logger.error("No user by openId:" + openId);
+            logger.error("No user by openId:" + tag);
             return;
         }
         TicketEntity ticketEntity = new TicketEntity();
