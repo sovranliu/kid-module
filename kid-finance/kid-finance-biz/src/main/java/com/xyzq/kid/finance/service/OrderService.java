@@ -64,7 +64,7 @@ public class OrderService {
      * @return 订单信息
      */
     public NewOrderEntity createOrder(String orderNo, String openId, String goodsTitle, int goodsType, int fee, String ip, String tag) throws OrderExistException, IOException, WechatResponseException {
-        logger.info("OrderService.createOrder(" + orderNo + ", " + openId + ", " + goodsType + ", " + fee + ", " + ip + ")");
+        logger.info("OrderService.createOrder(" + orderNo + ", " + openId + ", " + goodsType + ", " + fee + ", " + ip + ", " + tag + ")");
         if(Text.isBlank(orderNo)) {
             orderNo = generateOrderNo();
         }
