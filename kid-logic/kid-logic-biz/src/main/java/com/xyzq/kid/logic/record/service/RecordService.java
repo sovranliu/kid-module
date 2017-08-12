@@ -172,6 +172,7 @@ public class RecordService implements PayListener {
 			targetFile.getParentFile().mkdirs();
 		}
 		FileHelper.copy(uploadFile, targetFile, true);
+		targetFile.setReadable(true, false);
 		// 保存record记录，但是不关联票券号。
 		RecordPO recordPO = new RecordPO();
 		recordPO.setPath(File.separator + recordName);
