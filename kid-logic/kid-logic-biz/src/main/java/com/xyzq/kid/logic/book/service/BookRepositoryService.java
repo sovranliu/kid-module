@@ -218,13 +218,13 @@ public class BookRepositoryService {
 			Integer amount=repo.getBookamount();
 			Integer nAmount=0;
 			if(StringUtils.isNullOrEmpty(status)){
-				nAmount=amount-1;
-			}else if("1".equals(status)){//扣库存
-				nAmount=amount-1;
-			}else if("2".equals(status)){//回退库存
 				nAmount=amount+1;
+			}else if("1".equals(status)){//扣库存
+				nAmount=amount+1;
+			}else if("2".equals(status)){//回退库存
+				nAmount=amount-1;
 			}else{
-				nAmount=amount-1;//其它状态默认为扣库存
+				nAmount=amount+1;//其它状态默认为扣库存
 			}
 			repo.setBookamount(nAmount);
 			repo.setLastupdatetime(new Date());
