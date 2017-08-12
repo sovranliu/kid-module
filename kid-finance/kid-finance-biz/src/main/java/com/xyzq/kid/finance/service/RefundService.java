@@ -11,25 +11,33 @@ import com.xyzq.kid.finance.service.entity.RefundEntity;
 import com.xyzq.kid.finance.service.entity.RefundInfoEntity;
 import com.xyzq.kid.finance.service.exception.OrderExistException;
 import com.xyzq.kid.finance.service.exception.WechatResponseException;
+import com.xyzq.simpson.base.async.Operator;
+import com.xyzq.simpson.base.async.core.IOperation;
 import com.xyzq.simpson.base.etc.Serial;
 import com.xyzq.simpson.base.model.Page;
+import com.xyzq.simpson.base.model.core.IModule;
 import com.xyzq.simpson.base.text.Text;
 import com.xyzq.simpson.base.time.DateTime;
+import com.xyzq.simpson.base.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 退款服务
  */
 @Service
-public class RefundService {
+public class RefundService implements IModule {
     /**
      * 日志对象
      */
@@ -44,7 +52,67 @@ public class RefundService {
      */
     @Autowired
     private RefundDAO refundDAO;
+    /**
+     * 是否需要停止作业
+     */
+    protected volatile AtomicBoolean needStop = null;
 
+
+    /**
+     * 初始化
+     */
+    @Override
+    @PostConstruct
+    public boolean initialize() {
+        needStop = new AtomicBoolean(false);
+        new Operator<Void>(new IOperation<Void>() {
+            @Override
+            public Void onExecute() {
+                int begin = 0;
+                while(true) {
+                    // 执行退款状态查询作业
+                    Timestamp beginTime = new Timestamp(DateTime.now().subtract(Duration.createDays(3)).toLong());
+                    List<RefundInfoPO> list = refundDAO.select(null, null, 1, beginTime, null, begin, 10);
+                    for(RefundInfoPO refundInfoPO : list) {
+                        if(needStop.get()) {
+                            return null;
+                        }
+                        try {
+                            queryRefund(refundInfoPO.getOrderNo());
+                        }
+                        catch (Exception ex) {
+                            logger.error("refund state check failed, orderNo = " + refundInfoPO.getOrderNo(), ex);
+                        }
+                    }
+                    begin += list.size();
+                    try {
+                        synchronized (needStop) {
+                            needStop.wait(Duration.createHours(1).millis());
+                        }
+                    }
+                    catch (Exception e) {
+                        logger.error("refund state check sleep interrupted", e);
+                    }
+                    if(needStop.get()) {
+                        return null;
+                    }
+                }
+            }
+        });
+        return true;
+    }
+
+    /**
+     * 析构
+     */
+    @Override
+    @PreDestroy
+    public void terminate() {
+        needStop.set(true);
+        synchronized (needStop) {
+            needStop.notifyAll();
+        }
+    }
 
     /**
      * 申请退款
