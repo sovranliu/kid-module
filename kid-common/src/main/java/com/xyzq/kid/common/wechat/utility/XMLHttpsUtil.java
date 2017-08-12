@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.*;
 
@@ -54,10 +56,12 @@ public class XMLHttpsUtil {
     private static boolean initialize() throws IOException, KeyStoreException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyManagementException, java.security.cert.CertificateException {
         String password = WechatConfig.apiPassword;
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
-        keyStore.load(XMLHttpsUtil.class.getResourceAsStream("/certificate/apiclient_cert.p12"), password.toCharArray());
+        FileInputStream fileInputStream = new FileInputStream(new File("/apps/data/kid-secret/apiclient_cert.p12"));
+        keyStore.load(fileInputStream, password.toCharArray());
         SSLContext sslContext = SSLContexts.custom().loadKeyMaterial(keyStore, password.toCharArray()).build();
         SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext, new String[]{"TLSv1"}, null, SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
         httpClient = HttpClients.custom().setSSLSocketFactory(socketFactory).build();
+        fileInputStream.close();
         return true;
     }
 

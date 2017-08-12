@@ -35,6 +35,10 @@ public class RefundPO {
      */
     private int state;
     /**
+     * 退款是否成功，N：未失败，null：失败
+     */
+    private String isFailed;
+    /**
      * 退款成功时间
      */
     private Date refundTime;
@@ -106,6 +110,14 @@ public class RefundPO {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public String getIsFailed() {
+        return isFailed;
+    }
+
+    public void setIsFailed(String isFailed) {
+        this.isFailed = isFailed;
     }
 
     public Date getRefundTime() {

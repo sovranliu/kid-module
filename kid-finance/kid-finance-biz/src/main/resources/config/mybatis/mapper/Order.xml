@@ -15,17 +15,32 @@ VALUES (#{orderNo}, #{openId}, #{fee}, #{goodsType}, NULL, 0, 0, NOW(), NOW())
     <update id="updateOrderSuccess">
 UPDATE FIN_Order
 SET PrepayID = #{prepayId}, State = 1, UpdateTime = NOW()
-WHERE OrderNo = #{orderNo} AND State = 0 AND Deleted = 0
+WHERE Deleted = 0 AND OrderNo = #{orderNo} AND State = 0
     </update>
     <update id="updateOrderClosed">
 UPDATE FIN_Order
 SET State = 5, UpdateTime = NOW()
-WHERE OrderNo = #{orderNo} AND State = 1 AND Deleted = 0
+WHERE Deleted = 0 AND OrderNo = #{orderNo} AND (State = 0 OR State = 1)
     </update>
     <update id="updateOrderPaid">
 UPDATE FIN_Order
 SET State = 2, UpdateTime = NOW()
-WHERE OrderNo = #{orderNo} AND State = 1 AND Deleted = 0
+WHERE Deleted = 0 AND OrderNo = #{orderNo} AND (State = 0 OR State = 1 OR State = 3)
+    </update>
+    <update id="updateOrderRefunding">
+UPDATE FIN_Order
+SET State = 3, UpdateTime = NOW()
+WHERE Deleted = 0 AND OrderNo = #{orderNo} AND State = 2
+    </update>
+    <update id="updateOrderRefundSuccess">
+UPDATE FIN_Order
+SET State = 4, UpdateTime = NOW()
+WHERE Deleted = 0 AND OrderNo = #{orderNo} AND State = 3
+    </update>
+    <update id="updateOrderRefundFail">
+UPDATE FIN_Order
+SET State = 2, UpdateTime = NOW()
+WHERE Deleted = 0 AND OrderNo = #{orderNo} AND State = 3
     </update>
     <select id="select" resultType="OrderInfoPO">
 SELECT O.*, U.MobileNo, U.RealName AS userName, T.SerialNo FROM

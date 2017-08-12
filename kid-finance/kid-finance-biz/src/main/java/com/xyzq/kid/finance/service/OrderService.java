@@ -7,10 +7,7 @@ import com.xyzq.kid.finance.dao.po.OrderInfoPO;
 import com.xyzq.kid.finance.dao.po.OrderPO;
 import com.xyzq.kid.finance.dao.po.ReceiptPO;
 import com.xyzq.kid.finance.service.api.PayListener;
-import com.xyzq.kid.finance.service.entity.NewOrderEntity;
-import com.xyzq.kid.finance.service.entity.OrderEntity;
-import com.xyzq.kid.finance.service.entity.OrderInfoEntity;
-import com.xyzq.kid.finance.service.entity.PaidOrderEntity;
+import com.xyzq.kid.finance.service.entity.*;
 import com.xyzq.kid.finance.service.exception.OrderExistException;
 import com.xyzq.kid.finance.service.exception.WechatResponseException;
 import com.xyzq.simpson.base.etc.Serial;
@@ -18,6 +15,7 @@ import com.xyzq.simpson.base.model.Page;
 import com.xyzq.simpson.base.text.Text;
 import com.xyzq.simpson.base.time.DateTime;
 import com.xyzq.kid.common.wechat.pay.WechatPayHelper;
+import com.xyzq.simpson.base.time.Duration;
 import com.xyzq.simpson.base.type.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,6 +82,7 @@ public class OrderService {
         orderPO.setGoodsType(goodsType);
         orderPO.setTag(tag);
         orderDAO.insertOrder(orderPO);
+        logger.info("insert into order, orderNo = " + orderNo);
         // 发起请求
         UnifiedOrderRequest unifiedOrderRequest = UnifiedOrderRequest.build(orderNo, openId, goodsTitle, goodsType, fee, ip);
         UnifiedOrderResponse unifiedOrderResponse = WechatPayHelper.unifiedOrder(unifiedOrderRequest);
@@ -119,21 +118,95 @@ public class OrderService {
             // 订单不存在
             return null;
         }
-        ReceiptPO receiptPO = receiptDAO.loadByOrderNo(orderNo);
-        if(null != receiptPO) {
-            // 1：已支付，2：待退款，3：已退款
+        if(0 == orderPO.getState() || 5 == orderPO.getState() ) {
+            // 未支付
+            OrderEntity orderEntity = new OrderEntity();
+            convert(orderPO, orderEntity);
+            return orderEntity;
+        }
+        else if(1 == orderPO.getState()) {
+            // 远程查询订单信息
+            QueryOrderRequest queryOrderRequest = QueryOrderRequest.build(orderNo, null);
+            QueryOrderResponse queryOrderResponse = WechatPayHelper.queryOrder(queryOrderRequest);
+            if(!queryOrderResponse.isSuccessful()) {
+                throw new WechatResponseException("queryOrder", queryOrderRequest.toString(), queryOrderResponse.toString());
+            }
+            if("SUCCESS".equals(queryOrderResponse.state)) {
+                logger.info("order query success, orderNo = " + orderNo);
+                // 支付成功
+                ReceiptPO receiptPO = null;
+                if(null == receiptDAO.loadByOrderNo(orderNo)) {
+                    receiptPO = new ReceiptPO();
+                    receiptPO.setOrderNo(orderNo);
+                    receiptPO.setOpenId(queryOrderResponse.openId);
+                    receiptPO.setAmount(queryOrderResponse.fee);
+                    receiptPO.setTransactionId(queryOrderResponse.transactionId);
+                    receiptPO.setMode("query");
+                    receiptPO.setDeleted(false);
+                    receiptDAO.insertReceipt(receiptPO);
+                    logger.info("insert receipt when query, orderNo = " + orderNo);
+                }
+                else {
+                    receiptPO = receiptDAO.loadByOrderNo(orderNo);
+                }
+                orderDAO.updateOrderPaid(orderNo);
+                // 已经支付
+                PaidOrderEntity paidOrderEntity = new PaidOrderEntity();
+                convert(orderPO, paidOrderEntity);
+                convert(receiptPO, paidOrderEntity);
+                return paidOrderEntity;
+            }
+            else if("NOTPAY".equals(queryOrderResponse.state) || "USERPAYING".equals(queryOrderResponse.state)) {
+                // 未支付
+                if(orderPO.getCreateTime().getTime() < DateTime.now().toLong() - Duration.MINUTE_MILLIS * 10) {
+                    logger.info("query order and try close, orderNo = " + orderNo);
+                    // 超过十分钟进行关单
+                    closeOrder(orderNo);
+                    orderPO.setState(5);
+                }
+                else {
+                    logger.info("query order and not close, orderNo = " + orderNo);
+                }
+                OrderEntity orderEntity = new OrderEntity();
+                convert(orderPO, orderEntity);
+                return orderEntity;
+            }
+            else if("REVOKED".equals(queryOrderResponse.state) || "CLOSED".equals(queryOrderResponse.state) || "PAYERROR".equals(queryOrderResponse.state)) {
+                // 未支付且无法再支付
+                logger.info("query order and set state closed, orderNo = " + orderNo);
+                orderDAO.updateOrderClosed(orderNo);
+                OrderEntity orderEntity = new OrderEntity();
+                convert(orderPO, orderEntity);
+                return orderEntity;
+            }
+        }
+        else if(2 == orderPO.getState()) {
+            // 已经支付
+            ReceiptPO receiptPO = receiptDAO.loadByOrderNo(orderNo);
             PaidOrderEntity paidOrderEntity = new PaidOrderEntity();
             convert(orderPO, paidOrderEntity);
-            convert(receiptPO, paidOrderEntity);
+            if(null != receiptPO) {
+                convert(receiptPO, paidOrderEntity);
+            }
+            else {
+                logger.error("order is paid, but receipt not found, orderNo = " + orderNo);
+            }
             return paidOrderEntity;
         }
-        // 远程查询订单信息
-        QueryOrderRequest queryOrderRequest = QueryOrderRequest.build(orderNo, null);
-        QueryOrderResponse queryOrderResponse = WechatPayHelper.queryOrder(queryOrderRequest);
-        if(!queryOrderResponse.isSuccessful()) {
-            throw new WechatResponseException("queryOrder", queryOrderRequest.toString(), queryOrderResponse.toString());
+        else if(3 == orderPO.getState() || 4 == orderPO.getState()) {
+            // 退款
+            RefundOrderEntity refundOrderEntity = new RefundOrderEntity();
+            convert(orderPO, refundOrderEntity);
+            ReceiptPO receiptPO = receiptDAO.loadByOrderNo(orderNo);
+            if(null != receiptPO) {
+                convert(receiptPO, refundOrderEntity);
+            }
+            else {
+                logger.error("order is refund, but receipt not found, orderNo = " + orderNo);
+            }
+            return refundOrderEntity;
         }
-        return null;
+        throw new RuntimeException("unexpected state of order, state = " + orderPO.getState());
     }
 
     /**

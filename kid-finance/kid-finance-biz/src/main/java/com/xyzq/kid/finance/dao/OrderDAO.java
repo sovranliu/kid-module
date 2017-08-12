@@ -53,6 +53,30 @@ public interface OrderDAO {
     public int updateOrderPaid(@Param("orderNo") String orderNo);
 
     /**
+     * 更新订单状态为退款中
+     *
+     * @param orderNo 订单号
+     * @return 记录变动条数
+     */
+    public int updateOrderRefunding(@Param("orderNo") String orderNo);
+
+    /**
+     * 更新订单状态为退款成功
+     *
+     * @param orderNo 订单号
+     * @return 记录变动条数
+     */
+    public int updateOrderRefundSuccess(@Param("orderNo") String orderNo);
+
+    /**
+     * 更新订单状态为退款失败
+     *
+     * @param orderNo 订单号
+     * @return 记录变动条数
+     */
+    public int updateOrderRefundFail(@Param("orderNo") String orderNo);
+
+    /**
      * 分页查询
      *
      * @param orderNo 订单号

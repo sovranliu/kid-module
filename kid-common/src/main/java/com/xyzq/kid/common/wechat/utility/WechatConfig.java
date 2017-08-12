@@ -7,7 +7,7 @@ public class WechatConfig {
     /**
      * APPID
      */
-    public static String appId = "wx4fcaa111127eaa57";
+    public static String appId = "";
     /**
      * APP Secret
      */
@@ -15,7 +15,7 @@ public class WechatConfig {
     /**
      * 商户号
      */
-    public static String merchantId = "1487150022";
+    public static String merchantId = "";
     /**
      * API KEY
      */
@@ -31,5 +31,5 @@ public class WechatConfig {
     /**
      * 微信认证
      */
-    public static String token = "kid";
+    public static String token = "";
 }

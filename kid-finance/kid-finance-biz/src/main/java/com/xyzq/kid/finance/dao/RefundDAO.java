@@ -46,14 +46,21 @@ public interface RefundDAO {
     public int updateRefunding(@Param("refundNo") String refundNo, @Param("refundId") String refundId);
 
     /**
-     * 更新退款状态
+     * 更新退款状态为失败
      *
      * @param refundNo 退款单号
-     * @param state 退款状态
+     * @return 记录变动条数
+     */
+    public int updateRefundFail(@Param("refundNo") String refundNo);
+
+    /**
+     * 更新退款状态为成功
+     *
+     * @param refundNo 退款单号
      * @param refundTime 退款成功时间
      * @return 记录变动条数
      */
-    public int updateRefundState(@Param("refundNo") String refundNo, @Param("state") int state, @Param("refundTime") Date refundTime);
+    public int updateRefundSuccess(@Param("refundNo") String refundNo, @Param("refundTime") Date refundTime);
 
     /**
      * 分页查询

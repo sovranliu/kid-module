@@ -78,8 +78,15 @@ public class RefundService {
         refundPO.setOrderNo(orderNo);
         refundPO.setRefundFee(refundFee);
         refundPO.setState(0);
+        refundPO.setIsFailed("N");
         refundPO.setReason(reason);
-        refundDAO.insertRefund(refundPO);
+        try {
+            refundDAO.insertRefund(refundPO);
+        }
+        catch (Exception ex) {
+            logger.error("insert into refund table failed, refundNo = " + refundNo + ", orderNo = " + orderNo + ", refundFee = " + refundFee, ex);
+            return false;
+        }
         // 发起请求
         RefundRequest refundRequest = RefundRequest.build(orderNo, refundNo, transactionId, orderPO.getFee(), refundFee, reason);
         RefundResponse refundResponse = WechatPayHelper.refund(refundRequest);
@@ -87,10 +94,8 @@ public class RefundService {
             throw new WechatResponseException("refund", refundRequest.toString(), refundResponse.toString());
         }
         refundPO.setState(1);
-        int count = refundDAO.updateRefunding(refundNo, refundResponse.refundId);
-        if(1 != count) {
-            throw new RuntimeException("update refund status return unexpected count : " + count + ", refundNo = " + refundNo + ", refundId = " + refundResponse.refundId);
-        }
+        refundDAO.updateRefunding(refundNo, refundResponse.refundId);
+        orderDAO.updateOrderRefunding(orderNo);
         return true;
     }
 
@@ -121,7 +126,6 @@ public class RefundService {
             }
             else {
                 // 远程查询退款信息
-                // 此处参数过多会造成异常
                 // QueryRefundRequest queryRefundRequest = QueryRefundRequest.build(refundPO.getOrderNo(), null, refundPO.getRefundNo(), refundPO.getRefundId());
                 QueryRefundRequest queryRefundRequest = QueryRefundRequest.build(null, null, refundPO.getRefundNo(), null);
                 QueryRefundResponse queryRefundResponse = WechatPayHelper.queryRefund(queryRefundRequest);
@@ -136,11 +140,13 @@ public class RefundService {
                                 dateTime = DateTime.parse(refundInfo.refundTime).toDate();
                             }
                             catch (ParseException e) { }
-                            refundDAO.updateRefundState(refundInfo.refundTradeNo, 2, dateTime);
+                            refundDAO.updateRefundSuccess(refundInfo.refundTradeNo, dateTime);
+                            orderDAO.updateOrderRefundSuccess(orderNo);
                             result.state = 2;
                         }
                         else if("REFUNDCLOSE".equalsIgnoreCase(refundInfo.refundStatus) || "CHANGE".equalsIgnoreCase(refundInfo.refundStatus)) {
-                            refundDAO.updateRefundState(refundInfo.refundTradeNo, 3, null);
+                            refundDAO.updateRefundFail(refundInfo.refundTradeNo);
+                            orderDAO.updateOrderRefundFail(orderNo);
                             result.state = 3;
                         }
                         else if("PROCESSING".equalsIgnoreCase(refundInfo.refundStatus)) {

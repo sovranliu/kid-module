@@ -15,18 +15,23 @@ ORDER BY ID DESC
 LIMIT 1
     </select>
     <insert id="insertRefund" parameterType="RefundPO">
-INSERT INTO FIN_Refund (RefundNo, OrderNo, RefundFee, Reason, RefundID, State, Deleted, CreateTime, UpdateTime)
-VALUES (#{refundNo}, #{orderNo}, #{refundFee}, #{reason}, NULL, 0, 0, NOW(), NOW())
+INSERT INTO FIN_Refund (RefundNo, OrderNo, RefundFee, Reason, RefundID, State, IsFailed, Deleted, CreateTime, UpdateTime)
+VALUES (#{refundNo}, #{orderNo}, #{refundFee}, #{reason}, NULL, 0, #{isFailed}, 0, NOW(), NOW())
     </insert>
     <update id="updateRefunding">
 UPDATE FIN_Refund
 SET RefundID = #{refundId}, State = 1, UpdateTime = NOW()
 WHERE RefundNo = #{refundNo} AND State = 0 AND Deleted = 0
     </update>
-    <update id="updateRefundState">
+    <update id="updateRefundFail">
 UPDATE FIN_Refund
-SET State = #{state}, RefundTime = #{refundTime}, UpdateTime = NOW()
-WHERE RefundNo = #{refundNo} AND State = 1 AND Deleted = 0
+SET State = 3, IsFailed = null, UpdateTime = NOW()
+WHERE Deleted = 0 AND RefundNo = #{refundNo} AND (State = 0 OR State = 1)
+    </update>
+    <update id="updateRefundSuccess">
+UPDATE FIN_Refund
+SET State = 2, RefundTime = #{refundTime}, UpdateTime = NOW()
+WHERE Deleted = 0 AND RefundNo = #{refundNo} AND (State = 0 OR State = 1)
     </update>
     <select id="select" resultType="RefundInfoPO">
 SELECT R.*, O.GoodsType, O.Fee, O.Tag, U.MobileNo, U.RealName AS UserName, T.SerialNo FROM
