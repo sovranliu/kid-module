@@ -32,8 +32,8 @@ public class TicketServiceTest {
 
     @Test
     public void buySingleTickets() throws Exception {
-        for (int i = 0; i < 1; i++) {
-            ticketService.onPay("123456780" + i, "ovQHwwEWahEJWswlxsHlB70smIGc", 20005, 38000, "ovQHwwEWahEJWswlxsHlB70smIGc");
+        for (int i = 0; i < 50; i++) {
+            ticketService.onPay("555555" + i, "ovQHwwEWahEJWswlxsHlB70smIGc", 11000, 38000, "ovQHwwEWahEJWswlxsHlB70smIGc");
         }
 
     }
@@ -57,6 +57,14 @@ public class TicketServiceTest {
         Assert.assertSame("fail!", ticketService.extendTickets(37, "2017-10-01"), "ticket expire!");
         Assert.assertSame("fail!", ticketService.extendTickets(38, "2017-06-01"), "wrong extendDate!");
         Assert.assertSame("fail!", ticketService.extendTickets(39, "2017-10-01"), "success");
+    }
+
+    @Test
+    public void refundingTickets() throws Exception {
+        for (int i = 140; i < 190; i++) {
+            ticketService.refundingTickets(i);
+        }
+
     }
 
     @Test
