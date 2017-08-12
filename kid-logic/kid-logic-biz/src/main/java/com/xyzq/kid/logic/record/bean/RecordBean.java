@@ -41,7 +41,7 @@ public class RecordBean {
      * @return RecordEntity
      */
     public List<RecordEntity> findBy(String serialNo, String purchased){
-        List<RecordPO> recordPOList = recordDAO.findBy(serialNo,purchased);
+        List<RecordPO> recordPOList = recordDAO.findBy(serialNo, purchased);
         List<RecordEntity> recordEntityList= new ArrayList<>();
         for (RecordPO recordPO :recordPOList
                 ) {
@@ -98,6 +98,14 @@ public class RecordBean {
      */
     public int deleteRecord(Integer id){
         return recordDAO.deleteRecord(id);
+    }
+    /**
+     * 更新飞行日志
+     * @Param RecordPO
+     * @return int
+     */
+    public void saveRecords(String serialNo,List<Integer> ids){
+        recordDAO.saveRecords(serialNo,ids);
     }
 }
 

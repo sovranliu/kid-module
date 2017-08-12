@@ -55,5 +55,10 @@ public interface RecordDAO {
      * @return int
      */
     int deleteRecord(Integer id);
-
+    /**
+     * 保存飞行日志
+     * @Param RecordPO
+     * @return int
+     */
+    void saveRecords(@Param("serialNo")String serialNo,@Param("ids")List<Integer> ids);
 }

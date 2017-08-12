@@ -1,6 +1,9 @@
 package com.xyzq.kid.logic.record.dao.po;
 
+import com.xyzq.kid.logic.record.entity.RecordEntity;
+
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Brann on 17/7/27.
@@ -37,6 +40,24 @@ public class RecordPO {
      */
     private Timestamp updateTime;
 
+    public RecordPO() {
+        purchased = RecordEntity.UNPURCHASED;
+        deleted = RecordEntity.STATUS_NORMAL;
+        createTime = new Timestamp(System.currentTimeMillis());
+        updateTime =new Timestamp(System.currentTimeMillis());
+    }
+
+    public RecordPO(RecordEntity entity) {
+        if (entity != null) {
+            id = entity.id;
+            serialNo = entity.serialNo;
+            path = entity.path;
+            purchased = entity.purchased;
+            deleted = entity.deleted;
+            createTime = entity.createTime;
+            updateTime = entity.updateTime;
+        }
+    }
 
     public Integer getId() {
         return id;

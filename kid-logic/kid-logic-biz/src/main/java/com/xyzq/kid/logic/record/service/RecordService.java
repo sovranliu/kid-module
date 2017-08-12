@@ -129,20 +129,19 @@ public class RecordService implements PayListener {
 		return recordBean.buyRecords(serialNo);
 	}
 
+
 	/**
-	 * 新增飞行日志
+	 * 保存飞行日志
 	 *
 	 * @return int
 	 * @Param RecordPO
 	 */
-	public int addRecord(String serialNo, String path) {
-		RecordPO recordPO = new RecordPO();
-		recordPO.setSerialNumber(serialNo);
-		recordPO.setPath(path);
-		recordPO.setDeleted(RecordEntity.STATUS_NORMAL);
-		recordPO.setPurchased(RecordEntity.UNPURCHASED);
-
-		return recordBean.addRecord(recordPO);
+	public void saveRecords(String serialNo, String[] ids) {
+		List<Integer> idList = new ArrayList<>(ids.length);
+		for (String id : ids) {
+			idList.add(Integer.parseInt(id));
+		}
+		recordBean.saveRecords(serialNo, idList);
 	}
 
 	/**
@@ -161,19 +160,24 @@ public class RecordService implements PayListener {
 	 *
 	 * @return fileName
 	 */
-	public String uploadFile(MultipartFile uplodaFile) throws Exception {
-		InputStream inputStream = uplodaFile.getInputStream();
+	public Map<String, String> uploadFile(MultipartFile uploadFile) throws Exception {
+		Map<String, String> resMap = new HashMap<String, String>();
+		InputStream inputStream = uploadFile.getInputStream();
 		byte[] b = new byte[1048576];
 		Integer length = inputStream.read(b);
 		// 文件流写到服务器端
-		String suffixStr = uplodaFile.getOriginalFilename().substring(uplodaFile.getOriginalFilename().indexOf("."));
+		String suffixStr = uploadFile.getOriginalFilename().substring(uploadFile.getOriginalFilename().indexOf("."));
 		String filePath = genFileName(suffixStr);
 		FileOutputStream outputStream = new FileOutputStream(filePath);
 		outputStream.write(b, 0, length);
 		inputStream.close();
 		outputStream.close();
-
-		return filePath;
+		//保存record记录，但是不关联票券号。
+		RecordPO recordPO = new RecordPO();
+		recordPO.setPath(filePath);
+		Integer id = recordBean.addRecord(recordPO);
+		resMap.put("id", String.valueOf(id));
+		return resMap;
 
 	}
 
