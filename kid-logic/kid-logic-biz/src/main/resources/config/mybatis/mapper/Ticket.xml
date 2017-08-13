@@ -239,7 +239,7 @@
 
   <update id="updateRefundByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
     update LGC_Ticket
-    set Status = 4
+    set Status = 3
     where ID = #{id,jdbcType=INTEGER} and Status = 0
   </update>
 

@@ -486,7 +486,7 @@ public class TicketService implements PayListener {
 
     /**
      * 退款申请拒绝
-     * @param id
+     * @param ticketId
      * @return
      */
     public int refuseRefund(Integer ticketId) {

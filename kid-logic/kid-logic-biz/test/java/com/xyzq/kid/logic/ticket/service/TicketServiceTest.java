@@ -32,7 +32,7 @@ public class TicketServiceTest {
 
     @Test
     public void buySingleTickets() throws Exception {
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 2; i++) {
             ticketService.onPay("555555" + i, "ovQHwwFwTV4stCe3ncywvDrkDioI", 11000, 38000, "ovQHwwFwTV4stCe3ncywvDrkDioI");
         }
 
