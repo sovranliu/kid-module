@@ -181,7 +181,7 @@ public class RecordService implements PayListener {
 		Files.setPosixFilePermissions(targetFile.toPath(), perms);
 		// 保存record记录，但是不关联票券号。
 		RecordPO recordPO = new RecordPO();
-		recordPO.setPath(File.separator + recordName);
+		recordPO.setPath(recordName);
 		int recordId = recordBean.addRecord(recordPO);
 		result.put("id", recordId);
 		result.put("path", recordUploadUrl + "/" + recordName);
