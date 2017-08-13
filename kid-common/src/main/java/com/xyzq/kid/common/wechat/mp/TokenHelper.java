@@ -87,6 +87,7 @@ public class TokenHelper {
             return null;
         }
         tick = DateTime.now().toLong();
+        logger.info("access token is " + token.get());
         return token.get();
     }
 }
