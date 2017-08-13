@@ -479,10 +479,6 @@ public class TicketService implements PayListener {
         boolean result = refund(ticketId);
         if(result) {
             ticketRefundBean.accessByPrimaryKey(ticketRefundEntityChect.id);
-            TicketEntity ticketEntity = new TicketEntity();
-            ticketEntity.status = TicketEntity.TICKET_STATUS_BACK;
-            ticketEntity.id = ticketId;
-            ticketBean.updateByPrimaryKeySelective(ticketEntity);
         }
         return result;
 
