@@ -12,13 +12,10 @@
     SELECT *
     FROM LGC_Record
     WHERE Deleted = 0
-        <if test="usedTIcketSerialNoList!= null and usedTIcketSerialNoList.size()!= 0">
-            AND SerialNo in
-            <foreach collection="usedTIcketSerialNoList" item="listItem" open="(" close=")" separator="," >
-                #{listItem}
-            </foreach>
-        </if>
-
+        AND SerialNo in
+        <foreach collection="usedTIcketSerialNoList" item="listItem" open="(" close=")" separator="," >
+            #{listItem}
+        </foreach>
         <if test="purchased != null" >
             AND purchased = #{purchased,jdbcType=VARCHAR}
         </if>
