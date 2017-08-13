@@ -195,6 +195,9 @@
    <if test="ticketId != null">
    	and TicketId = #{ticketId}
    </if>
+   <if test="bookTimeId != null">
+   	and BookTimeId = #{bookTimeId}
+   </if>
    <if test="userId != null">
    and  UserId = #{userId}
    </if>
