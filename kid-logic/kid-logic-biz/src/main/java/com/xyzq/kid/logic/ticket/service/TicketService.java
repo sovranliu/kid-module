@@ -713,7 +713,7 @@ public class TicketService implements PayListener {
         if(ticketEntity.insurance) {
             fee = ticketEntity.price.intValue() - fee;
         } else {
-            fee = ticketEntity.price.intValue();
+            fee = (int) (ticketEntity.price.intValue() * 0.7);
         }
         logger.info("TicketService.refund[in]-ticketId:" + ticketId + "All[" + ticketEntity.price.intValue() +"],insurance[" + fee + "]");
 
