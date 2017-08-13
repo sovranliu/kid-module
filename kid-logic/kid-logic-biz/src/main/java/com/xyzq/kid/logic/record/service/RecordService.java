@@ -70,7 +70,7 @@ public class RecordService implements PayListener {
 	public void onPay(String orderNo, String openId, int goodsType, int fee, String tag) {
 		if (goodsTypeService.isRecord(goodsType)) {
 			logger.info("RecordService.onPay[in]-orderNo:" + orderNo + ",openId:" + openId + ",goodsType:" + goodsType + ",fee:" + fee);
-			UserEntity userEntity = userService.selectByOpenId(tag);
+			UserEntity userEntity = userService.selectByOpenId(openId);
 			if (null == userEntity || null == userEntity.openid) {
 				logger.error("No user by openId:" + openId);
 				return;
@@ -112,6 +112,10 @@ public class RecordService implements PayListener {
 	 * @Param purchased
 	 */
 	public List<RecordEntity> findBy(List<String> usedTIcketSerialNoList, String purchased) {
+		List<RecordEntity> list = new ArrayList<RecordEntity>();
+		if (usedTIcketSerialNoList == null || usedTIcketSerialNoList.size() == 0) {
+			return list;
+		}
 		return recordBean.findBy(usedTIcketSerialNoList, purchased);
 	}
 
