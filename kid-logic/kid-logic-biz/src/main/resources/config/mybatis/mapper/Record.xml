@@ -50,6 +50,9 @@
     </update>
 
     <insert id="addRecord" parameterType="RecordPO" useGeneratedKeys="true" keyProperty="id">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
         insert into LGC_Record (SerialNo, Path, Purchased, Deleted)
         values (#{serialNo}, #{path}, #{purchased}, #{deleted})
     </insert>

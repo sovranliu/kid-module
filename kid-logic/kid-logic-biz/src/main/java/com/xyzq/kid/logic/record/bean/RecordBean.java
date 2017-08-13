@@ -88,7 +88,8 @@ public class RecordBean {
      * @return int
      */
     public int addRecord(RecordPO recordPO){
-        return recordDAO.addRecord(recordPO);
+        recordDAO.addRecord(recordPO);
+        return recordPO.getId();
     }
     /**
      * 删除飞行日志
