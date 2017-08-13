@@ -4,6 +4,8 @@ import com.xyzq.kid.CommonTool;
 import com.xyzq.kid.logic.ticket.dao.TicketHistoryDAO;
 import com.xyzq.kid.logic.ticket.dao.po.TicketHistoryPO;
 import com.xyzq.kid.logic.ticket.entity.TicketHistoryEntity;
+import com.xyzq.kid.logic.user.dao.UserDAO;
+import com.xyzq.kid.logic.user.dao.po.UserPO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +24,8 @@ public class TicketHistoryBean {
      */
     @Autowired
     private TicketHistoryDAO ticketHistoryDAO;
+    @Autowired
+    private UserDAO userDAO;
 
 
     /**
@@ -67,7 +71,8 @@ public class TicketHistoryBean {
      */
     public List<TicketHistoryEntity> selectHandselByPreMobile(String mobileNo) {
         List<TicketHistoryEntity> ticketHistoryEntities = new ArrayList<>();
-        List<TicketHistoryPO> ticketHistoryPOList = ticketHistoryDAO.selectByPreMobile(mobileNo);
+        UserPO userPO = userDAO.selectByMolieNo(mobileNo);
+        List<TicketHistoryPO> ticketHistoryPOList = ticketHistoryDAO.selectByPreMobile(userPO.getOpenid());
         if(null != ticketHistoryPOList) {
             for (int i = 0; i < ticketHistoryPOList.size(); i++) {
                 if(ticketHistoryPOList.get(i).getDeleted() == CommonTool.STATUS_NORMAL  &&
@@ -213,12 +218,12 @@ public class TicketHistoryBean {
         return po;
     }
 
-    public int updateMobileNo(String mobile, String mobilePre) {
-        Map paramMap = new HashMap();
-        paramMap.put("mobileno", mobile);
-        paramMap.put("mobilenoPre", mobilePre);
-
-        return ticketHistoryDAO.updateMobileNo(paramMap);
-    }
+//    public int updateMobileNo(String mobile, String mobilePre) {
+//        Map paramMap = new HashMap();
+//        paramMap.put("mobileno", mobile);
+//        paramMap.put("mobilenoPre", mobilePre);
+//
+//        return ticketHistoryDAO.updateMobileNo(paramMap);
+//    }
 
 }

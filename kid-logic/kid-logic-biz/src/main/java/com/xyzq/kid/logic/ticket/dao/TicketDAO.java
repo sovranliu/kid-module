@@ -44,5 +44,5 @@ public interface TicketDAO {
 
     int queryTicketByCondCount(Map paramMap);
 
-    int updateMobileNo(Map paramMap);
+//    int updateMobileNo(Map paramMap);
 }

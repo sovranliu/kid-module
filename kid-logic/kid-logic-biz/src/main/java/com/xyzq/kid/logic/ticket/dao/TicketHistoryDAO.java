@@ -26,5 +26,5 @@ public interface TicketHistoryDAO {
 
     List<TicketHistoryPO> selectHandselByTicketId(Integer ticketid);
 
-    int updateMobileNo(Map paramMap);
+//    int updateMobileNo(Map paramMap);
 }

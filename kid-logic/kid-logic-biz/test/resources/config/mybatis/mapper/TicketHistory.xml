@@ -149,4 +149,28 @@
     where ID = #{id,jdbcType=INTEGER}
   </update>
 
+  <select id="queryTickethandselCount" resultType="java.lang.Integer">
+    select count(1)
+    from LGC_TicketHistory
+    where Deleted = 0
+    and (Action = 2 or Action = 6)
+    and TicketID = #{ticketid,jdbcType=INTEGER}
+    and Deleted = 0
+  </select>
+
+  <select id="selectHandselByTicketId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LGC_TicketHistory
+    where Action = 6
+    and TicketID = #{ticketid,jdbcType=INTEGER}
+    and Deleted = 0
+  </select>
+
+  <update id="updateMobileNo" parameterType="java.lang.String">
+    update LGC_TicketHistory
+    set PreMobile = #{mobileno,jdbcType=VARCHAR}
+    where PreMobile = #{mobilenoPre,jdbcType=VARCHAR}
+  </update>
+
 </mapper>

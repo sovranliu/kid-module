@@ -10,7 +10,7 @@ public class TicketPO {
 
     private Integer type;
 
-    private String ownermobileno;
+    private String owneropenid;
 
     private String payeropenid;
 
@@ -54,12 +54,12 @@ public class TicketPO {
         this.type = type;
     }
 
-    public String getOwnermobileno() {
-        return ownermobileno;
+    public String getOwneropenid() {
+        return owneropenid;
     }
 
-    public void setOwnermobileno(String ownermobileno) {
-        this.ownermobileno = ownermobileno == null ? null : ownermobileno.trim();
+    public void setOwneropenid(String owneropenid) {
+        this.owneropenid = owneropenid;
     }
 
     public String getPayeropenid() {

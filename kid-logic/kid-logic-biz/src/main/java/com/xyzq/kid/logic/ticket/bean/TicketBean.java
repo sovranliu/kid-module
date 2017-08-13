@@ -6,6 +6,8 @@ import com.xyzq.kid.logic.ticket.dao.TicketDAO;
 import com.xyzq.kid.logic.ticket.dao.po.TicketPO;
 import com.xyzq.kid.logic.ticket.entity.TicketEntity;
 import com.xyzq.kid.logic.ticket.entity.TicketHistoryEntity;
+import com.xyzq.kid.logic.user.dao.UserDAO;
+import com.xyzq.kid.logic.user.dao.po.UserPO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +26,8 @@ public class TicketBean {
      */
     @Autowired
     private TicketDAO ticketDAO;
+    @Autowired
+    private UserDAO userDAO;
 
 
     /**
@@ -48,11 +52,15 @@ public class TicketBean {
 
     public List<TicketEntity> getTicketsInfoByOwnerMobileNo(String mobileNo) {
         List<TicketEntity> ticketEntityList = new ArrayList<>();
-        List<TicketPO> ticketPOList = ticketDAO.getTicketsInfoByOwnerMobileNo(mobileNo);
-        if(null != ticketPOList) {
-            for (int i = 0; i < ticketPOList.size(); i++) {
-                if(ticketPOList.get(i).getDeleted() == CommonTool.STATUS_NORMAL) {
-                    ticketEntityList.add(TicketPOToEntity(ticketPOList.get(i)));
+        UserPO userPO = userDAO.selectByMolieNo(mobileNo);
+        if(null != userPO) {
+            List<TicketPO> ticketPOList = ticketDAO.getTicketsInfoByOwnerMobileNo(userPO.getOpenid());
+
+            if (null != ticketPOList) {
+                for (int i = 0; i < ticketPOList.size(); i++) {
+                    if (ticketPOList.get(i).getDeleted() == CommonTool.STATUS_NORMAL) {
+                        ticketEntityList.add(TicketPOToEntity(ticketPOList.get(i)));
+                    }
                 }
             }
         }
@@ -231,8 +239,11 @@ public class TicketBean {
         if(null != po.getType()) {
             entity.type = po.getType();
         }
-        if(null != po.getOwnermobileno()) {
-            entity.telephone = po.getOwnermobileno();
+        if(null != po.getOwneropenid()) {
+            UserPO userPO = userDAO.selectByOpenId(po.getOwneropenid());
+            if(null != userPO) {
+                entity.telephone = userPO.getMobileno();
+            }
         }
         if(null != po.getPayeropenid()) {
             entity.payeropenid = po.getPayeropenid();
@@ -281,7 +292,10 @@ public class TicketBean {
             po.setType(entity.type);
         }
         if(null != entity.telephone) {
-            po.setOwnermobileno(entity.telephone);
+            UserPO userPO = userDAO.selectByMolieNo(entity.telephone);
+            if(null != userPO) {
+                po.setOwneropenid(userPO.getOpenid());
+            }
         }
         if(null != entity.payeropenid) {
             po.setPayeropenid(entity.payeropenid);
@@ -313,12 +327,12 @@ public class TicketBean {
         return po;
     }
 
-    public int updateMobileNo(String mobile, String mobilePre) {
-        Map paramMap = new HashMap();
-        paramMap.put("mobileno", mobile);
-        paramMap.put("mobilenoPre", mobilePre);
-
-        return ticketDAO.updateMobileNo(paramMap);
-    }
+//    public int updateMobileNo(String mobile, String mobilePre) {
+//        Map paramMap = new HashMap();
+//        paramMap.put("mobileno", mobile);
+//        paramMap.put("mobilenoPre", mobilePre);
+//
+//        return ticketDAO.updateMobileNo(paramMap);
+//    }
 
 }

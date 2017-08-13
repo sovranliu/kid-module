@@ -538,7 +538,10 @@ public class TicketService implements PayListener {
             paramMap.put("serialno", serialno);
         }
         if(null != ownermobileno && ownermobileno.length() > 0) {
-            paramMap.put("ownermobileno", ownermobileno);
+            UserEntity userEntity = userService.selectByMolieNo(ownermobileno);
+            if(null != userEntity) {
+                paramMap.put("ownermobileno", userEntity.openid);
+            }
         }
         if(null != beginDate && beginDate.length() > 0) {
             paramMap.put("beginDate", beginDate);
@@ -675,7 +678,8 @@ public class TicketService implements PayListener {
         ticketHistoryEntity.ticketid = ticketId;
         ticketHistoryEntity.action = action;
         if(action == TicketHistoryEntity.TICKET_ACTION_HANDSEL || action == TicketHistoryEntity.TICKET_ACTION_HANDSEL_EFFECTIVE) {
-            ticketHistoryEntity.premobile = preMobile;
+            UserEntity userEntity = userService.selectByMolieNo(preMobile);
+            ticketHistoryEntity.premobile = userEntity.openid;
         }
         if(action == TicketHistoryEntity.TICKET_ACTION_EXTEND) {
             ticketHistoryEntity.prevalidperiod = preValidPeriod;
@@ -718,8 +722,8 @@ public class TicketService implements PayListener {
 
     }
 
-    public void updateMobileNo(String mobile, String mobilePre) {
-        ticketBean.updateMobileNo(mobile, mobilePre);
-        ticketHistoryBean.updateMobileNo(mobile, mobilePre);
-    }
+//    public void updateMobileNo(String mobile, String mobilePre) {
+//        ticketBean.updateMobileNo(mobile, mobilePre);
+//        ticketHistoryBean.updateMobileNo(mobile, mobilePre);
+//    }
 }

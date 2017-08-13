@@ -5,7 +5,7 @@
     <id column="ID" jdbcType="INTEGER" property="id" />
     <result column="SerialNo" jdbcType="VARCHAR" property="serialno" />
     <result column="Type" jdbcType="INTEGER" property="type" />
-    <result column="OwnerMobileNo" jdbcType="VARCHAR" property="ownermobileno" />
+    <result column="OwnerOpenID" jdbcType="VARCHAR" property="owneropenid" />
     <result column="PayerOpenID" jdbcType="VARCHAR" property="payeropenid" />
     <result column="Price" jdbcType="DECIMAL" property="price" />
     <result column="ExpireDate" jdbcType="TIMESTAMP" property="expiredate" />
@@ -18,7 +18,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    ID, SerialNo, Type, OwnerMobileNo, PayerOpenID, Price, ExpireDate, Insurance, OrderNo, 
+    ID, SerialNo, Type, OwnerOpenID, PayerOpenID, Price, ExpireDate, Insurance, OrderNo,
     Status, Deleted, CreateTime, UpdateTime
   </sql>
 
@@ -40,7 +40,8 @@
     select
     <include refid="Base_Column_List" />
     from LGC_Ticket
-    where OwnerMobileNo = #{ownermobileno,jdbcType=VARCHAR} and Deleted = 0
+    where OwnerOpenID = #{owneropenid,jdbcType=VARCHAR} and Deleted = 0
+    order by status
   </select>
 
   <select id="getTicketsInfoByPayerOpenID" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -58,12 +59,12 @@
 
   <insert id="insert" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO" useGeneratedKeys="true" keyProperty="id">
     insert into LGC_Ticket (ID, SerialNo, Type, 
-      OwnerMobileNo, PayerOpenID, Price, 
+      OwnerOpenID, PayerOpenID, Price,
       ExpireDate, Insurance, OrderNo,
       Status, Deleted, CreateTime, 
       UpdateTime)
     values (#{id,jdbcType=INTEGER}, #{serialno,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
-      #{ownermobileno,jdbcType=VARCHAR}, #{payeropenid,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{owneropenid,jdbcType=VARCHAR}, #{payeropenid,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
       #{expiredate,jdbcType=TIMESTAMP}, #{insurance,jdbcType=BIT}, #{orderno,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{deleted,jdbcType=TINYINT}, #{createtime,jdbcType=TIMESTAMP}, 
       #{updatetime,jdbcType=TIMESTAMP})
@@ -84,8 +85,8 @@
       <if test="type != null">
         Type,
       </if>
-      <if test="ownermobileno != null">
-        OwnerMobileNo,
+      <if test="owneropenid != null">
+        OwnerOpenID,
       </if>
       <if test="payeropenid != null">
         PayerOpenID,
@@ -125,8 +126,8 @@
       <if test="type != null">
         #{type,jdbcType=INTEGER},
       </if>
-      <if test="ownermobileno != null">
-        #{ownermobileno,jdbcType=VARCHAR},
+      <if test="owneropenid != null">
+        #{owneropenid,jdbcType=VARCHAR},
       </if>
       <if test="payeropenid != null">
         #{payeropenid,jdbcType=VARCHAR},
@@ -167,8 +168,8 @@
       <if test="type != null">
         Type = #{type,jdbcType=INTEGER},
       </if>
-      <if test="ownermobileno != null">
-        OwnerMobileNo = #{ownermobileno,jdbcType=VARCHAR},
+      <if test="owneropenid != null">
+        OwnerOpenID = #{owneropenid,jdbcType=VARCHAR},
       </if>
       <if test="payeropenid != null">
         PayerOpenID = #{payeropenid,jdbcType=VARCHAR},
@@ -205,7 +206,7 @@
     update LGC_Ticket
     set SerialNo = #{serialno,jdbcType=VARCHAR},
       Type = #{type,jdbcType=INTEGER},
-      OwnerMobileNo = #{ownermobileno,jdbcType=VARCHAR},
+      OwnerOpenID = #{owneropenid,jdbcType=VARCHAR},
       PayerOpenID = #{payeropenid,jdbcType=VARCHAR},
       Price = #{price,jdbcType=DECIMAL},
       ExpireDate = #{expiredate,jdbcType=TIMESTAMP},
@@ -244,15 +245,15 @@
 
   <update id="updateHandselByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
     update LGC_Ticket
-    set OwnerMobileNo = #{ownermobileno,jdbcType=VARCHAR}
+    set OwnerOpenID = #{owneropenid,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER} and Status = 0
   </update>
 
   <update id="updateHandselByPrimaryKeyLock">
     update LGC_Ticket
-    set OwnerMobileNo = #{ownermobileno,jdbcType=VARCHAR}
+    set OwnerOpenID = #{owneropenid,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
-    and OwnerMobileNo = #{premobileno,jdbcType=VARCHAR}
+    and OwnerOpenID = #{premobileno,jdbcType=VARCHAR}
      and Status = 0
   </update>
 
@@ -276,8 +277,8 @@
     <if test="serialno != null">
       and SerialNo = #{serialno,jdbcType=VARCHAR}
     </if>
-    <if test="ownermobileno != null">
-      and OwnerMobileNo = #{ownermobileno,jdbcType=VARCHAR}
+    <if test="owneropenid != null">
+      and OwnerOpenID = #{owneropenid,jdbcType=VARCHAR}
     </if>
     <if test="beginDate != null">
       <![CDATA[
@@ -292,6 +293,7 @@
     <if test="status != null">
       and Status = #{status,jdbcType=INTEGER}
     </if>
+    order by status
     limit #{begin, jdbcType=INTEGER}, #{limit,jdbcType=INTEGER}
   </select>
 
@@ -302,8 +304,8 @@
     <if test="serialno != null">
       and SerialNo = #{serialno,jdbcType=VARCHAR}
     </if>
-    <if test="ownermobileno != null">
-      and OwnerMobileNo = #{ownermobileno,jdbcType=VARCHAR}
+    <if test="owneropenid != null">
+      and OwnerOpenID = #{owneropenid,jdbcType=VARCHAR}
     </if>
     <if test="beginDate != null">
       <![CDATA[
@@ -319,5 +321,11 @@
       and Status = #{status,jdbcType=INTEGER}
     </if>
   </select>
+
+  <!--<update id="updateMobileNo" parameterType="java.lang.String">-->
+    <!--update LGC_Ticket-->
+    <!--set OwnerMobileNo = #{mobileno,jdbcType=VARCHAR}-->
+    <!--where OwnerMobileNo = #{mobilenoPre,jdbcType=VARCHAR}-->
+  <!--</update>-->
 
 </mapper>
