@@ -668,14 +668,14 @@ public class TicketService implements PayListener {
         doInsertTicketHistory(ticketId, TicketHistoryEntity.TICKET_ACTION_REFUND, null, null);
     }
 
-    /**
-     * 新增飞行票历史
-     * @param ticketId 飞行票ID
-     * @param action    1-新建，2-赠送，3-使用，4-有效期延长
-     * @param preValidPeriod    Action为4时，上次截止日
-     * @param preMobile Action为2时，记录下原归属人手机号
-     */
-    private void doInsertTicketHistory(int ticketId, int action, String preValidPeriod, String preMobile) {
+    private void doInsertTicketHistory(int ticketId, int action, String
+            /**
+             * 新增飞行票历史
+             * @param ticketId 飞行票ID
+             * @param action    1-新建，2-赠送，3-使用，4-有效期延长
+             * @param preValidPeriod    Action为4时，上次截止日
+             * @param preMobile Action为2时，记录下原归属人手机号
+             */ preValidPeriod, String preMobile) {
         TicketHistoryEntity ticketHistoryEntity = new TicketHistoryEntity();
         ticketHistoryEntity.ticketid = ticketId;
         ticketHistoryEntity.action = action;
