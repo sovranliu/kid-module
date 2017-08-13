@@ -239,8 +239,8 @@
 
   <update id="updateRefundByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
     update LGC_Ticket
-    set Status = 3
-    where ID = #{id,jdbcType=INTEGER} and Status = 0
+    set Status = 4
+    where ID = #{id,jdbcType=INTEGER} and Status = 3
   </update>
 
   <update id="updateHandselByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
@@ -253,7 +253,7 @@
     update LGC_Ticket
     set OwnerOpenID = #{owneropenid,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
-    and OwnerOpenID = #{preowneropenid,jdbcType=VARCHAR}
+    and OwnerOpenID = #{owneropenid,jdbcType=VARCHAR}
      and Status = 0
   </update>
 
