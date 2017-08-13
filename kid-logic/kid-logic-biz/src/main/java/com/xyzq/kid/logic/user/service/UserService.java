@@ -130,7 +130,7 @@ public class UserService {
         entity.openid = openId;
         try {
             UserInfoHelper.GuestInfo guestInfo = UserInfoHelper.fetchUserInfo(openId);
-            if(guestInfo instanceof UserInfoHelper.MemberInfo) {
+            if(null != guestInfo && guestInfo instanceof UserInfoHelper.MemberInfo) {
                 entity.avatarUrl = ((UserInfoHelper.MemberInfo) guestInfo).headImgUrl;
             }
         }

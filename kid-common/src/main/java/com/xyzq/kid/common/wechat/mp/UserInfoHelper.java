@@ -80,7 +80,12 @@ public class UserInfoHelper {
      * @return 有效票据
      */
     public static boolean isFans(String openId) throws IOException {
-        if(fetchUserInfo(openId) instanceof MemberInfo) {
+        GuestInfo guestInfo = fetchUserInfo(openId);
+        if(null == guestInfo) {
+            logger.error("isFan is failed and try adjust true");
+            return true;
+        }
+        if(guestInfo instanceof MemberInfo) {
             logger.info(openId + " is fans");
             return true;
         }
@@ -97,17 +102,27 @@ public class UserInfoHelper {
      * @return 用户信息实体
      */
     public static GuestInfo fetchUserInfo(String openId) throws IOException {
-        String url = URL_USERINFO.replace("[ACCESS_TOKEN]", TokenHelper.getToken()).replace("[OPENID]", openId);
+        String oldToken = TokenHelper.getToken();
+        String url = URL_USERINFO.replace("[ACCESS_TOKEN]", oldToken).replace("[OPENID]", openId);
         String result = XMLHttpsUtil.get(url);
         logger.info("fetch user " + openId + " information :\n" + result);
         JSONVisitor visitor = new JSONVisitor(JSONObject.convert(result));
         if("40001".equals(visitor.getString("errcode"))) {
-            TokenHelper.fetchToken();
-            result = XMLHttpsUtil.get(url);
-            logger.info("refetch user " + openId + " information :\n" + result);
-            visitor = new JSONVisitor(JSONObject.convert(result));
+            String newToken = TokenHelper.fetchToken();
+            if(!oldToken.equals(newToken)) {
+                result = XMLHttpsUtil.get(url);
+                logger.info("refetch user " + openId + " information :\n" + result);
+                visitor = new JSONVisitor(JSONObject.convert(result));
+                if(!"40001".equals(visitor.getString("errcode"))) {
+                    return convert(visitor);
+                }
+            }
         }
-        return convert(visitor);
+        else {
+            return convert(visitor);
+        }
+        logger.error("fetch user info failed");
+        return null;
     }
 
     /**
