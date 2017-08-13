@@ -479,6 +479,10 @@ public class TicketService implements PayListener {
         boolean result = refund(ticketId);
         if(result) {
             ticketRefundBean.accessByPrimaryKey(ticketRefundEntityChect.id);
+            TicketEntity ticketEntity = new TicketEntity();
+            ticketEntity.status = TicketEntity.TICKET_STATUS_BACK;
+            ticketEntity.id = ticketId;
+            ticketBean.updateByPrimaryKeySelective(ticketEntity);
         }
         return result;
 
@@ -486,7 +490,7 @@ public class TicketService implements PayListener {
 
     /**
      * 退款申请拒绝
-     * @param id
+     * @param ticketId
      * @return
      */
     public int refuseRefund(Integer ticketId) {
