@@ -50,7 +50,8 @@ public class BookRepositoryService {
 		boolean flag=false;
 		try{
 			DateUnviableEntity date=dateUnviableService.findBy(bookDate);
-			if(date==null){
+			List<BookTimeRepository> repoList=queryAllByBookDate(bookDate);
+			if(date==null&&(repoList==null||repoList.size()<=0)){
 				List<BookTimeSpan> spanList=bookTimeSpanService.queryValidTimeSpans();
 				if(spanList!=null&&spanList.size()>0){
 					for(BookTimeSpan span:spanList){
