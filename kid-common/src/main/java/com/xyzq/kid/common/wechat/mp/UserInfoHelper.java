@@ -6,6 +6,7 @@ import com.xyzq.simpson.base.json.JSONObject;
 import com.xyzq.kid.common.wechat.utility.XMLHttpsUtil;
 import com.xyzq.simpson.base.json.JSONString;
 import com.xyzq.simpson.base.json.JSONVisitor;
+import com.xyzq.simpson.base.time.DateTime;
 import com.xyzq.simpson.base.type.List;
 import com.xyzq.simpson.base.type.Table;
 import org.slf4j.Logger;
@@ -66,6 +67,10 @@ public class UserInfoHelper {
      * 日志对象
      */
     protected static Logger logger = LoggerFactory.getLogger(UserInfoHelper.class);
+    /**
+     * 判断是否是会员的缓存
+     */
+    private static com.xyzq.simpson.base.type.safe.Table<String, Long> fansCache = new com.xyzq.simpson.base.type.safe.Table<String, Long>();
 
 
     /**
@@ -80,12 +85,17 @@ public class UserInfoHelper {
      * @return 有效票据
      */
     public static boolean isFans(String openId) throws IOException {
+        Long tick = fansCache.get(openId);
+        if(null != tick && tick > DateTime.now().toLong() - 1000 * 5) {
+            return true;
+        }
         GuestInfo guestInfo = fetchUserInfo(openId);
         if(null == guestInfo) {
             logger.error("isFan is failed and try adjust true");
             return true;
         }
         if(guestInfo instanceof MemberInfo) {
+            fansCache.put("openId", DateTime.now().toLong());
             logger.info(openId + " is fans");
             return true;
         }
@@ -107,13 +117,13 @@ public class UserInfoHelper {
         String result = XMLHttpsUtil.get(url);
         logger.info("fetch user " + openId + " information :\n" + result);
         JSONVisitor visitor = new JSONVisitor(JSONObject.convert(result));
-        if("40001".equals(visitor.getString("errcode"))) {
+        if(40001 == visitor.getInteger("errcode", 0)) {
             String newToken = TokenHelper.fetchToken();
             if(!oldToken.equals(newToken)) {
                 result = XMLHttpsUtil.get(url);
                 logger.info("refetch user " + openId + " information :\n" + result);
                 visitor = new JSONVisitor(JSONObject.convert(result));
-                if(!"40001".equals(visitor.getString("errcode"))) {
+                if(40001 != visitor.getInteger("errcode", 0)) {
                     return convert(visitor);
                 }
             }
