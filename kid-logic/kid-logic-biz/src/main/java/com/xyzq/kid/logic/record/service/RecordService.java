@@ -112,6 +112,10 @@ public class RecordService implements PayListener {
 	 * @Param purchased
 	 */
 	public List<RecordEntity> findBy(List<String> usedTIcketSerialNoList, String purchased) {
+		List<RecordEntity> list = new ArrayList<RecordEntity>();
+		if (usedTIcketSerialNoList == null || usedTIcketSerialNoList.size() == 0) {
+			return list;
+		}
 		return recordBean.findBy(usedTIcketSerialNoList, purchased);
 	}
 
