@@ -203,8 +203,10 @@ public class TicketService implements PayListener {
 
         Map paramMap = new HashMap<>();
         paramMap.put("id", ticketId);
-        paramMap.put("ownermobileno", mobileNo);
-        paramMap.put("premobileno", preMobile);
+        UserEntity userEntity = userService.selectByMolieNo(mobileNo);
+        UserEntity userEntityPre = userService.selectByMolieNo(preMobile);
+        paramMap.put("owneropenid", userEntity.openid);
+        paramMap.put("preowneropenid", userEntityPre.openid);
         int result = ticketBean.updateHandselByPrimaryKeyLock(paramMap);
 
         if(0 == result) {
@@ -212,8 +214,8 @@ public class TicketService implements PayListener {
         }
 
         ITable<String, String> data = new Table<String, String>();
-        UserEntity userEntity = userService.selectByOpenId(ticketEntity.payeropenid);
-        data.put("userName", userEntity.userName);
+        UserEntity userEntityPayer = userService.selectByOpenId(ticketEntity.payeropenid);
+        data.put("userName", userEntityPayer.userName);
         data.put("serialNumber", ticketEntity.serialNumber);
         smsService.sendSMS(mobileNo, "redundticket", data);
 
