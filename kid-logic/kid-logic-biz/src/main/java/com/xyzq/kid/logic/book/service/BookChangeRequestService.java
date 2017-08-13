@@ -186,10 +186,12 @@ public class BookChangeRequestService {
 					}else if(request.getReqesttype().equals("2")){
 						book.setBookstatus("7");
 					}
-					book.setBooktimeid(request.getBooktimeid());
-					book.setLastupdatetime(new Date());
 					BookTimeRepository repo=bookTimeRepositoryMapper.selectByPrimaryKey(book.getBooktimeid());
 					BookTimeSpan span=bookTimeSpanMapper.selectByPrimaryKey(repo.getBooktimespanid());
+					if(request.getBooktimeid()!=null&&request.getReqesttype().equals("1")){
+						book.setBooktimeid(request.getBooktimeid());
+					}
+					book.setLastupdatetime(new Date());
 					book.setBookdate(repo.getBookdate());
 					book.setBooktime(span.getTimespan());
 					bookMapper.updateByPrimaryKeySelective(book);
