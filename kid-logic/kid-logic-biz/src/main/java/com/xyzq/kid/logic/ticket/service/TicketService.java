@@ -139,6 +139,7 @@ public class TicketService implements PayListener {
             for (int i = 0; i < num; i++) {
                 ticketEntity.type = TicketEntity.TICKET_TYPE_GROUP;
                 ticketEntity.insurance = false;
+                ticketEntity.price = BigDecimal.valueOf(ticketEntity.price.intValue()/num);
                 buyTickets(ticketEntity);
             }
         }
@@ -709,7 +710,11 @@ public class TicketService implements PayListener {
 
         Map<String, Integer> pricemap = configService.getPriceInfo();
         int fee = Integer.valueOf(pricemap.get(ConfigCommon.FEE_INSURANCE).toString());
-        fee =  ticketEntity.price.intValue() - fee;
+        if(ticketEntity.insurance) {
+            fee = ticketEntity.price.intValue() - fee;
+        } else {
+            fee = ticketEntity.price.intValue();
+        }
         logger.info("TicketService.refund[in]-ticketId:" + ticketId + "All[" + ticketEntity.price.intValue() +"],insurance[" + fee + "]");
 
         try {
