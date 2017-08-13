@@ -100,7 +100,11 @@ public class BookChangeRequestService {
 			request.setCreatetime(new Date());
 			request.setLastupdatetime(new Date());
 			request.setDeleteflag("0");
-			bookChangeRequestMapper.updateByPrimaryKeySelective(request);
+			if(getRequestByBookId(bookId)!=null){
+				bookChangeRequestMapper.updateByPrimaryKeySelective(request);
+			}else{
+				bookChangeRequestMapper.insert(request);
+			}
 			Book book=bookMapper.selectByPrimaryKey(bookId);
 			//1：已预约，2：改期申请中，3：改期通过，4：改期拒绝，5：核销完成，6：撤销申请中，7：撤销通过，8：拒绝撤销
 			if(requestType.equals("1")){
@@ -182,10 +186,12 @@ public class BookChangeRequestService {
 					}else if(request.getReqesttype().equals("2")){
 						book.setBookstatus("7");
 					}
-					book.setBooktimeid(request.getBooktimeid());
-					book.setLastupdatetime(new Date());
 					BookTimeRepository repo=bookTimeRepositoryMapper.selectByPrimaryKey(book.getBooktimeid());
 					BookTimeSpan span=bookTimeSpanMapper.selectByPrimaryKey(repo.getBooktimespanid());
+					if(request.getBooktimeid()!=null&&request.getReqesttype().equals("1")){
+						book.setBooktimeid(request.getBooktimeid());
+					}
+					book.setLastupdatetime(new Date());
 					book.setBookdate(repo.getBookdate());
 					book.setBooktime(span.getTimespan());
 					bookMapper.updateByPrimaryKeySelective(book);

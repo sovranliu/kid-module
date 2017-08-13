@@ -261,6 +261,30 @@ public class BookService {
 		boolean flag=false;
 		return flag;
 	}
+	
+	/**
+	 * 根据库存ID查询所有可撤销预约的预约记录
+	 * @param bookTimeId
+	 * @return
+	 */
+	public List<Book> queryByBookTimeId(Integer bookTimeId){
+		List<Book> resultList=new ArrayList<>();
+		Map<String,Object> map=new HashMap<>();
+		map.put("bookTimeId", bookTimeId);
+		List<Book> bookList=bookMapper.queryBookByCond(map);
+		if(bookList!=null&&bookList.size()>0){
+			for(Book book:bookList){
+				String bookStatus=book.getBookstatus();
+				//1：已预约，2：改期申请中，3：改期通过，4：改期拒绝，5：核销完成，6：撤销申请中，7：撤销通过，8：拒绝撤销
+				//查询可撤销的预约记录，状态为5：核销完成、7：撤销通过的预约不可再撤销
+				if(!bookStatus.equals("5")&&!bookStatus.equals("7")){
+					resultList.add(book);
+				}
+			}
+		}
+		return resultList;
+		
+	}
 		
 	
 	/**
