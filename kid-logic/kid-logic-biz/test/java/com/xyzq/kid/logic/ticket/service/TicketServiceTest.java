@@ -74,8 +74,8 @@ public class TicketServiceTest {
     }
 
     @Test
-    public void getTicketsInfoByOwnerMobileNo() throws Exception {
-
+    public void refund() throws Exception {
+        ticketService.refund(1);
     }
 
     @Test

@@ -695,7 +695,7 @@ public class TicketService implements PayListener {
      * @param ticketId 票号
      * @return true-退票成功，false-退票失败
      */
-    private boolean refund(int ticketId) {
+    public boolean refund(int ticketId) {
         logger.info("TicketService.refund[in]-ticketId:" + ticketId);
 
         boolean result = false;
@@ -707,8 +707,13 @@ public class TicketService implements PayListener {
             return false;
         }
 
+        Map<String, Integer> pricemap = configService.getPriceInfo();
+        int fee = Integer.valueOf(pricemap.get(ConfigCommon.FEE_INSURANCE).toString());
+        fee =  ticketEntity.price.intValue() - fee;
+        logger.info("TicketService.refund[in]-ticketId:" + ticketId + "All[" + ticketEntity.price.intValue() +"],insurance[" + fee + "]");
+
         try {
-            result = refundService.refund(ticketEntity.payNumber, null, null, ticketEntity.price.intValue(), null);
+            result = refundService.refund(ticketEntity.payNumber, null, null, fee, null);
         } catch (IOException e) {
             logger.info("TicketService.refund[in]-ticketId:" + ticketId + " fail for " + e.toString());
             return false;
