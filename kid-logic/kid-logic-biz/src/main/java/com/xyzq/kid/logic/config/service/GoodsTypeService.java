@@ -125,7 +125,7 @@ public class GoodsTypeService {
             }
         }
         else if(isGroupTicket(goodsType)) {
-            return configService.fetch(ConfigCommon.FEE_GROUPTICKET, Integer.class);
+            return configService.fetch(ConfigCommon.FEE_GROUPTICKET, Integer.class) * this.calculateTicketCount(goodsType);
         }
         else if(isRecord(goodsType)) {
             return configService.fetch(ConfigCommon.FEE_RECORD, Integer.class);
