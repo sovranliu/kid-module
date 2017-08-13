@@ -76,7 +76,12 @@ public class BookChangeRequestService {
 	public boolean createRequest(Integer bookId,String requestType,String reason,Integer userId,Integer bookTimeId,String requestBy){
 		boolean flag=false;
 		try{
-			BookChangeRequest request=new BookChangeRequest();
+			BookChangeRequest request=null;
+			if(getRequestByBookId(bookId)!=null){
+				request=getRequestByBookId(bookId);
+			}else{
+				request=new BookChangeRequest();
+			}
 			request.setBookid(bookId);
 			request.setUserid(userId);
 			request.setReqesttype(requestType);
@@ -95,7 +100,7 @@ public class BookChangeRequestService {
 			request.setCreatetime(new Date());
 			request.setLastupdatetime(new Date());
 			request.setDeleteflag("0");
-			bookChangeRequestMapper.insertSelective(request);
+			bookChangeRequestMapper.updateByPrimaryKeySelective(request);
 			Book book=bookMapper.selectByPrimaryKey(bookId);
 			//1：已预约，2：改期申请中，3：改期通过，4：改期拒绝，5：核销完成，6：撤销申请中，7：撤销通过，8：拒绝撤销
 			if(requestType.equals("1")){
@@ -336,5 +341,18 @@ public class BookChangeRequestService {
         result.setRows(sum);
         result.setResultList(resultList);
         return result;
+	}
+	
+	public BookChangeRequest getRequestByBookId(Integer bookId){
+		BookChangeRequest req=null;
+		try {
+			List<BookChangeRequest> reqList=queryByCondLimt(bookId, null, null, null, null, null, null);
+			if(reqList!=null&&reqList.size()>0){
+				req=reqList.get(0);
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return req;
 	}
 }
