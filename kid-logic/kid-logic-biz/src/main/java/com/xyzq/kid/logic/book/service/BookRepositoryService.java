@@ -194,7 +194,7 @@ public class BookRepositoryService {
 		try{
 			BookTimeRepository repo=bookTimeRepositoryMapper.selectByPrimaryKey(bookTimeId);
 			if(repo!=null){
-				if(repo.getBookamount()>0){
+				if(repo.getBooktotal()-repo.getBookamount()>0){
 					flag=true;
 				}
 			}

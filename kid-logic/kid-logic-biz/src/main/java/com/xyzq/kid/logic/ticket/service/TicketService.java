@@ -542,7 +542,7 @@ public class TicketService implements PayListener {
         if(null != ownermobileno && ownermobileno.length() > 0) {
             UserEntity userEntity = userService.selectByMolieNo(ownermobileno);
             if(null != userEntity) {
-                paramMap.put("ownermobileno", userEntity.openid);
+                paramMap.put("owneropenid", userEntity.openid);
             }
         }
         if(null != beginDate && beginDate.length() > 0) {

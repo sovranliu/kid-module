@@ -58,6 +58,10 @@ public class BookChangeRequestService {
 	BookTimeSpanService bookTimeSpanService;
 	
 	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+	
+	public BookChangeRequest selectByPk(Integer id){
+		return bookChangeRequestMapper.selectByPrimaryKey(id);
+	}
 
 	/**
 	 * 创建预约改期申请单
