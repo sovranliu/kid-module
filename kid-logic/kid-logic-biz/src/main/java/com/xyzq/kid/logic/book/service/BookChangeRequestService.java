@@ -186,14 +186,15 @@ public class BookChangeRequestService {
 					}else if(request.getReqesttype().equals("2")){
 						book.setBookstatus("7");
 					}
-					BookTimeRepository repo=bookTimeRepositoryMapper.selectByPrimaryKey(book.getBooktimeid());
-					BookTimeSpan span=bookTimeSpanMapper.selectByPrimaryKey(repo.getBooktimespanid());
+					
 					if(request.getBooktimeid()!=null&&request.getReqesttype().equals("1")){
 						book.setBooktimeid(request.getBooktimeid());
+						BookTimeRepository repo=bookTimeRepositoryMapper.selectByPrimaryKey(request.getBooktimeid());
+						BookTimeSpan span=bookTimeSpanMapper.selectByPrimaryKey(repo.getBooktimespanid());
+						book.setBookdate(repo.getBookdate());
+						book.setBooktime(span.getTimespan());
 					}
 					book.setLastupdatetime(new Date());
-					book.setBookdate(repo.getBookdate());
-					book.setBooktime(span.getTimespan());
 					bookMapper.updateByPrimaryKeySelective(book);
 					
 					//回退原时间库存
