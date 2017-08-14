@@ -83,7 +83,7 @@
         #{title,jdbcType=VARCHAR},
       </if>
       <if test="content != null">
-        #{title,jdbcType=VARCHAR},
+        #{content,jdbcType=VARCHAR},
       </if>
       <if test="imageurl != null">
         #{imageurl,jdbcType=VARCHAR},
@@ -113,7 +113,7 @@
         Title = #{title,jdbcType=VARCHAR},
       </if>
       <if test="content != null">
-        #{title,jdbcType=VARCHAR},
+        #{content,jdbcType=VARCHAR},
       </if>
       <if test="imageurl != null">
         ImageUrl = #{imageurl,jdbcType=VARCHAR},
