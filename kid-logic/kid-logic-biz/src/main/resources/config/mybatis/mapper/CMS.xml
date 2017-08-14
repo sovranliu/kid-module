@@ -5,6 +5,7 @@
     <id column="ID" jdbcType="INTEGER" property="id" />
     <result column="CategoryID" jdbcType="INTEGER" property="categoryid" />
     <result column="Title" jdbcType="VARCHAR" property="title" />
+    <result column="Content" jdbcType="VARCHAR" property="content" />
     <result column="ImageUrl" jdbcType="VARCHAR" property="imageurl" />
     <result column="Link" jdbcType="VARCHAR" property="link" />
     <result column="Deleted" jdbcType="TINYINT" property="deleted" />
@@ -13,7 +14,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    ID, CategoryID, Title, ImageUrl, Link, Deleted, CreateTime, UpdateTime
+    ID, CategoryID, Title, Content,ImageUrl, Link, Deleted, CreateTime, UpdateTime
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -29,10 +30,10 @@
   </delete>
 
   <insert id="insert" parameterType="com.xyzq.kid.logic.cms.dao.po.CMSPO">
-    insert into LGC_CMS (ID, CategoryID, Title, 
+    insert into LGC_CMS (ID, CategoryID, Title, Content,
       ImageUrl, Link, Deleted, 
       CreateTime, UpdateTime)
-    values (#{id,jdbcType=INTEGER}, #{categoryid,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{categoryid,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR},  #{content,jdbcType=VARCHAR},
       #{imageurl,jdbcType=VARCHAR}, #{link,jdbcType=VARCHAR}, #{deleted,jdbcType=TINYINT}, 
       #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP})
   </insert>
@@ -51,6 +52,9 @@
       </if>
       <if test="title != null">
         Title,
+      </if>
+      <if test="content != null">
+        Content,
       </if>
       <if test="imageurl != null">
         ImageUrl,
@@ -76,6 +80,9 @@
         #{categoryid,jdbcType=INTEGER},
       </if>
       <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
         #{title,jdbcType=VARCHAR},
       </if>
       <if test="imageurl != null">
@@ -105,6 +112,9 @@
       <if test="title != null">
         Title = #{title,jdbcType=VARCHAR},
       </if>
+      <if test="content != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
       <if test="imageurl != null">
         ImageUrl = #{imageurl,jdbcType=VARCHAR},
       </if>
@@ -128,6 +138,7 @@
     update LGC_CMS
     set CategoryID = #{categoryid,jdbcType=INTEGER},
       Title = #{title,jdbcType=VARCHAR},
+      Content = #{content,jdbcType=VARCHAR},
       ImageUrl = #{imageurl,jdbcType=VARCHAR},
       Link = #{link,jdbcType=VARCHAR},
       Deleted = #{deleted,jdbcType=TINYINT},
