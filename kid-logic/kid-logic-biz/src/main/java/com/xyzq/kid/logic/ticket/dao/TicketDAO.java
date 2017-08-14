@@ -44,5 +44,9 @@ public interface TicketDAO {
 
     int queryTicketByCondCount(Map paramMap);
 
+    int updateHandselNewUser(Map paramMap);
+
+    int updateHandselExpired(Map paramMap);
+
 //    int updateMobileNo(Map paramMap);
 }

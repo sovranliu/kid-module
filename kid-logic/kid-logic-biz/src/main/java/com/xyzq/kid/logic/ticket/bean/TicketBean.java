@@ -221,6 +221,23 @@ public class TicketBean {
     }
 
     /**
+     * 用户注册时更新别人赠送给他的票信息
+     * @param ownerOpenId
+     * @param mobileNo
+     * @return
+     */
+    public int updateHandselNewUser(String ownerOpenId, String mobileNo) {
+        Map paramMap = new HashMap<>();
+        paramMap.put("owneropenid", ownerOpenId);
+        paramMap.put("mobileno", mobileNo);
+        return ticketDAO.updateHandselNewUser(paramMap);
+    }
+
+    public int updateHandselExpired(Map paramMap) {
+        return ticketDAO.updateHandselExpired(paramMap);
+    }
+
+    /**
      * TicketPO 转化为 TicketEntity
      * @param po
      * @return TicketEntity

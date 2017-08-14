@@ -240,7 +240,7 @@
   <update id="updateRefundByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
     update LGC_Ticket
     set Status = 4
-    where ID = #{id,jdbcType=INTEGER} and Status = 0
+    where ID = #{id,jdbcType=INTEGER} and Status = 3
   </update>
 
   <update id="updateHandselByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
@@ -321,6 +321,20 @@
       and Status = #{status,jdbcType=INTEGER}
     </if>
   </select>
+
+  <update id="updateHandselNewUser">
+    update LGC_Ticket
+    set OwnerOpenID = #{owneropenid,jdbcType=VARCHAR}
+    where OwnerOpenID = #{mobileno,jdbcType=VARCHAR}
+    and Status = 0
+  </update>
+
+  <update id="updateHandselExpired">
+    update LGC_Ticket
+    set OwnerOpenID = #{owneropenid,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+    and Status = 0
+  </update>
 
   <!--<update id="updateMobileNo" parameterType="java.lang.String">-->
     <!--update LGC_Ticket-->

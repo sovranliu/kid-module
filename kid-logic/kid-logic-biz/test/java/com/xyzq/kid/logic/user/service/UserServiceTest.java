@@ -33,18 +33,20 @@ public class UserServiceTest {
 
     @Test
     public void insertSelective() throws Exception {
-        for (int i = 100; i < 200; i++) {
-            UserEntity userEntity = new UserEntity();
-            userEntity.telephone = "15121018" + i;
-            userEntity.openid = "myj_test" + i;
-            userEntity.userName = "myj_test";
-            userEntity.address = "abcdefghijklmn" + i;
-            userEntity.sex = UserEntity.USER_MALE;
-            userEntity.subscribetime= "2017-08-06 05:58:00";
-//            int id = userService.(userEntity);
+//        for (int i = 100; i < 200; i++) {
+//            UserEntity userEntity = new UserEntity();
+//            userEntity.telephone = "18101657676" + i;
+//            userEntity.openid = "myj_test" + i;
+//            userEntity.userName = "myj_test";
+//            userEntity.address = "abcdefghijklmn" + i;
+//            userEntity.sex = UserEntity.USER_MALE;
+//            userEntity.subscribetime= "2017-08-06 05:58:00";
+
+            userService.register("myj_test", "18101657676", "ke");
+//            int id = userService.insertSelective(userEntity);
 //            System.out.println(id);
 
-        }
+//        }
 
     }
 
@@ -57,8 +59,9 @@ public class UserServiceTest {
         userEntity.address = "abcdefghijklmn_new";
         userEntity.sex = UserEntity.USER_FEMALE;
         userEntity.subscribetime= "2017-08-31 11:00:00";
-        int id = userService.updateByMobileNo(userEntity);
-        System.out.println(id);
+
+//        int id = userService.updateByMobileNo(userEntity);
+//        System.out.println(id);
     }
 
     @Test

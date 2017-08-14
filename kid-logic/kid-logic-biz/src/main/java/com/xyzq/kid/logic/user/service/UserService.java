@@ -2,6 +2,7 @@ package com.xyzq.kid.logic.user.service;
 
 import com.xyzq.kid.common.wechat.mp.UserInfoHelper;
 import com.xyzq.kid.logic.Page;
+import com.xyzq.kid.logic.ticket.bean.TicketBean;
 import com.xyzq.kid.logic.user.bean.UserBean;
 import com.xyzq.kid.logic.user.entity.SessionEntity;
 import com.xyzq.kid.logic.user.entity.UserEntity;
@@ -37,6 +38,8 @@ public class UserService {
      */
     @Autowired
     private UserBean userBean;
+    @Autowired
+    private TicketBean ticketBean;
 
 
     /**
@@ -138,6 +141,10 @@ public class UserService {
             logger.error("load avatar failed", e);
         }
         userBean.insertSelective(entity);
+
+        //更新票表中别人赠送的openid
+        ticketBean.updateHandselNewUser(openId, mobileNo);
+
         return true;
     }
 

@@ -210,7 +210,13 @@ public class TicketService implements PayListener {
         paramMap.put("id", ticketId);
         UserEntity userEntity = userService.selectByMolieNo(mobileNo);
         UserEntity userEntityPre = userService.selectByMolieNo(preMobile);
-        paramMap.put("owneropenid", userEntity.openid);
+        //用户没有注册，置为手机号
+        if(null == userEntity || userEntity.openid ==null) {
+            logger.info("TicketService.handselTickets[in]-ticketId:" + ticketId + " user[" + mobileNo + "] unregister!");
+            paramMap.put("owneropenid", mobileNo);
+        } else {
+            paramMap.put("owneropenid", userEntity.openid);
+        }
         paramMap.put("preowneropenid", userEntityPre.openid);
         int result = ticketBean.updateHandselByPrimaryKeyLock(paramMap);
 
@@ -409,6 +415,11 @@ public class TicketService implements PayListener {
 
         List<TicketHistoryEntity> ticketHistoryEntityList = ticketHistoryBean.selectHandselByPreMobile(mobileNo);
         for (int i = 0; i < ticketHistoryEntityList.size(); i++) {
+            //已过期、生效的不做处理
+            if(ticketHistoryEntityList.get(i).action == TicketHistoryEntity.TICKET_ACTION_HANDSEL_EFFECTIVE ||
+                    ticketHistoryEntityList.get(i).action == TicketHistoryEntity.TICKET_ACTION_HANDSEL_EXPPIRED ) {
+                continue;
+            }
             //如果用户在user表中存在，代表赠送生效
             //如果用户在user表中不存在，且已超过24小时，赠送失效
             TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketHistoryEntityList.get(i).ticketid);
@@ -423,6 +434,8 @@ public class TicketService implements PayListener {
                 calendar.add(calendar.DATE,1);
                 handseldate = calendar.getTime();
                 if(handseldate.before(nowDate)) {
+                    //更owner为原有者
+                    updateHandselExpired(ticketHistoryEntityList.get(i).premobile, ticketHistoryEntityList.get(i).ticketid);
                     handselExpiredTicketHistory(ticketHistoryEntityList.get(i).id);
                 }
             }
@@ -736,6 +749,20 @@ public class TicketService implements PayListener {
     public TicketEntity getTicketByPk(Integer ticketId){
     	return ticketBean.selectByPrimaryKey(ticketId);
 
+    }
+
+    /**
+     * 增票过期时返还给原有者
+     * @param ownerOpenId
+     * @param tickedId
+     * @return
+     */
+    public int updateHandselExpired(String ownerOpenId, int tickedId) {
+        logger.info("TicketService.updateHandselNewUser[in]-ownerOpenId:" + ownerOpenId + ", tickedId:" + tickedId);
+        Map paramMap = new HashMap<>();
+        paramMap.put("owneropenid", ownerOpenId);
+        paramMap.put("id", tickedId);
+        return ticketBean.updateHandselExpired(paramMap);
     }
 
 //    public void updateMobileNo(String mobile, String mobilePre) {

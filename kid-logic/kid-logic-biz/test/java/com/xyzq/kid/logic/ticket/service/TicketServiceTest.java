@@ -41,7 +41,7 @@ public class TicketServiceTest {
 
     @Test
     public void handselTickets() throws Exception {
-        String res =  ticketService.handselTickets(10, "15601889783", "15121018205", CommonTool.HANDLE_GIVE);
+        String res =  ticketService.handselTickets(23, "18101657676", "15121018205", CommonTool.HANDLE_GIVE);
         System.out.println();
     }
 
@@ -71,6 +71,11 @@ public class TicketServiceTest {
     public void getTicketsInfoBySerialno() throws Exception {
         TicketEntity ticketEntity = ticketService.getTicketsInfoBySerialno("20170730110949896");
         Assert.assertSame("fail!", ticketEntity.id, 40);
+    }
+
+    @Test
+    public void getTicketsInfoByOwnerMobileNo() throws Exception {
+        ticketService.getTicketsInfoByOwnerMobileNo("15121018205");
     }
 
     @Test

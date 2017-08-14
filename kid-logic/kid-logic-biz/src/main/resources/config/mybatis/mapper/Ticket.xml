@@ -322,6 +322,20 @@
     </if>
   </select>
 
+  <update id="updateHandselNewUser">
+    update LGC_Ticket
+    set OwnerOpenID = #{owneropenid,jdbcType=VARCHAR}
+    where OwnerOpenID = #{mobileno,jdbcType=VARCHAR}
+    and Status = 0
+  </update>
+
+  <update id="updateHandselExpired">
+    update LGC_Ticket
+    set OwnerOpenID = #{owneropenid,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+    and Status = 0
+  </update>
+
   <!--<update id="updateMobileNo" parameterType="java.lang.String">-->
     <!--update LGC_Ticket-->
     <!--set OwnerMobileNo = #{mobileno,jdbcType=VARCHAR}-->
