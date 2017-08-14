@@ -42,9 +42,6 @@ WHERE Deleted = 0
 <if test="orderNo != null and orderNo != ''">
     AND OrderNo = #{orderNo}
 </if>
-<if test="openId != null and openId != ''">
-    AND OpenID = #{openId}
-</if>
 <if test="status != null and status == 1">
     AND (State = 0 OR State = 1)
 </if>
@@ -67,6 +64,9 @@ AND CreateTime <= #{endTime}
 ) R
 LEFT JOIN FIN_Order O
 ON R.OrderNo = O.OrderNo AND R.Deleted = 0 AND O.Deleted = 0
+<if test="openId != null and openId != ''">
+    AND O.OpenID = #{openId}
+</if>
 LEFT JOIN LGC_User U
 ON O.OpenID = U.OpenID AND U.Deleted = 0
 LEFT JOIN LGC_Ticket T
@@ -82,9 +82,6 @@ FROM FIN_Refund
 WHERE Deleted = 0
 <if test="orderNo != null and orderNo != ''">
     AND OrderNo = #{orderNo}
-</if>
-<if test="openId != null and openId != ''">
-    AND OpenID = #{openId}
 </if>
 <if test="status != null and status == 1">
     AND (State = 0 OR State = 1)
@@ -108,6 +105,9 @@ WHERE Deleted = 0
 ) R
 LEFT JOIN FIN_Order O
 ON R.OrderNo = O.OrderNo AND R.Deleted = 0 AND O.Deleted = 0
+<if test="openId != null and openId != ''">
+    AND O.OpenID = #{openId}
+</if>
 LEFT JOIN LGC_User U
 ON O.OpenID = U.OpenID AND U.Deleted = 0
 LEFT JOIN LGC_Ticket T
