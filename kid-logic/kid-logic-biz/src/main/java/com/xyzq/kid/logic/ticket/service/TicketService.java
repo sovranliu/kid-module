@@ -135,11 +135,15 @@ public class TicketService implements PayListener {
      */
     private void buyGroupleTickets(TicketEntity ticketEntity, int num){
         logger.info("TicketService.buyGroupleTickets[in]-ticketEntity:" + ticketEntity.toString() + ",num:" + num);
+
+        Map<String, Integer> pricemap = configService.getPriceInfo();
+        int fee = Integer.valueOf(pricemap.get(ConfigCommon.FEE_GROUPTICKET).toString());
+
         if(num >= 3) {
             for (int i = 0; i < num; i++) {
                 ticketEntity.type = TicketEntity.TICKET_TYPE_GROUP;
                 ticketEntity.insurance = false;
-                ticketEntity.price = BigDecimal.valueOf(ticketEntity.price.intValue()/num);
+                ticketEntity.price = BigDecimal.valueOf(fee);
                 buyTickets(ticketEntity);
             }
         }

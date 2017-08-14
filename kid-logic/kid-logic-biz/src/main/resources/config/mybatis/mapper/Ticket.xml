@@ -253,7 +253,7 @@
     update LGC_Ticket
     set OwnerOpenID = #{owneropenid,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
-    and OwnerOpenID = #{owneropenid,jdbcType=VARCHAR}
+    and OwnerOpenID = #{preowneropenid,jdbcType=VARCHAR}
      and Status = 0
   </update>
 
