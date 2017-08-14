@@ -9,6 +9,8 @@ public class CMSPO {
 
     private String title;
 
+    private String content;
+
     private String imageurl;
 
     private String link;
@@ -81,5 +83,13 @@ public class CMSPO {
 
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

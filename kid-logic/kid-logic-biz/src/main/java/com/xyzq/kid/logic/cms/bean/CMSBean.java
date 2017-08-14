@@ -97,6 +97,9 @@ public class CMSBean {
         if(null != po.getTitle()) {
             entity.title = po.getTitle();
         }
+        if(null != po.getContent() ) {
+            entity.content = po.getContent();
+        }
         if(null != po.getImageurl()) {
             entity.imageurl = po.getImageurl();
         }
@@ -126,10 +129,13 @@ public class CMSBean {
             po.setId(entity.id);
         }
         if(null != entity.categoryid ) {
-            po.setCategoryid(entity.categoryid );
+            po.setCategoryid(entity.categoryid);
         }
         if(null != entity.title ) {
             po.setTitle(entity.title);
+        }
+        if(null != entity.content ) {
+            po.setContent(entity.content);
         }
         if(null != entity.imageurl ) {
             po.setImageurl(entity.imageurl);
