@@ -62,7 +62,7 @@ AND CreateTime <= #{endTime}
     ]]>
 </if>
 ) R
-LEFT JOIN FIN_Order O
+INNER JOIN FIN_Order O
 ON R.OrderNo = O.OrderNo AND R.Deleted = 0 AND O.Deleted = 0
 <if test="openId != null and openId != ''">
     AND O.OpenID = #{openId}
