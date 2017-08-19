@@ -241,13 +241,14 @@ public class BookChangeRequestService {
 					//改期则回退新占用的时间库存
 					if(request.getReqesttype().equals("1")){
 						if(bookRepositoryService.updateAmount(request.getBooktimeid(), "2")){
-							flag=true;
+//							flag=true;
 						}
 					}else if(request.getReqesttype().equals("2")){
 						//撤销
-						flag=true;
+//						flag=true;
 					}
 				}
+				flag=true;
 			}
 		}catch(Exception e){
 			logger.error("approve request fail ,caused by "+e.getMessage());
