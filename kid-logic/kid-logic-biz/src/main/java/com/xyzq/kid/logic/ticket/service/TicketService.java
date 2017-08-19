@@ -509,6 +509,7 @@ public class TicketService implements PayListener {
      */
     public int refuseRefund(Integer ticketId) {
         TicketRefundEntity ticketRefundEntityChect = ticketRefundBean.selectByTicketId(ticketId);
+        ticketBean.updateRefundRefuseByPrimaryKey(ticketId);
         return ticketRefundBean.refuseByPrimaryKey(ticketRefundEntityChect.id);
     }
 
