@@ -84,8 +84,8 @@ public class TicketServiceTest {
     }
 
     @Test
-    public void getTicketsInfoByPayerOpenID() throws Exception {
-
+    public void refuseRefund() throws Exception {
+        ticketService.refuseRefund(9);
     }
 
     @Test

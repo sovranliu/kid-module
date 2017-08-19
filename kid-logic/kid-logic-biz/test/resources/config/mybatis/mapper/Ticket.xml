@@ -237,6 +237,12 @@
     where ID = #{id,jdbcType=INTEGER} and Status = 0
   </update>
 
+  <update id="updateRefundRefuseByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
+    update LGC_Ticket
+    set Status = 0
+    where ID = #{id,jdbcType=INTEGER} and Status = 3
+  </update>
+
   <update id="updateRefundByPrimaryKey" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO">
     update LGC_Ticket
     set Status = 4

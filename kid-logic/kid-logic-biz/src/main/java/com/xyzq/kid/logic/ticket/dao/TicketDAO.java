@@ -32,6 +32,8 @@ public interface TicketDAO {
 
     int updateRefundingByPrimaryKey(Integer id);
 
+    int updateRefundRefuseByPrimaryKey(Integer id);
+
     int updateHandselByPrimaryKey(TicketPO record);
 
     int updateHandselByPrimaryKeyLock(Map paramMap);
