@@ -160,6 +160,7 @@ public class TicketService implements PayListener {
         logger.info("TicketService.handselTickets[in]-ticketId:" + ticketId + ",mobileNo:" + mobileNo + ", preMobile:" + preMobile);
         TicketEntity ticketEntity = ticketBean.selectByPrimaryKey(ticketId);
         UserEntity userEntity = userService.selectByMolieNo(mobileNo);
+        UserEntity userEntityPre = userService.selectByMolieNo(preMobile);
         if(ticketEntity.deleted != CommonTool.STATUS_NORMAL) {
             logger.error("ticket has been deleted![" + ticketEntity.deleted + "]");
             return "票被删除!";
@@ -181,7 +182,7 @@ public class TicketService implements PayListener {
             List<TicketHistoryEntity> ticketHistoryEntityList = ticketHistoryBean.selectHandselByTicketId(ticketId);
             if(null != ticketHistoryEntityList && ticketHistoryEntityList.size() > 0) {
                 for (int i = 0; i < ticketHistoryEntityList.size(); i++) {
-                    if(ticketHistoryEntityList.get(i).premobile.equals(userEntity.openid)) {
+                    if(ticketHistoryEntityList.get(i).premobile.equals(userEntityPre.openid)) {
                         return "票已经被" + ticketEntity.telephone + "领取！";
                     }
                 }
@@ -209,7 +210,7 @@ public class TicketService implements PayListener {
 
         Map paramMap = new HashMap<>();
         paramMap.put("id", ticketId);
-        UserEntity userEntityPre = userService.selectByMolieNo(preMobile);
+
         //用户没有注册，置为手机号
         if(null == userEntity || userEntity.openid ==null) {
             logger.info("TicketService.handselTickets[in]-ticketId:" + ticketId + " user[" + mobileNo + "] unregister!");
