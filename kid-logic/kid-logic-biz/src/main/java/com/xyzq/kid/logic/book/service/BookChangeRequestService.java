@@ -108,50 +108,67 @@ public class BookChangeRequestService {
 			Book book=bookMapper.selectByPrimaryKey(bookId);
 			//1：已预约，2：改期申请中，3：改期通过，4：改期拒绝，5：核销完成，6：撤销申请中，7：撤销通过，8：拒绝撤销
 			if(requestType.equals("1")){
+				BookTimeRepository repo=bookRepositoryService.queryByPrimaryKey(bookTimeId);
+				BookTimeSpan span=bookTimeSpanService.queryByPrimaryKey(repo.getBooktimespanid());
 				if(requestBy.equals("2")){
+					//管理员操作，直接改期成功，则直接扣减新预约时间库存，回退原时间库存
+					if(bookRepositoryService.updateAmount(bookTimeId, "1")&&bookRepositoryService.updateAmount(book.getBooktimeid(), "2")){//1：扣减库存，2：回退库存
+//						flag=true;
+					}
 					book.setBookstatus("3");//改期通过
 					book.setBooktimeid(bookTimeId);
-					BookTimeRepository repo=bookRepositoryService.queryByPrimaryKey(bookTimeId);
-					BookTimeSpan span=bookTimeSpanService.queryByPrimaryKey(repo.getBooktimespanid());
 					book.setBookdate(repo.getBookdate());
 					book.setBooktime(span.getTimespan());
 				}else{
+					//用户申请，则为申请中
+					if(repo!=null){
+						//改期申请中，占用一个新预约时间库存
+						if(bookRepositoryService.updateAmount(bookTimeId, "1")){//1：扣减库存，2：回退库存
+//							flag=true;
+						}
+					}
 					book.setBookstatus("2");//改期申请中
 				}
 			}else if(requestType.equals("2")){
 				if(requestBy.equals("2")){
+					//管理员撤销，则直接回通库存
+					if(bookRepositoryService.updateAmount(book.getBooktimeid(), "2")){
+						ticketService.recoverTickets(book.getTicketid());
+					}
 					book.setBookstatus("7");//撤销通过
 				}else{
 					book.setBookstatus("6");//撤销申请中
+					//撤销申请中
 				}
 			}
 			book.setLastupdatetime(new Date());
 			bookMapper.updateByPrimaryKeySelective(book);
-			if(requestType.equals("1")){//改期
-				BookTimeRepository repo=bookTimeRepositoryMapper.selectByPrimaryKey(bookTimeId);
-				if(requestBy.equals("2")){//管理员操作，直接改期成功，则直接扣减新预约时间库存，回退原时间库存
-					if(bookRepositoryService.updateAmount(bookTimeId, "1")&&bookRepositoryService.updateAmount(book.getBooktimeid(), "2")){//1：扣减库存，2：回退库存
-						flag=true;
-					}
-				}else{//用户申请，则为申请中
-					if(repo!=null){
-						//改期申请中，占用一个新预约时间库存
-						if(bookRepositoryService.updateAmount(bookTimeId, "1")){//1：扣减库存，2：回退库存
-							flag=true;
-						}
-					}
-				}
-			}else if(requestType.equals("2")){
-				if(requestBy.equals("2")){//管理员撤销，则直接回通库存
-					if(bookRepositoryService.updateAmount(book.getBooktimeid(), "2")){
-						ticketService.recoverTickets(book.getTicketid());
-						flag=true;
-					}
-				}else{
-					//撤销申请中
-					flag=true;	
-				}
-			}
+			flag=true;
+//			if(requestType.equals("1")){//改期
+//				BookTimeRepository repo=bookTimeRepositoryMapper.selectByPrimaryKey(bookTimeId);
+//				if(requestBy.equals("2")){//管理员操作，直接改期成功，则直接扣减新预约时间库存，回退原时间库存
+//					if(bookRepositoryService.updateAmount(bookTimeId, "1")&&bookRepositoryService.updateAmount(book.getBooktimeid(), "2")){//1：扣减库存，2：回退库存
+//						flag=true;
+//					}
+//				}else{//用户申请，则为申请中
+//					if(repo!=null){
+//						//改期申请中，占用一个新预约时间库存
+//						if(bookRepositoryService.updateAmount(bookTimeId, "1")){//1：扣减库存，2：回退库存
+//							flag=true;
+//						}
+//					}
+//				}
+//			}else if(requestType.equals("2")){
+//				if(requestBy.equals("2")){//管理员撤销，则直接回通库存
+//					if(bookRepositoryService.updateAmount(book.getBooktimeid(), "2")){
+//						ticketService.recoverTickets(book.getTicketid());
+//						flag=true;
+//					}
+//				}else{
+//					//撤销申请中
+//					flag=true;	
+//				}
+//			}
 		}catch(Exception e){
 			logger.error("create book change request fail,caused by "+e.getMessage());
 			e.printStackTrace();
@@ -182,9 +199,19 @@ public class BookChangeRequestService {
 					//审批通过，则修改原预约单为改期申请通过，并回退该时间库存
 					Book book=bookMapper.selectByPrimaryKey(request.getBookid());
 					if(request.getReqesttype().equals("1")){
+						//回退原时间库存
+						if(bookRepositoryService.updateAmount(book.getBooktimeid(), "2")){
+//							flag=true;
+						}
 						book.setBookstatus("3");
 					}else if(request.getReqesttype().equals("2")){
 						book.setBookstatus("7");
+						//撤销申请通过，回退原时间库存
+						if(bookRepositoryService.updateAmount(book.getBooktimeid(), "2")){
+//							flag=true;
+						}
+						//撤销预约申请审批通过，则将票状态变更为未使用状态
+						ticketService.recoverTickets(book.getTicketid());
 					}
 					
 					if(request.getBooktimeid()!=null&&request.getReqesttype().equals("1")){
@@ -197,14 +224,10 @@ public class BookChangeRequestService {
 					book.setLastupdatetime(new Date());
 					bookMapper.updateByPrimaryKeySelective(book);
 					
-					//回退原时间库存
-					if(bookRepositoryService.updateAmount(book.getBooktimeid(), "2")){
-						flag=true;
-					}
-					if(request.getReqesttype().equals("2")){
-						//撤销预约申请审批通过，则将票状态变更为未使用状态
-						ticketService.recoverTickets(book.getTicketid());
-					}
+//					if(request.getReqesttype().equals("2")){
+//						//撤销预约申请审批通过，则将票状态变更为未使用状态
+//						ticketService.recoverTickets(book.getTicketid());
+//					}
 				}else if(approveStatus.equals("3")){
 					//审批拒绝，则修改原预约单为改期申请拒绝，改期则回退新占用的时间库存
 					Book book=bookMapper.selectByPrimaryKey(request.getBookid());
