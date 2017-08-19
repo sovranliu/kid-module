@@ -33,7 +33,7 @@ public class TicketServiceTest {
     @Test
     public void buySingleTickets() throws Exception {
         for (int i = 0; i < 1; i++) {
-            ticketService.onPay("555555" + i, "ovQHwwEWahEJWswlxsHlB70smIGc", 20003, 38000, "ovQHwwEWahEJWswlxsHlB70smIGc");
+            ticketService.onPay("555555" + i, "ovQHwwEWahEJWswlxsHlB70smIGc", 11000, 38000, "ovQHwwEWahEJWswlxsHlB70smIGc");
         }
 
     }
@@ -61,9 +61,9 @@ public class TicketServiceTest {
 
     @Test
     public void refundingTickets() throws Exception {
-        for (int i = 140; i < 190; i++) {
-            ticketService.refundingTickets(i);
-        }
+//        for (int i = 140; i < 190; i++) {
+            ticketService.refundingTickets(42);
+//        }
 
     }
 
@@ -85,7 +85,7 @@ public class TicketServiceTest {
 
     @Test
     public void refuseRefund() throws Exception {
-        ticketService.refuseRefund(9);
+        ticketService.refuseRefund(42);
     }
 
     @Test

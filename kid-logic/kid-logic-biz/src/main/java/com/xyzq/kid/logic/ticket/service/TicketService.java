@@ -352,7 +352,7 @@ public class TicketService implements PayListener {
         TicketRefundEntity ticketRefundEntityChect = ticketRefundBean.selectByTicketId(ticketId);
         if(null != ticketRefundEntityChect && ticketRefundEntityChect.ticketid > 0) {
             logger.info("already had refund info![" + ticketRefundEntityChect.toString() + "]");
-            return "success";
+            return "不可二次退款！";
         }
 
         refundingTicketHistory(ticketId);
