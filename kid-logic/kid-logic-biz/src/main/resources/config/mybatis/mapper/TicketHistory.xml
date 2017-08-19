@@ -162,7 +162,7 @@
     select
     <include refid="Base_Column_List" />
     from LGC_TicketHistory
-    where Action = 6
+    where (Action = 2 or Action = 6)
     and TicketID = #{ticketid,jdbcType=INTEGER}
     and Deleted = 0
   </select>

@@ -41,7 +41,7 @@ public class TicketServiceTest {
 
     @Test
     public void handselTickets() throws Exception {
-        String res =  ticketService.handselTickets(39, "15121018205", "18101657676", CommonTool.HANDLE_RECEIVE);
+        String res =  ticketService.handselTickets(39, "18101657676", "15121018205", CommonTool.HANDLE_RECEIVE);
         System.out.println();
     }
 
