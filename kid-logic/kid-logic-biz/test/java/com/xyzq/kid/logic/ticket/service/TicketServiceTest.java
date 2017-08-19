@@ -33,7 +33,7 @@ public class TicketServiceTest {
     @Test
     public void buySingleTickets() throws Exception {
         for (int i = 0; i < 1; i++) {
-            ticketService.onPay("555555" + i, "ovQHwwFwTV4stCe3ncywvDrkDioI", 20003, 38000, "ovQHwwFwTV4stCe3ncywvDrkDioI");
+            ticketService.onPay("555555" + i, "ovQHwwEWahEJWswlxsHlB70smIGc", 20003, 38000, "ovQHwwEWahEJWswlxsHlB70smIGc");
         }
 
     }
@@ -41,7 +41,7 @@ public class TicketServiceTest {
 
     @Test
     public void handselTickets() throws Exception {
-        String res =  ticketService.handselTickets(23, "18101657676", "15121018205", CommonTool.HANDLE_GIVE);
+        String res =  ticketService.handselTickets(39, "15121018205", "18101657676", CommonTool.HANDLE_RECEIVE);
         System.out.println();
     }
 
