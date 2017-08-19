@@ -165,6 +165,10 @@ public class TicketBean {
         return ticketDAO.updateRefundingByPrimaryKey(id);
     }
 
+    public int updateRefundRefuseByPrimaryKey(Integer id){
+        return ticketDAO.updateRefundRefuseByPrimaryKey(id);
+    }
+
     /**
      * 赠送
      * @param entity
