@@ -16,6 +16,8 @@ public class TicketPO {
 
     private BigDecimal price;
 
+    private BigDecimal refundprice;
+
     private Date expiredate;
 
     private Boolean insurance;
@@ -76,6 +78,14 @@ public class TicketPO {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public BigDecimal getRefundprice() {
+        return refundprice;
+    }
+
+    public void setRefundprice(BigDecimal refundprice) {
+        this.refundprice = refundprice;
     }
 
     public Date getExpiredate() {

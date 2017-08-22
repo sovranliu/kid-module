@@ -272,6 +272,9 @@ public class TicketBean {
         if(null != po.getPrice()) {
             entity.price = po.getPrice();
         }
+        if(null != po.getRefundprice()) {
+            entity.refundprice = po.getRefundprice();
+        }
         if(null != po.getExpiredate()) {
             entity.expire = CommonTool.dataToStringYMD(po.getExpiredate());
         }
@@ -323,6 +326,9 @@ public class TicketBean {
         }
         if(null != entity.price) {
             po.setPrice(entity.price);
+        }
+        if(null != entity.refundprice) {
+            po.setRefundprice(entity.refundprice);
         }
         if(null != entity.expire) {
             po.setExpiredate(CommonTool.stringToDataYMD(entity.expire));

@@ -104,6 +104,15 @@ public class TicketService implements PayListener {
         if(goodsTypeService.isSingleTicket(goodsType)) {
             ticketEntity.insurance = goodsTypeService.containsInsurance(goodsType);
             ticketEntity.type = TicketEntity.TICKET_TYPE_SINGLE;
+            Map<String, Integer> pricemap = configService.getPriceInfo();
+            int insuranceFee = Integer.valueOf(pricemap.get(ConfigCommon.FEE_INSURANCE).toString());
+            if(ticketEntity.insurance) {
+                ticketEntity.refundprice = new BigDecimal(fee - insuranceFee); //支付价格减去当前的保险费价格
+//                ticketEntity.refundprice = new BigDecimal(ticketEntity.price.intValue() - insuranceFee);
+            } else {
+                ticketEntity.refundprice = new BigDecimal( fee * 0.7); //支付价格的7折
+//                ticketEntity.refundprice = new BigDecimal( (ticketEntity.price.intValue() * 0.7));
+            }
             buySingleTickets(ticketEntity);
             return;
         }
@@ -727,17 +736,17 @@ public class TicketService implements PayListener {
             return false;
         }
 
-        Map<String, Integer> pricemap = configService.getPriceInfo();
-        int fee = Integer.valueOf(pricemap.get(ConfigCommon.FEE_INSURANCE).toString());
-        if(ticketEntity.insurance) {
-            fee = ticketEntity.price.intValue() - fee;
-        } else {
-            fee = (int) (ticketEntity.price.intValue() * 0.7);
-        }
-        logger.info("TicketService.refund[in]-ticketId:" + ticketId + "All[" + ticketEntity.price.intValue() +"],insurance[" + fee + "]");
+//        Map<String, Integer> pricemap = configService.getPriceInfo();
+//        int fee = Integer.valueOf(pricemap.get(ConfigCommon.FEE_INSURANCE).toString());
+//        if(ticketEntity.insurance) {
+//            fee = ticketEntity.price.intValue() - fee;
+//        } else {
+//            fee = (int) (ticketEntity.price.intValue() * 0.7);
+//        }
+        logger.info("TicketService.refund[in]-ticketId:" + ticketId + "All[" + ticketEntity.price.intValue() +"],insurance[" + ticketEntity.refundprice + "]");
 
         try {
-            result = refundService.refund(ticketEntity.payNumber, null, null, fee, null);
+            result = refundService.refund(ticketEntity.payNumber, null, null, ticketEntity.refundprice.intValue(), null);
         } catch (IOException e) {
             logger.info("TicketService.refund[in]-ticketId:" + ticketId + " fail for " + e.toString());
             return false;

@@ -8,6 +8,7 @@
     <result column="OwnerOpenID" jdbcType="VARCHAR" property="owneropenid" />
     <result column="PayerOpenID" jdbcType="VARCHAR" property="payeropenid" />
     <result column="Price" jdbcType="DECIMAL" property="price" />
+    <result column="RefundPrice" jdbcType="DECIMAL" property="refundprice" />
     <result column="ExpireDate" jdbcType="TIMESTAMP" property="expiredate" />
     <result column="Insurance" jdbcType="BIT" property="insurance" />
     <result column="OrderNo" jdbcType="VARCHAR" property="orderno" />
@@ -59,12 +60,12 @@
 
   <insert id="insert" parameterType="com.xyzq.kid.logic.ticket.dao.po.TicketPO" useGeneratedKeys="true" keyProperty="id">
     insert into LGC_Ticket (ID, SerialNo, Type, 
-      OwnerOpenID, PayerOpenID, Price,
+      OwnerOpenID, PayerOpenID, Price,RefundPrice
       ExpireDate, Insurance, OrderNo,
       Status, Deleted, CreateTime, 
       UpdateTime)
     values (#{id,jdbcType=INTEGER}, #{serialno,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
-      #{owneropenid,jdbcType=VARCHAR}, #{payeropenid,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
+      #{owneropenid,jdbcType=VARCHAR}, #{payeropenid,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},#{refundprice,jdbcType=DECIMAL},
       #{expiredate,jdbcType=TIMESTAMP}, #{insurance,jdbcType=BIT}, #{orderno,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{deleted,jdbcType=TINYINT}, #{createtime,jdbcType=TIMESTAMP}, 
       #{updatetime,jdbcType=TIMESTAMP})
@@ -93,6 +94,9 @@
       </if>
       <if test="price != null">
         Price,
+      </if>
+      <if test="refundprice != null">
+        RefundPrice,
       </if>
       <if test="expiredate != null">
         ExpireDate,
@@ -134,6 +138,9 @@
       </if>
       <if test="price != null">
         #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="refundprice != null">
+        #{refundprice,jdbcType=DECIMAL},
       </if>
       <if test="expiredate != null">
         #{expiredate,jdbcType=TIMESTAMP},
@@ -177,6 +184,9 @@
       <if test="price != null">
         Price = #{price,jdbcType=DECIMAL},
       </if>
+      <if test="refundprice != null">
+        RefundPrice = #{refundprice,jdbcType=DECIMAL},
+      </if>
       <if test="expiredate != null">
         ExpireDate = #{expiredate,jdbcType=TIMESTAMP},
       </if>
@@ -209,6 +219,7 @@
       OwnerOpenID = #{owneropenid,jdbcType=VARCHAR},
       PayerOpenID = #{payeropenid,jdbcType=VARCHAR},
       Price = #{price,jdbcType=DECIMAL},
+      Price = #{refundprice,jdbcType=DECIMAL},
       ExpireDate = #{expiredate,jdbcType=TIMESTAMP},
       Insurance = #{insurance,jdbcType=BIT},
       OrderNo = #{orderno,jdbcType=VARCHAR},

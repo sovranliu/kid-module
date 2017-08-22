@@ -43,6 +43,10 @@ public class TicketEntity {
      */
     public BigDecimal price;
     /**
+     * 可退架构，单位分；个人票才有
+     */
+    public BigDecimal refundprice;
+    /**
      * 截至日期
      */
     public String expire;
