@@ -19,7 +19,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    ID, SerialNo, Type, OwnerOpenID, PayerOpenID, Price, ExpireDate, Insurance, OrderNo,
+    ID, SerialNo, Type, OwnerOpenID, PayerOpenID, Price, RefundPrice, ExpireDate, Insurance, OrderNo,
     Status, Deleted, CreateTime, UpdateTime
   </sql>
 
